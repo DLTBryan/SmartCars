@@ -23,26 +23,26 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <QtRcc Include="SmartCars.qrc">
-      <Filter>Resource Files</Filter>
-    </QtRcc>
-    <QtUic Include="SmartCars.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
-    <QtMoc Include="SmartCars.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="SmartCars.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ResourceCompile Include="$pro_name$.rc">
-    </ResourceCompile>
-    <None Include="$pro_name$.ico">
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="SmartCars.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="SmartCars.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="SmartCars.qrc">
       <Filter>Resource Files</Filter>
-    </None>
-    <None Include="$pro_name$.def">
-      <Filter>Resource Files</Filter>
-    </None>
-
+    </QtRcc>
   </ItemGroup>
 </Project>

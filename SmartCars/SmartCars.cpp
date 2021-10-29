@@ -1,7 +1,11 @@
 #include "SmartCars.h"
 
 SmartCars::SmartCars(QWidget *parent)
-    : QMainWindow(parent)
+	: QWidget(parent)
 {
-    ui.setupUi(this);
+	ui.setupUi(this);
+}
+
+SmartCars::~SmartCars()
+{
 }

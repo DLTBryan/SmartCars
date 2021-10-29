@@ -1,15 +1,16 @@
 #pragma once
 
-#include <QtWidgets/QMainWindow>
+#include <QWidget>
 #include "ui_SmartCars.h"
 
-class SmartCars : public QMainWindow
+class SmartCars : public QWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    SmartCars(QWidget *parent = Q_NULLPTR);
+	SmartCars(QWidget *parent = Q_NULLPTR);
+	~SmartCars();
 
 private:
-    Ui::SmartCarsClass ui;
+	Ui::SmartCars ui;
 };
