@@ -86,17 +86,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="hexagonal_mesh.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="SmartCars.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <QtMoc Include="SmartCars.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <QtUic Include="SmartCars.ui" />
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="SmartCars.qrc" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="hexagonal_mesh.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
