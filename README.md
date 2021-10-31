@@ -13,13 +13,18 @@ go in project properties > Configuration properties > VC++ directories > under g
 ## Librairie Osmium
 Pour mettre en place la librairie osmium il faut placer le répertoire include dans le dossier du projet et ensuite rajouter ce dossier au niveau de project properties > Configuration properties > VC++ directories > under general > external include directories > ";include"
 
-### bzip2
+### bzip2 et zlib
+*Installer bzip2*
 http://gnuwin32.sourceforge.net/packages/bzip2.htm
 https://netcologne.dl.sourceforge.net/project/gnuwin32/bzip2/1.0.5/bzip2-1.0.5-setup.exe
-
-### zlib
+*Installer zlib*
 http://gnuwin32.sourceforge.net/packages/zlib.htm
 https://altushost-swe.dl.sourceforge.net/project/gnuwin32/zlib/1.2.3/zlib-1.2.3.exe
-
-### Pour inclure les dépendances installés dans le projet
+*Inclure dans le projet*
 C:\Program Files (x86)\GnuWin32\include
+
+### unistd.h
+*Cloner le dépôt*
+https://github.com/robinrowe/libunistd
+*Inclure dans le projet*
+C:\libunistd\unistd

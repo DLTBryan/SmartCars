@@ -55,7 +55,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <ExternalIncludePath>C:\Qt\5.12.11\msvc2017_64\include;include;C:\Program Files (x86)\GnuWin32\include;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>C:\Qt\5.12.11\msvc2017_64\include;include;C:\Program Files (x86)\GnuWin32\include;C:\libunistd\unistd;$(ExternalIncludePath)</ExternalIncludePath>
     <PreBuildEventUseInBuild>false</PreBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
