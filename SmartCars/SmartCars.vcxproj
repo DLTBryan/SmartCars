@@ -55,7 +55,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <ExternalIncludePath>C:\Qt\5.12.11\msvc2017_64\include;include\tinyxml2;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>C:\Qt\5.12.11\msvc2017_64\include;$(ExternalIncludePath)</ExternalIncludePath>
     <PreBuildEventUseInBuild>false</PreBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
@@ -89,6 +89,7 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SmartCars.cpp" />
+    <ClCompile Include="tinyxml2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="SmartCars.h" />
@@ -98,6 +99,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="SmartCars.qrc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="tinyxml2.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
