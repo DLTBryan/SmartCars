@@ -29,7 +29,7 @@ private:
         int nb_col;
         bool selected;
     };
-    std::vector<Cell> cells;
+    std::vector<std::vector<Cell>> cells;
     int widget_height;
     int widget_width;
 };
