@@ -6,17 +6,23 @@
 #include <vector>
 
 class Noeud {
-    friend class Rue;
-    private:
-        // Construit un noeud avec les coordonnées de p
-        Noeud(const Point &p) : v_coordonnees(p) {};
-        // Destructeur de noeud privé
-        ~Noeud() = default;
-        // Méthodes
-        void ajouteVoisin(Noeud* v);
-        // Attributs
-        Point v_coordonnees;
-        std::vector<Noeud*> v_noeudvoisins;
+public:
+    // Constructeurs
+    Noeud(float x, float y) : v_coordonnees{ Point(x, y) }, v_noeudvoisins{ {} } {}
+    // Déstructeurs
+    ~Noeud() = default;
+    // Méthodes
+    float x() const {
+        return v_coordonnees.v_x;
+    }
+    float y() const {
+        return v_coordonnees.v_y;
+    }
+    void ajouteVoisin(Noeud* v);
+private:
+    // Attributs
+    Point v_coordonnees;
+    std::vector<Noeud*> v_noeudvoisins;
 };
 
 #endif

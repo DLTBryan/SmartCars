@@ -7,21 +7,25 @@
 #include <iostream>
 
 class Rue {
-    public:
-        // Constructeurs
-        Rue(std::string reference) : v_reference{reference} {};
-        // Accesseurs
-        std::vector<Noeud*> noeuds() const {
-            return v_noeuds;
-        }
-        // Méthodes
-        int nombrenoeuds() const {
-            return (int) v_noeuds.size();
-        }
-    private:
-        // Coordonnées
-        std::vector<Noeud*> v_noeuds;
-        std::string v_reference;
+public:
+    // Constructeurs
+    Rue(std::string reference, Noeud* noeud) : v_reference{ reference }, v_noeuds{ {noeud} } {};
+    // Accesseurs
+    std::vector<Noeud*> noeuds() const {
+        return v_noeuds;
+    }
+    // Méthodes
+    std::string reference() const {
+        return v_reference;
+    }
+    int nombrenoeuds() const {
+        return (int)v_noeuds.size();
+    }
+    void ajouteNoeud(Noeud* noeud);
+private:
+    // Attributs
+    std::string v_reference;
+    std::vector<Noeud*> v_noeuds;
 };
 
 

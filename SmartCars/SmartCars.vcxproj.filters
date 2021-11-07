@@ -46,9 +46,6 @@
     <ClCompile Include="noeud.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="point.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="rue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

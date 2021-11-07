@@ -89,7 +89,6 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="noeud.cpp" />
-    <ClCompile Include="point.cpp" />
     <ClCompile Include="rue.cpp" />
     <ClCompile Include="SmartCars.cpp" />
     <ClCompile Include="tinyxml2.cpp" />

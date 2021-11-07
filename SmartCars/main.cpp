@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
     //SmartCars w;
     //w.show();
     //return a.exec();
-        // https://overpass-api.de/api/map?bbox=7.30370,47.72729,7.31900,47.73389
+    // https://overpass-api.de/api/map?bbox=7.30370,47.72729,7.31900,47.73389
     XMLDocument map;
     XMLError eResult = map.LoadFile("map.osm");
     XMLCheckResult(eResult);
@@ -96,9 +96,61 @@ int main(int argc, char *argv[]) {
 
     // "node" par "node" on commence à créer nos objets
     std::vector<Rue> rues;
-    /*for (auto i = linksrefnodeway.begin(); i != linksrefnodeway.end(); ++i)
-        for ()
-        rues.push_back(Rue());*/
+    for (auto i = linksrefnodeway.begin(); i != linksrefnodeway.end(); ++i) {
+        // On retrouve le "node" correspondant avec l'attribut "id"
+        XMLElement* nodeactuel = root->FirstChildElement("node");
+        while (nodeactuel != nullptr) {
+            const char* attributidnodeactuel = nullptr;
+            attributidnodeactuel = nodeactuel->Attribute("id");
+            if (attributidnodeactuel != nullptr) {
+                std::string stringattributidnodeactuel = attributidnodeactuel;
+                if (stringattributidnodeactuel == i->first) {
+                    // On récupère les coordonnées de cet "node"
+                    const char* attributlatnodeactuel = nullptr;
+                    attributlatnodeactuel = nodeactuel->Attribute("lat");
+                    const char* attributlonnodeactuel = nullptr;
+                    attributlonnodeactuel = nodeactuel->Attribute("lon");
+                    if (attributlatnodeactuel != nullptr && attributlonnodeactuel != nullptr) {
+                        std::string stringattributlatnodeactuel = attributlatnodeactuel;
+                        std::string stringattributlonnodeactuel = attributlonnodeactuel;
+                        std::cout << i->first << " : " << stringattributlatnodeactuel << ", " << stringattributlonnodeactuel << std::endl;
+                        // On crée un nouveau noeud dans la mémoire
+                        Noeud* nouveaunoeud = new Noeud(std::stof(stringattributlatnodeactuel), std::stof(stringattributlonnodeactuel));
+                        // On rajoute ce nouveau noeud dans chaque rue auxquelle il appartient
+                        for (XMLElement* wayactuel : i->second) {
+                            // On récupère l'attribut "id" de "way"
+                            const char* attributidwayactuel = nullptr;
+                            attributidwayactuel = wayactuel->Attribute("id");
+                            if (attributidwayactuel != nullptr) {
+                                std::string stringattributidwayactuel = attributidwayactuel;
+                                std::cout << i->first << " : " << stringattributidwayactuel << std::endl;
+                                // Si la "way" existe déjà on rajoute juste le "node"
+                                int indicerueexistante = -1;
+                                for (size_t j = 0; j < rues.size(); j++) {
+                                    if (rues[j].reference() == stringattributidwayactuel)
+                                        indicerueexistante = j;
+                                }
+                                /* TODO : gérer les liens entre les rues (quand le noeud est attribuée à plus d'une rue) */
+                                if (indicerueexistante != -1)
+                                    rues[indicerueexistante].ajouteNoeud(nouveaunoeud);
+                                else
+                                    rues.push_back(Rue(stringattributidwayactuel, nouveaunoeud));
+                            }
+                        }
+                    }
+                }
+            }
+            nodeactuel = nodeactuel->NextSiblingElement("node");
+        }
+    }
+
+    // J'affiche les routes récupérées
+    std::cout << std::endl << "### RUES ###" << std::endl;
+    for (Rue rue : rues) {
+        std::cout << rue.reference() << " avec les nodes :" << std::endl;
+        for (Noeud* noeud : rue.noeuds())
+            std::cout << noeud->x() << ", " << noeud->y() << std::endl;
+    }
 
     return XML_SUCCESS;
 }
