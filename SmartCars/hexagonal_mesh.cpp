@@ -7,7 +7,11 @@
 Hexagonal_mesh::Hexagonal_mesh(QWidget *parent)
 	: QWidget(parent)
 {
-	setWindowTitle(tr("Honeycombs"));
+    QString Qpath = QString::fromStdString(pathToBckImage);
+    QImageReader reader(Qpath);
+    QSize sizeOfImage = reader.size();
+    widget_height = sizeOfImage.height();
+    widget_width  = sizeOfImage.width();
 	qDebug() << "Hexagonal_mesh";
 
     createMesh();
@@ -17,10 +21,17 @@ Hexagonal_mesh::~Hexagonal_mesh()
 {
 }
 
+int Hexagonal_mesh::getHexMeshWidth(){
+    return widget_width;
+}
+int Hexagonal_mesh::getHexMeshHeight() {
+    return widget_height;
+}
+
 void Hexagonal_mesh::createMesh() {
     cells.clear();
     qDebug() << "createMesh " << cells.size();
-    const int cellWidth = 100; // est le diametre sur une représentation en cercle où chaque sommet touche le cercle
+    const int cellWidth = 50; // est le diametre sur une représentation en cercle où chaque sommet touche le cercle
     const int rows = widget_height / (sqrt(3) * cellWidth / 2);
     const int columns = widget_width / (0.75 * cellWidth);
     qDebug() << rows << " = " << widget_height << " / " << cellWidth;
@@ -71,28 +82,43 @@ void Hexagonal_mesh::createMesh() {
 void Hexagonal_mesh::paintEvent(QPaintEvent* event) {
     qDebug() << "paintEvent";
     //RGB
-    const QColor backgroundColor(255, 255, 255);
-    const QColor borderColor(0, 0, 0);
-    const QColor cellColor(255, 255, 0);
+    QColor borderColor(200, 200, 200);
+    borderColor.setAlphaF(0.3);
     const QColor textColor(255, 0, 0);
-    const QColor selectedCellColor(255, 0, 255);
-    const QColor selectedTextColor(0, 0, 0);
+    const QColor selectedTextColor(0, 0, 255);
+
+    QColor cellColor(255, 255, 255);
+    cellColor.setAlphaF(0); // 0 is transparent -> 1 is opaque
+    QColor selectedCellColor(255, 0, 255);
+    selectedCellColor.setAlphaF(0.5);
+
+    QString Qpath = QString::fromStdString(pathToBckImage);
+
+    setAutoFillBackground(true);
+    QPalette p = this->palette();
+    QPixmap bkgnd(Qpath);
 
     QPainter painter(this);
+
+    int widWidth = this->width();
+    int widHeight = this->height();
+    bkgnd = bkgnd.scaled(widget_width, widget_height, Qt::KeepAspectRatioByExpanding);
+    painter.drawPixmap(0, 0, bkgnd);
+
     painter.setRenderHint(QPainter::Antialiasing);
-    painter.fillRect(event->rect(), backgroundColor);
     QFont font("Helvetica");
-    font.setPixelSize(40);
+    font.setPixelSize(10);
     painter.setFont(font);
-    //for (const Cell& cell : cells) {
-    for (std::vector<Cell> row : cells)
+    for (std::vector<Cell> &row : cells)
     {
         for (Cell cell : row) {
             QPainterPath path;
             path.addPolygon(cell.polygon);
             QPen pen(borderColor, 2);
             painter.setPen(pen);
+
             painter.setBrush(cell.selected ? selectedCellColor : cellColor);
+
             painter.drawPath(path);
             painter.setPen(cell.selected ? selectedTextColor : textColor);
             std::string str = std::to_string(cell.nb_col) + "," + std::to_string(cell.nb_row);
@@ -105,7 +131,6 @@ void Hexagonal_mesh::paintEvent(QPaintEvent* event) {
 
 void Hexagonal_mesh::mouseReleaseEvent(QMouseEvent* event) {
     QPoint point = event->pos();
-    //std::cout << 'TEST' << event->pos() << std::endl;
     qDebug() << "mouseReleaseEvent" << event;
     qDebug() << "point" << point;
 
@@ -119,10 +144,6 @@ void Hexagonal_mesh::mouseReleaseEvent(QMouseEvent* event) {
         }
         qDebug() << str;
     }
-
-    /*Cell* cell = &cells[0][0];
-    cell->selected = !cell->selected;
-    update(cell->polygon.boundingRect());*/
 
     
     for (std::vector<Cell> &row : cells)
@@ -139,24 +160,4 @@ void Hexagonal_mesh::mouseReleaseEvent(QMouseEvent* event) {
             update(cell->polygon.boundingRect());
         }
     }
-
-    
-    // with a simple structure: std::vector<Cell> cells;
-    /*auto cell = std::find_if(cells.begin(), cells.end(),
-        [point](const Cell& c) {
-            return c.polygon.containsPoint(point, Qt::OddEvenFill);
-        }
-    );
-    if (cell != cells.end()) {
-        cell->selected = !cell->selected;
-        update(cell->polygon.boundingRect());
-    }*/
-}
-
-void Hexagonal_mesh::resizeEvent(QResizeEvent* event) {
-    auto size = event->size();
-    qDebug() << "resize: " << size; //width, height
-    widget_height = size.height();
-    widget_width = size.width();
-    createMesh();
 }

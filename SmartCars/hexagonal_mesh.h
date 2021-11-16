@@ -12,11 +12,12 @@ class Hexagonal_mesh : public QWidget {
 public:
 	Hexagonal_mesh(QWidget *parent = nullptr);
 	~Hexagonal_mesh();
+    int getHexMeshWidth();
+    int getHexMeshHeight();
 
 protected:
     void paintEvent(QPaintEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;
-    void resizeEvent(QResizeEvent* event);
     void createMesh();
 
 private:
@@ -32,4 +33,5 @@ private:
     std::vector<std::vector<Cell>> cells;
     int widget_height;
     int widget_width;
+    std::string pathToBckImage = "./img/backgroundImage.png";
 };
