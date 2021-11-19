@@ -4,17 +4,16 @@ Voiture::Voiture(string nom, int vitesse, Noeud* depart)
 {
 	this->nom = nom;
 	this->vitesse = vitesse;
-	this->depart = depart;
-	this->arrivee = depart->voisins().at(0);
+	this->noeudDepart = depart;
+	this->noeudArrivee = depart->voisins().at(0);
 	this->coordonnees = depart->coordonnees();
 }
 
 void Voiture::avancer(int multiplicateur, float distanceRestance)
 {
 	Point depart = this->coordonnees;
-	Point arrivee = this->arrivee->coordonnees();
 
-	float distance = getDistance(depart, this->arrivee->coordonnees()) * 1000;
+	float distance = getDistance(depart, this->noeudArrivee->coordonnees()) * 1000;
 
 	float distanceAparcourir = distanceRestance;
 
@@ -24,41 +23,47 @@ void Voiture::avancer(int multiplicateur, float distanceRestance)
 
 	float pourcentageParcouru = distanceAparcourir / distance;
 
-	cout << "distanceAparcourir : " << distanceAparcourir << endl;
+	cout << "distanceAparcourir : " << distanceAparcourir;
 
-	cout << "Distance : " << distance << endl;
+	cout << ", distance : " << distance;
 
-	cout << "% : " << pourcentageParcouru << endl;
+	cout << ", % : " << pourcentageParcouru << endl;
 
 	if (pourcentageParcouru >= 1) {
-		cout << "Avancer car % : " << pourcentageParcouru << endl;
-		this->depart = this->arrivee;
+		Noeud* tmp = noeudArrivee;
 
-		int i = 0;
-		while (this->arrivee == this->depart) {
-			this->arrivee = this->arrivee->voisins().at(i);
-			i++;
+		this->noeudArrivee = this->noeudDepart;
+
+		cout << "voisins : " << tmp->voisins().size() << endl;
+
+		while (this->noeudArrivee == this->noeudDepart || this->noeudArrivee == tmp) {
+			int rd = random(0, tmp->voisins().size() - 1);
+			this->noeudArrivee = tmp->voisins().at(rd);
 		}
 
-		this->coordonnees = this->depart->coordonnees();
+		this->noeudDepart = tmp;
+
+		this->coordonnees = this->noeudDepart->coordonnees();
+
+		cout << "new temp coords : " << this->coordonnees.x() << ", " << this->coordonnees.y() << endl;
 
 		if(pourcentageParcouru > 1) this->avancer(multiplicateur, distanceAparcourir - distance);
 	}
 	else {
-		//Faire new coordonnees
-		cout << "Fini" << endl;
+		this->coordonnees = getCoordsFromPercentage(depart, this->noeudArrivee, pourcentageParcouru);
+		cout << "new coords : " << this->coordonnees.x() << ", " << this->coordonnees.y() << endl;
 	}
 
 	//Reflechir au ratio vitesse distance
 }
 
 void Voiture::affichage() {
-	cout << "--- Affichage ---" << this->nom << endl;
-	cout << "Nom : " << this->nom << endl;
-	cout << "Coordonnées : " << this->coordonnees.x() << ", " << this->coordonnees.y() << endl;
-	cout << "Vitesse : " << this->vitesse << endl;
-	cout << "Depart : " << this->depart->coordonnees().x() << ", " << this->depart->coordonnees().y() << endl;
-	cout << "Arrivee : " << this->arrivee->coordonnees().x() << ", " << this->arrivee->coordonnees().y() << endl;
+	//cout << "--- Affichage ---" << this->nom << endl;
+	//cout << "Nom : " << this->nom << endl;
+	cout << "Coords : " << this->coordonnees.x() << ", " << this->coordonnees.y() << endl;
+	//cout << "Vitesse : " << this->vitesse << endl;
+	cout << "Depart : " << this->noeudDepart->coordonnees().x() << ", " << this->noeudDepart->coordonnees().y() << endl;
+	cout << "Arrivee : " << this->noeudArrivee->coordonnees().x() << ", " << this->noeudArrivee->coordonnees().y() << endl;
 }
 
 float Voiture::getDistance(Point a, Point b)
@@ -72,4 +77,22 @@ float Voiture::getDistance(Point a, Point b)
 	return sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2) * 1.0);
 }
 
+Point Voiture::getCoordsFromPercentage(Point depart, Noeud* arrivee, float pourcentage) {
+	float lat1 = depart.x();
+	float long1 = depart.y();
+	float lat2 = arrivee->coordonnees().x();
+	float long2 = arrivee->coordonnees().y();
 
+	return Point(lat1 + (lat2 - lat1) * pourcentage, long1 + (long2 - long1) * pourcentage);
+}
+
+int Voiture::random(int min, int max)
+{
+	static bool first = true;
+	if (first)
+	{
+		srand(time(NULL));
+		first = false;
+	}
+	return min + rand() % ((max + 1) - min);
+}

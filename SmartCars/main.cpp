@@ -34,6 +34,7 @@ int main(int argc, char* argv[]) {
     Voiture a = Voiture("1", 2, osm->ways().at(0)->noeuds().at(0));
     a.affichage();
     a.avancer(1);
+    a.affichage();
     return 0;
 }
 //int main(int argc, char *argv[]) {

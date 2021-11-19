@@ -19,11 +19,11 @@ public:
 	void affichage();
 
 	Noeud* getDepart() {
-		return depart;
+		return noeudDepart;
 	}
 
 	Noeud* getArrivee() {
-		return arrivee;
+		return noeudArrivee;
 	}
 
 	Point getCoordonnees() {
@@ -35,10 +35,12 @@ private:
 	int vitesse;
 	Point coordonnees;
 
-	Noeud* depart;
-	Noeud* arrivee;
+	Noeud* noeudDepart;
+	Noeud* noeudArrivee;
 
 	float getDistance(Point a, Point b);
+	Point getCoordsFromPercentage(Point depart, Noeud* arrivee, float pourcentage);
+	int random(int a, int b);
 };
 
 #endif
