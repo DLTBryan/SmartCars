@@ -55,6 +55,9 @@
     <ClCompile Include="TestOsmProcessor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="voiture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tinyxml2.h">
@@ -73,6 +76,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TestOsmProcessor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="voiture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -8,11 +8,13 @@
 #include "noeud.h"
 #include "rue.h"
 
+using namespace std;
+
 class Voiture {
 public:
 	Voiture(std::string nom, int vitesse, Noeud* depart);
 
-	void avancer(int multiplicateur);
+	void avancer(int multiplicateur, float distanceRestante=0.0);
 
 	void affichage();
 

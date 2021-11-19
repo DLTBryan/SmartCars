@@ -102,6 +102,7 @@
     <ClCompile Include="SmartCars.cpp" />
     <ClCompile Include="TestOsmProcessor.cpp" />
     <ClCompile Include="tinyxml2.cpp" />
+    <ClCompile Include="voiture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="SmartCars.h" />
@@ -119,6 +120,7 @@
     <ClInclude Include="rue.h" />
     <ClInclude Include="TestOsmProcessor.h" />
     <ClInclude Include="tinyxml2.h" />
+    <ClInclude Include="voiture.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

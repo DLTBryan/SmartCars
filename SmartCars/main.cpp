@@ -3,6 +3,8 @@
 #include <QtWidgets/QApplication>
 #include "tinyxml2.h"
 
+#include "voiture.h"
+
 #include "rue.h"
 #include "OsmProcessor.h"
 #include "TestOsmProcessor.h"
@@ -29,6 +31,9 @@ int main(int argc, char* argv[]) {
     //TestOsmProcessor testOsm(osm);
     //testOsm.testParsingOsm();
     //testOsm.tracePlan();
+    Voiture a = Voiture("1", 2, osm->ways().at(0)->noeuds().at(0));
+    a.affichage();
+    a.avancer(1);
     return 0;
 }
 //int main(int argc, char *argv[]) {
