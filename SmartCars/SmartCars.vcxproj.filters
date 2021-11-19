@@ -49,6 +49,12 @@
     <ClCompile Include="rue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="OsmProcessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TestOsmProcessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tinyxml2.h">
@@ -61,6 +67,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="rue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OsmProcessor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TestOsmProcessor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

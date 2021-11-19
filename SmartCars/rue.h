@@ -5,27 +5,52 @@
 
 #include <vector>
 #include <iostream>
+#include <string>
+
+using namespace std;
 
 class Rue {
 public:
     // Constructeurs
-    Rue(std::string reference, Noeud* noeud) : v_reference{ reference }, v_noeuds{ {noeud} } {};
+    Rue(string idRue, Noeud* noeud) : d_rueId{ idRue }, d_noeuds{ {noeud} } {};
+    Rue(string idRue) : d_rueId{ idRue } {};
+
     // Accesseurs
-    std::vector<Noeud*> noeuds() const {
-        return v_noeuds;
+    vector<Noeud*> noeuds() const {
+        return d_noeuds;
     }
     // Méthodes
-    std::string reference() const {
-        return v_reference;
+    string id() const {
+        return d_rueId;
     }
     int nombrenoeuds() const {
-        return (int)v_noeuds.size();
+        return (int)d_noeuds.size();
     }
+
     void ajouteNoeud(Noeud* noeud);
+    
+    void findNoeud(string id);
+
+    friend ostream& operator<<(ostream& output, const Rue& rue) {
+        int nbVoisin = 1;
+        for (Noeud* n : rue.d_noeuds) {
+            
+            output << "Rue id =>" << n->id() << endl;
+            output << "Total number of voisins => " << n->voisins().size() << endl;
+            output << "Voisins :" << endl;
+            for (Noeud* nVoisin : n->voisins()) {
+                output << "  Voisin " << nbVoisin << " = " << nVoisin->id() << endl;
+                nbVoisin++;
+            }
+            output << "------------" << endl;
+        }
+        return output;
+    }
+
 private:
     // Attributs
-    std::string v_reference;
-    std::vector<Noeud*> v_noeuds;
+    string d_rueId;
+    vector<Noeud*> d_noeuds;
 };
 
 
