@@ -33,20 +33,36 @@ int main(int argc, char* argv[]) {
     //testOsm.testParsingOsm();
     //testOsm.tracePlan();
     Voiture a = Voiture("1", 2, osm->ways().at(0)->noeuds().at(0));
-    cout << "-- Debut de la simulation --" << endl << "Appuyer sur '+' pour avancer, une autre touche pour quitter" << endl << endl;
+    cout << "-- Debut de la simulation --" << endl
+        << "Touches : " << endl
+        << "  'space' : avancer" << endl 
+        << "  '+' : augmenter la vitesse" << endl 
+        << "  '-' : baisser la vitesse" << endl
+        << "  autre : quitter" << endl << endl;
+    cout << endl << "-- Coordonnees de depart --" << endl;
     a.affichage();
+    int vitesse = 1;
     while (1) {
         char input = getch();
-        if (input == '+') {
-            cout << endl << "Avancer de 1" << endl;
-            a.avancer(1);
+        if (input == ' ') {
+            cout << endl << "Avancer de 1. Vitesse : " << vitesse << endl;
+            a.avancer(vitesse);
             a.affichage();
+        }
+        else if (input == '+') {
+            cout << endl << "Vitesse de simulation : " << ++vitesse << endl;
+        }
+        else if (input == '-') {
+            vitesse--;
+            if (vitesse < 1) vitesse = 1;
+            cout << endl << "Vitesse de simulation : " << vitesse << endl;
+
         }
         else break;
     }
     cout << endl << "-- Coordonnees finales --" << endl;
     a.affichage();
-    cout << "-- Fin de la simulation --" << endl;
+    cout << endl << "-- Fin de la simulation --" << endl;
     return 0;
 }
 //int main(int argc, char *argv[]) {
