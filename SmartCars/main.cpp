@@ -13,6 +13,7 @@
 #include <vector>
 #include <map>
 #include <iostream>
+#include <conio.h>
 
 using namespace tinyxml2;
 using namespace std;
@@ -32,9 +33,20 @@ int main(int argc, char* argv[]) {
     //testOsm.testParsingOsm();
     //testOsm.tracePlan();
     Voiture a = Voiture("1", 2, osm->ways().at(0)->noeuds().at(0));
+    cout << "-- Debut de la simulation --" << endl << "Appuyer sur '+' pour avancer, une autre touche pour quitter" << endl << endl;
     a.affichage();
-    a.avancer(1);
+    while (1) {
+        char input = getch();
+        if (input == '+') {
+            cout << endl << "Avancer de 1" << endl;
+            a.avancer(1);
+            a.affichage();
+        }
+        else break;
+    }
+    cout << endl << "-- Coordonnees finales --" << endl;
     a.affichage();
+    cout << "-- Fin de la simulation --" << endl;
     return 0;
 }
 //int main(int argc, char *argv[]) {

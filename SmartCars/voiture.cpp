@@ -23,35 +23,41 @@ void Voiture::avancer(int multiplicateur, float distanceRestance)
 
 	float pourcentageParcouru = distanceAparcourir / distance;
 
-	cout << "distanceAparcourir : " << distanceAparcourir;
+	//cout << "distanceAparcourir : " << distanceAparcourir;
 
-	cout << ", distance : " << distance;
+	//cout << ", distance : " << distance;
 
-	cout << ", % : " << pourcentageParcouru << endl;
+	//cout << ", % : " << pourcentageParcouru << endl;
 
 	if (pourcentageParcouru >= 1) {
 		Noeud* tmp = noeudArrivee;
 
 		this->noeudArrivee = this->noeudDepart;
 
-		cout << "voisins : " << tmp->voisins().size() << endl;
+		//cout << "voisins : " << tmp->voisins().size() << endl;
 
-		while (this->noeudArrivee == this->noeudDepart || this->noeudArrivee == tmp) {
-			int rd = random(0, tmp->voisins().size() - 1);
-			this->noeudArrivee = tmp->voisins().at(rd);
+		if (tmp->voisins().size() != 1) {
+			while (this->noeudArrivee == this->noeudDepart || this->noeudArrivee == tmp) {
+				int rd = random(0, tmp->voisins().size() - 1);
+				this->noeudArrivee = tmp->voisins().at(rd);
+			}
 		}
+		else {
+			this->noeudArrivee = this->noeudDepart;
+		}
+
 
 		this->noeudDepart = tmp;
 
 		this->coordonnees = this->noeudDepart->coordonnees();
 
-		cout << "new temp coords : " << this->coordonnees.x() << ", " << this->coordonnees.y() << endl;
+		//cout << "new temp coords : " << this->coordonnees.x() << ", " << this->coordonnees.y() << endl;
 
 		if(pourcentageParcouru > 1) this->avancer(multiplicateur, distanceAparcourir - distance);
 	}
 	else {
 		this->coordonnees = getCoordsFromPercentage(depart, this->noeudArrivee, pourcentageParcouru);
-		cout << "new coords : " << this->coordonnees.x() << ", " << this->coordonnees.y() << endl;
+		//cout << "new coords : " << this->coordonnees.x() << ", " << this->coordonnees.y() << endl;
 	}
 
 	//Reflechir au ratio vitesse distance
