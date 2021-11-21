@@ -33,7 +33,7 @@ void SmartCars::paintEvent(QPaintEvent* event)
     }
     // Je dessine tous les noeuds et les liaisons entre eux
     for (Noeud* noeud : v_noeuds) {
-        for (Noeud* noeudvoisin : noeud->voisins())
+        for (Noeud* noeudvoisin : noeud->noeudsvoisins())
             painter.drawLine(QLine((xmax - noeud->x()) * 1000 / (xmax - xmin), (ymax - noeud->y()) * 800 / (ymax - ymin), (xmax - noeudvoisin->x()) * 1000 / (xmax - xmin), (ymax - noeudvoisin->y()) * 800 / (ymax - ymin)));
     }
 }

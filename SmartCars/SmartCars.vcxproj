@@ -95,12 +95,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="noeud.cpp" />
-    <ClCompile Include="OsmProcessor.cpp" />
-    <ClCompile Include="rue.cpp" />
     <ClCompile Include="SmartCars.cpp" />
-    <ClCompile Include="TestOsmProcessor.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="tinyxml2.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -113,12 +109,9 @@
     <QtRcc Include="SmartCars.qrc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="noeud.h" />
-    <ClInclude Include="OsmProcessor.h" />
-    <ClInclude Include="point.h" />
-    <ClInclude Include="rue.h" />
-    <ClInclude Include="TestOsmProcessor.h" />
+    <ClInclude Include="osmextract.h" />
     <ClInclude Include="tinyxml2.h" />
+    <ClInclude Include="WGS84toCartesian.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

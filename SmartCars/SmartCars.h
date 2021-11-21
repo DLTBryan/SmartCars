@@ -1,9 +1,13 @@
 #pragma once
 
 #include <QtWidgets/QMainWindow>
-#include<QPainter>
-#include "noeud.h"
+#include <QPainter>
+#include "osmextract.h"
 #include "ui_SmartCars.h"
+
+#include <vector>
+
+using namespace std;
 
 class SmartCars : public QMainWindow
 {
