@@ -75,5 +75,8 @@
     <ClInclude Include="TestOsmProcessor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="WGS84toCartesian.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
