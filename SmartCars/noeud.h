@@ -16,9 +16,9 @@ public:
     // Destructor
     ~Noeud() { d_noeudvoisins.clear(); d_idsOfNeighboorsOnOtherRue.clear(); };
     // M�thodes
-    float x() const { return d_coordonnees.v_x; }
+    float x() const { return d_coordonnees.d_x; }
     
-    float y() const { return d_coordonnees.v_y; }
+    float y() const { return d_coordonnees.d_y; }
 
     Point coordonnees() const { return d_coordonnees;}
 
