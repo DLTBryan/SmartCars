@@ -73,6 +73,7 @@ void OsmProcessor::firstParsing() {
 	cout << d_ways.at(1)->noeuds().at(d_ways.at(1)->noeuds().size() - 1)->voisins().at(1)->id() << endl;
 	cout << "First voisin " << d_ways.at(1)->noeuds().at(d_ways.at(1)->noeuds().size() - 1)->voisins().at(1)->voisins().at(0)->id() << endl;
 	cout << "Second voisin " << d_ways.at(1)->noeuds().at(d_ways.at(1)->noeuds().size() - 1)->voisins().at(1)->voisins().at(1)->id() << endl;
+	cout << "Coords first voisin" << d_ways.at(1)->noeuds().at(d_ways.at(1)->noeuds().size() - 1)->voisins().at(1)->voisins().at(1)->coordonnees() << endl;
 	
 }
 
@@ -177,6 +178,8 @@ Noeud* OsmProcessor::makeNode(string idNode, XMLElement* currentWay) {
 	
 	Noeud* node = nullptr;
 
+	array<double, 2> lambertCoords;
+
 	while (currentNode != nullptr) {
 
 		if (currentNode->Attribute("id") != nullptr) {
@@ -185,8 +188,11 @@ Noeud* OsmProcessor::makeNode(string idNode, XMLElement* currentWay) {
 
 				if (currentNode->Attribute("lat") != nullptr && currentNode->Attribute("lon")) {
 
-					node = new Noeud(stof(currentNode->Attribute("lat")),
-									 stof(currentNode->Attribute("lon")),
+					//converting mercartor coord to lambert93
+					lambertCoords = wgs84::toCartesian(d_referenceCoordinates, { stod(currentNode->Attribute("lat")) , stod(currentNode->Attribute("lon")) });
+
+					node = new Noeud((float)lambertCoords[0],
+									 (float)lambertCoords[1],
 									 idNode);
 					
 					findNodeOnOtherRoutes(node, currentWay);

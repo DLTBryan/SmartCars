@@ -10,6 +10,7 @@
 #include "rue.h"
 #include "tinyxml2.h"
 #include "noeud.h"
+#include "WGS84toCartesian.hpp"
 #include <map>
 
 using namespace std;
@@ -23,7 +24,7 @@ using namespace tinyxml2;
 *that constains the following attributes:
 *	where k = 'highway'
 *	and 
-*	where v = 'primary'
+*	where v = 'primary' or other kind of highways
 */
 class OsmProcessor
 {
@@ -58,7 +59,7 @@ private:
 	string d_fileName;
 
 	vector<Rue*> d_ways;
-
+	const array<double, 2> d_referenceCoordinates = { 47.7334, 7.30404 }; //UHA coordinates reference
 
 
 };
