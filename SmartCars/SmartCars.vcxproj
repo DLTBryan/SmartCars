@@ -121,6 +121,7 @@
     <ClInclude Include="TestOsmProcessor.h" />
     <ClInclude Include="tinyxml2.h" />
     <ClInclude Include="voiture.h" />
+    <ClInclude Include="WGS84toCartesian.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

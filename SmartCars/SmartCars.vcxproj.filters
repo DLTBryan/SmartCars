@@ -79,6 +79,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="voiture.h">
+    <ClInclude Include="WGS84toCartesian.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
