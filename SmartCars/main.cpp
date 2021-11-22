@@ -13,7 +13,8 @@
 #include <vector>
 #include <map>
 #include <iostream>
-#include <conio.h>
+#include <QtWidgets/qpushbutton.h>
+#include <QHBoxLayout>
 
 using namespace tinyxml2;
 using namespace std;
@@ -32,7 +33,8 @@ int main(int argc, char* argv[]) {
     //TestOsmProcessor testOsm(osm);
     //testOsm.testParsingOsm();
     //testOsm.tracePlan();
-    Voiture a = Voiture("1", 2, osm->ways().at(0)->noeuds().at(0));
+    /*
+    Voiture voiture = Voiture("1", 2, osm->ways().at(0)->noeuds().at(0));
     cout << "-- Debut de la simulation --" << endl
         << "Touches : " << endl
         << "  'space' : avancer" << endl 
@@ -40,14 +42,14 @@ int main(int argc, char* argv[]) {
         << "  '-' : baisser la vitesse" << endl
         << "  autre : quitter" << endl << endl;
     cout << endl << "-- Coordonnees de depart --" << endl;
-    a.affichage();
+    voiture.affichage();
     int vitesse = 1;
     while (1) {
         char input = getch();
         if (input == ' ') {
             cout << endl << "Avancer de 1. Vitesse : " << vitesse << endl;
-            a.avancer(vitesse);
-            a.affichage();
+            voiture.avancer(vitesse);
+            voiture.affichage();
         }
         else if (input == '+') {
             cout << endl << "Vitesse de simulation : " << ++vitesse << endl;
@@ -61,19 +63,28 @@ int main(int argc, char* argv[]) {
         else break;
     }
     cout << endl << "-- Coordonnees finales --" << endl;
-    a.affichage();
-    cout << endl << "-- Fin de la simulation --" << endl;
-    return 0;
+    voiture.affichage();
+    cout << endl << "-- Fin de la simulation --" << endl;*/
+
+    // Generation de toutes les voitures
+    vector<Voiture*> voitures;
+    for (int i = 0; i < 10; i++) {
+        int rue = 0 + rand() % ((osm->ways().size()) - 0);;
+        int noeud = 0 + rand() % ((osm->ways().at(rue)->noeuds().size()) - 0);
+        voitures.push_back(new Voiture("Voiture " + i, 10, osm->ways().at(rue)->noeuds().at(noeud)));
+    }
+
     // Je gette tous les noeuds
     vector<Noeud*> noeuds;
     for (Rue* rue : osm->ways()) {
         for (Noeud* noeud : rue->noeuds())
             noeuds.push_back(noeud);
     }
-    cout << noeuds.size() << endl;
+
     QApplication a(argc, argv);
-    SmartCars w(noeuds);
-    //w.drawLine(10, 10, 110, 110);
+
+    SmartCars w(noeuds, voitures);
+
     w.show();
     return a.exec();
 }

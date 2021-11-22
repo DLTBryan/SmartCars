@@ -5,7 +5,8 @@ Voiture::Voiture(string nom, int vitesse, Noeud* depart)
 	this->nom = nom;
 	this->vitesse = vitesse;
 	this->noeudDepart = depart;
-	this->noeudArrivee = depart->voisins().at(0);
+	int rd = random(0, depart->voisins().size() - 1);
+	this->noeudArrivee = depart->voisins().at(rd);
 	this->coordonnees = depart->coordonnees();
 }
 

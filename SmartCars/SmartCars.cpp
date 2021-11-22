@@ -1,9 +1,11 @@
 #include "SmartCars.h"
 
-SmartCars::SmartCars(std::vector<Noeud*> noeuds, QWidget *parent)
+SmartCars::SmartCars(std::vector<Noeud*> noeuds, std::vector<Voiture*> voitures, QWidget *parent)
     : QMainWindow(parent)
 {
     v_noeuds = noeuds;
+    v_voitures = voitures;
+
     ui.setupUi(this);
 }
 
@@ -35,5 +37,10 @@ void SmartCars::paintEvent(QPaintEvent* event)
     for (Noeud* noeud : v_noeuds) {
         for (Noeud* noeudvoisin : noeud->voisins())
             painter.drawLine(QLine((xmax - noeud->x()) * 1000 / (xmax - xmin), (ymax - noeud->y()) * 800 / (ymax - ymin), (xmax - noeudvoisin->x()) * 1000 / (xmax - xmin), (ymax - noeudvoisin->y()) * 800 / (ymax - ymin)));
+    }
+    for (Voiture* v : v_voitures) {
+        float x = (xmax - v->getCoordonnees().x()) * 1000 / (xmax - xmin);
+        float y = (ymax - v->getCoordonnees().y()) * 800 / (ymax - ymin);
+        painter.drawEllipse(QPointF(x,y), 5, 5);
     }
 }
