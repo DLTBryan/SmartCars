@@ -59,6 +59,14 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
   </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
     <ClCompile>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
@@ -68,7 +76,7 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -94,6 +102,29 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="hexagonal_mesh.h" />
+    <ClCompile Include="osmextract.cpp" />
+    <ClCompile Include="Rue.cpp" />
+    <ClCompile Include="SmartCars.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Noeud.cpp" />
+    <ClCompile Include="tinyxml2.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="SmartCars.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="SmartCars.ui" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="SmartCars.qrc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Point.h" />
+    <ClInclude Include="Noeud.h" />
+    <ClInclude Include="osmextract.h" />
+    <ClInclude Include="Rue.h" />
+    <ClInclude Include="tinyxml2.h" />
+    <ClInclude Include="WGS84toCartesian.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
