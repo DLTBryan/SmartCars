@@ -10,7 +10,7 @@ using namespace std::chrono;
 
 int main(int argc, char* argv[]) {
     auto start = high_resolution_clock::now();
-    osmextract extracteur("map.osm");
+    osmextract extracteur("map_test.osm");
     extracteur.extraire();
     std::vector<Rue> rues = extracteur.rues();
     std::cout << "Size rues : " << rues.size() << std::endl;
