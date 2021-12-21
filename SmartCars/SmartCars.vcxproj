@@ -105,7 +105,6 @@
     <ClCompile Include="osmextract.cpp" />
     <ClCompile Include="Rue.cpp" />
     <ClCompile Include="SmartCars.cpp" />
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="Noeud.cpp" />
     <ClCompile Include="tinyxml2.cpp" />
   </ItemGroup>
@@ -114,9 +113,6 @@
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="SmartCars.ui" />
-  </ItemGroup>
-  <ItemGroup>
-    <QtRcc Include="SmartCars.qrc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Point.h" />
