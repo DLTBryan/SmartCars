@@ -95,8 +95,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="osmextract.cpp" />
+    <ClCompile Include="Rue.cpp" />
     <ClCompile Include="SmartCars.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Noeud.cpp" />
     <ClCompile Include="tinyxml2.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -109,7 +112,10 @@
     <QtRcc Include="SmartCars.qrc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Point.h" />
+    <ClInclude Include="Noeud.h" />
     <ClInclude Include="osmextract.h" />
+    <ClInclude Include="Rue.h" />
     <ClInclude Include="tinyxml2.h" />
     <ClInclude Include="WGS84toCartesian.hpp" />
   </ItemGroup>
