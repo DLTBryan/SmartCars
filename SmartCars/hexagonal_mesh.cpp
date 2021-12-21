@@ -80,7 +80,7 @@ void Hexagonal_mesh::createMesh() {
 }
 
 void Hexagonal_mesh::paintEvent(QPaintEvent* event) {
-    qDebug() << "paintEvent";
+    qDebug() << "paintEvent: ";
     //RGB
     QColor borderColor(200, 200, 200);
     borderColor.setAlphaF(0.3);
@@ -121,7 +121,7 @@ void Hexagonal_mesh::paintEvent(QPaintEvent* event) {
 
             painter.drawPath(path);
             painter.setPen(cell.selected ? selectedTextColor : textColor);
-            std::string str = std::to_string(cell.nb_col) + "," + std::to_string(cell.nb_row);
+            std::string str = std::to_string(cell.num_col) + "," + std::to_string(cell.num_row);
             QString qstr = QString::fromStdString(str);
             painter.drawText(cell.polygon.boundingRect(),
                 Qt::AlignCenter, QString(qstr));
@@ -154,7 +154,7 @@ void Hexagonal_mesh::mouseReleaseEvent(QMouseEvent* event) {
             }
         );
         if (cell != row.end()) {
-            qDebug() << cell->id_cell << " " << cell->nb_col << " " << cell->nb_row;
+            qDebug() << cell->id_cell << " " << cell->num_col << " " << cell->num_row;
 
             cell->selected = !cell->selected;
             update(cell->polygon.boundingRect());

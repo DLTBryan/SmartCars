@@ -23,11 +23,11 @@ protected:
 private:
     struct Cell {
         Cell(const QPolygon& p, int l, int r, int c)
-            : polygon(p), id_cell(l), nb_row(r), nb_col(c), selected(false) {}
+            : polygon(p), id_cell(l), num_row(r), num_col(c), selected(false) {}
         QPolygon polygon;
         int id_cell;
-        int nb_row;
-        int nb_col;
+        int num_row;
+        int num_col;
         bool selected;
     };
     std::vector<std::vector<Cell>> cells;
