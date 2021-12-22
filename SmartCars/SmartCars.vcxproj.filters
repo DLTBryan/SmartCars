@@ -26,9 +26,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="hexagonal_mesh.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="SmartCars.qrc">
@@ -36,12 +33,12 @@
     </QtRcc>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="hexagonal_mesh.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <ClCompile Include="SmartCars.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <QtMoc Include="SmartCars.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="tinyxml2.cpp">

@@ -1,5 +1,3 @@
-#include "hexagonal_mesh.h"
-
 #include "SmartCars.h"
 
 #include <QtWidgets/QApplication>
@@ -32,16 +30,16 @@ int main(int argc, char* argv[]) {
 
     QWidget* window = new QWidget;
 
-
-    Hexagonal_mesh* hexMesh = new Hexagonal_mesh();
-    hexMesh->setFixedSize(hexMesh->getHexMeshWidth(), hexMesh->getHexMeshHeight());
+    SmartCars* roads = new SmartCars(noeuds);
+    roads->setFixedSize(roads->getHexMeshWidth(), roads->getHexMeshHeight());
+    
     QPushButton* button2 = new QPushButton("Two");
 
     QScrollArea* scrollArea = new QScrollArea();
     int scrollbarWidth = 25; // +25px pour scrollbar
-    int scrollMaxWidth = hexMesh->getHexMeshWidth() + scrollbarWidth;
-    int scrollMaxHeight = hexMesh->getHexMeshHeight() + scrollbarWidth;
-    scrollArea->setWidget(hexMesh);
+    int scrollMaxWidth = roads->getHexMeshWidth() + scrollbarWidth;
+    int scrollMaxHeight = roads->getHexMeshHeight() + scrollbarWidth;
+    scrollArea->setWidget(roads);
     scrollArea->setMaximumSize(scrollMaxWidth, scrollMaxHeight); 
     scrollArea->setWidgetResizable(true);
     scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
@@ -58,8 +56,6 @@ int main(int argc, char* argv[]) {
     //mainWindow.show();
 
     window->show();
-    
-    SmartCars w(noeuds);
-    w.show();
+
     return a.exec();
 }

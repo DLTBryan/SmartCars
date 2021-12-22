@@ -94,14 +94,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="hexagonal_mesh.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="SmartCars.qrc" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="hexagonal_mesh.h" />
     <ClCompile Include="osmextract.cpp" />
     <ClCompile Include="Rue.cpp" />
     <ClCompile Include="SmartCars.cpp" />
@@ -110,9 +108,6 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="SmartCars.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <QtUic Include="SmartCars.ui" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Point.h" />
