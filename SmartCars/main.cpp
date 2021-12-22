@@ -14,7 +14,6 @@ int main(int argc, char* argv[]) {
     osmextract extracteur("map_test.osm");
     extracteur.extraire();
     std::vector<Noeud*> noeuds = extracteur.noeuds();
-    std::cout << "Size noeuds : " << noeuds.size() << std::endl;
     
     QApplication a(argc, argv);
 
