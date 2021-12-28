@@ -33,10 +33,11 @@ std::pair<std::string, std::vector<std::string>> osmextract::construirePaireRout
 
 // Détermine si la route est valide ou pas
 bool osmextract::estRouteValide(XMLElement* wayactuel) {
+    std::string stringsattributvpermis[] = { "motorway", "motorway_link", "trunk", "trunk_link", "primary", "primary_link", "secondary", "secondary_link", "tertiary", "tertiary_link", "unclassified", "residential"};
     // On parcours les "tag"
     XMLElement* tagactuel = wayactuel->FirstChildElement("tag");
     while (tagactuel != nullptr) {
-        // On stocke les "way" ayant k="highway" et v="primary"
+        // On stocke les "way" ayant k="highway" et v appartenant au tableau défini au début de la fonction
         const char* attributktagactuel = nullptr;
         attributktagactuel = tagactuel->Attribute("k");
         const char* attributvtagactuel = nullptr;
@@ -44,7 +45,7 @@ bool osmextract::estRouteValide(XMLElement* wayactuel) {
         if (attributktagactuel != nullptr && attributvtagactuel != nullptr) {
             std::string stringattributktagactuel = attributktagactuel;
             std::string stringattributvtagactuel = attributvtagactuel;
-            if (stringattributktagactuel == "highway")
+            if (stringattributktagactuel == "highway" && std::find(std::begin(stringsattributvpermis), std::end(stringsattributvpermis), stringattributvtagactuel) != std::end(stringsattributvpermis))
                 return true;
         }
         tagactuel = tagactuel->NextSiblingElement("tag");
