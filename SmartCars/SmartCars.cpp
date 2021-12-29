@@ -4,10 +4,10 @@
 #include <random>
 #include <QMouseEvent>
 
-SmartCars::SmartCars(std::vector<Noeud*> noeuds, QWidget *parent)
+SmartCars::SmartCars(std::vector<Rue> rues, QWidget *parent)
     : QMainWindow(parent)
 {
-    v_noeuds = noeuds;
+    v_rues = rues;
 
     qDebug() << "Hexagonal_mesh";
     createMesh();
@@ -75,13 +75,18 @@ void SmartCars::createMesh() {
 void SmartCars::paintEvent(QPaintEvent* event)
 {
     QPainter painter(this);
-    painter.setBrush(QBrush("red"));
     
     QPen pen;
-    pen.setWidth(1);
+    pen.setWidth(5);
+    pen.setColor("black");
 
     painter.setPen(pen);
     // Je recherche les xmin, xmax, ymin, ymax
+    vector<Noeud*> v_noeuds;
+    for (Rue rue : v_rues) {
+        vector<Noeud*> noeudsrue = rue.noeuds();
+        v_noeuds.insert(v_noeuds.end(), noeudsrue.begin(), noeudsrue.end());
+    }
     double xmin = v_noeuds[0]->x();
     double xmax = xmin;
     double ymin = v_noeuds[0]->y();
@@ -96,12 +101,48 @@ void SmartCars::paintEvent(QPaintEvent* event)
         if (noeud->y() > ymax)
             ymax = noeud->y();
     }
-    // Je dessine tous les noeuds et les liaisons entre eux
-    for (Noeud* noeud : v_noeuds) {
-        for (Noeud* noeudvoisin : noeud->noeudsvoisins())
-            painter.drawLine(QLine((xmax - noeud->x()) * widget_width / (xmax - xmin), (ymax - noeud->y()) * widget_height / (ymax - ymin), (xmax - noeudvoisin->x()) * widget_width / (xmax - xmin), (ymax - noeudvoisin->y()) * widget_height / (ymax - ymin)));
+    // Je dessine une par une des rues
+    for (Rue rue : v_rues) {
+        std::string typeroute = rue.type();
+        if (typeroute == "motorway" || typeroute == "motorway_link") {
+            pen.setWidth(15);
+            pen.setColor("red");
+            painter.setPen(pen);
+        } else if (typeroute == "trunk" || typeroute == "trunk_link") {
+            pen.setWidth(15);
+            pen.setColor("orange");
+            painter.setPen(pen);
+        } else if (typeroute == "primary" || typeroute == "primary_link") {
+            pen.setWidth(10);
+            pen.setColor("orange");
+            painter.setPen(pen);
+        } else if (typeroute == "secondary" || typeroute == "secondary_link") {
+            pen.setWidth(10);
+            pen.setColor("yellow");
+            painter.setPen(pen);
+        } else if (typeroute == "tertiary" || typeroute == "tertiary_link") {
+            pen.setWidth(10);
+            pen.setColor("yellow");
+            painter.setPen(pen);
+        } else if (typeroute == "unclassified") {
+            pen.setWidth(5);
+            pen.setColor("grey");
+            painter.setPen(pen);
+        } else if (typeroute == "residential") {
+            pen.setWidth(5);
+            pen.setColor("grey");
+            painter.setPen(pen);
+        } else {
+            pen.setWidth(5);
+            pen.setColor("black");
+            painter.setPen(pen);
+        }
+        vector<Noeud*> noeudsrue = rue.noeuds();
+        for (Noeud* noeud : noeudsrue) {
+            for (Noeud* noeudvoisin : noeud->noeudsvoisins())
+                painter.drawLine(QLine((xmax - noeud->x()) * widget_width / (xmax - xmin), (ymax - noeud->y()) * widget_height / (ymax - ymin), (xmax - noeudvoisin->x()) * widget_width / (xmax - xmin), (ymax - noeudvoisin->y()) * widget_height / (ymax - ymin)));
+        }
     }
-
     //-------------------------
 
     qDebug() << "paintEvent: ";

@@ -13,7 +13,7 @@ class SmartCars : public QMainWindow
     Q_OBJECT
 
 public:
-    SmartCars(std::vector<Noeud*> noeuds, QWidget *parent = Q_NULLPTR);
+    SmartCars(std::vector<Rue> rues, QWidget *parent = Q_NULLPTR);
     virtual void paintEvent(QPaintEvent* event);
 
     int getHexMeshWidth();
@@ -22,7 +22,7 @@ public:
     virtual void mouseReleaseEvent(QMouseEvent* event);
 
 private:
-    vector<Noeud*> v_noeuds;
+    vector<Rue> v_rues;
 
     struct Cell {
         Cell(const QPolygon& p, int l, int r, int c)

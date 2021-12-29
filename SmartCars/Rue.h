@@ -13,11 +13,14 @@ public:
     // Déstructeurs
     ~Rue() = default;
     // Accesseurs
-    std::vector<Noeud*> noeuds() const {
-        return v_noeuds;
-    }
     std::string reference() const {
         return v_reference;
+    }
+    std::string type() const {
+        return v_type;
+    }
+    std::vector<Noeud*> noeuds() const {
+        return v_noeuds;
     }
     // Méthodes
     int nombrenoeuds() const;
