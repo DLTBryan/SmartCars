@@ -187,9 +187,9 @@ void osmextract::extraire() {
             if (indicerueexistante != -1)
                 v_rues[indicerueexistante].ajouteNoeud(nouveaunoeud, (int)ensembleinformationsway[1]);
             else {
+                // Peut être mieux de récupérer ces informations directement au début (quand validation de la route) ?
                 std::string typeroute = recupererTypeRoute(root, std::to_string((int)ensembleinformationsway[0]));
-                std::cout << typeroute << std::endl;
-                v_rues.push_back(Rue(std::to_string(ensembleinformationsway[0]), nouveaunoeud, (int)ensembleinformationsway[2]));
+                v_rues.push_back(Rue(std::to_string(ensembleinformationsway[0]), typeroute, nouveaunoeud, (int)ensembleinformationsway[2]));
             }
         }
     }
