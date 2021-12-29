@@ -53,7 +53,7 @@ bool osmextract::estRouteValide(XMLElement* wayactuel) {
     return false;
 }
 
-// Fonction renvoyant une map inversée : un noeud sera associé à ses routes
+// Fonction renvoyant une map inversée : un noeud sera associé à ses routes (pour chaque route associée on spécifie son identifiant, l'emplacement du noeud associé dans cette route et le nombre total de noeuds dans cette route)
 std::map<std::string, std::vector<std::vector<double>>> osmextract::inverserMapRouteNds(std::map<std::string, std::vector<std::string>> linkswayrefnode) {
     std::map<std::string, std::vector<std::vector<double>>> linksrefnodeway;
     for (auto i = linkswayrefnode.begin(); i != linkswayrefnode.end(); ++i) {
@@ -105,6 +105,38 @@ std::array<double, 2> osmextract::recupererCoordonneesNd(XMLNode* root, std::str
     return coordonneeswsg84;
 }
 
+// Va récupérer le type de la route depuis le fichier
+std::string osmextract::recupererTypeRoute(XMLNode* root, std::string refroute) {
+    // On retrouve le "way" correspondant avec l'attribut "id" qui est la référence d'une route
+    XMLElement* wayactuel = root->FirstChildElement("way");
+    while (wayactuel != nullptr) {
+        const char* attributidwayactuel = nullptr;
+        attributidwayactuel = wayactuel->Attribute("id");
+        if (attributidwayactuel != nullptr) {
+            std::string stringattributidnodeactuel = attributidwayactuel;
+            if (stringattributidnodeactuel == refroute) {
+                // On parcours les "tag"
+                XMLElement* tagactuel = wayactuel->FirstChildElement("tag");
+                while (tagactuel != nullptr) {
+                    const char* attributktagactuel = nullptr;
+                    attributktagactuel = tagactuel->Attribute("k");
+                    const char* attributvtagactuel = nullptr;
+                    attributvtagactuel = tagactuel->Attribute("v");
+                    if (attributktagactuel != nullptr && attributvtagactuel != nullptr) {
+                        std::string stringattributktagactuel = attributktagactuel;
+                        std::string stringattributvtagactuel = attributvtagactuel;
+                        if (stringattributktagactuel == "highway")
+                            return stringattributvtagactuel;
+                    }
+                    tagactuel = tagactuel->NextSiblingElement("tag");
+                }
+                return "";
+            }
+        }
+        wayactuel = wayactuel->NextSiblingElement("way");
+    }
+}
+
 void osmextract::extraire() {
     XMLDocument map;
     XMLError eResult = map.LoadFile(v_nomfichier.c_str());
@@ -154,8 +186,11 @@ void osmextract::extraire() {
             // Si oui, alors on y ajoute juste le noeud
             if (indicerueexistante != -1)
                 v_rues[indicerueexistante].ajouteNoeud(nouveaunoeud, (int)ensembleinformationsway[1]);
-            else
+            else {
+                std::string typeroute = recupererTypeRoute(root, std::to_string((int)ensembleinformationsway[0]));
+                std::cout << typeroute << std::endl;
                 v_rues.push_back(Rue(std::to_string(ensembleinformationsway[0]), nouveaunoeud, (int)ensembleinformationsway[2]));
+            }
         }
     }
     // On rajoute des liens entre les noeuds
