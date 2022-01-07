@@ -44,6 +44,7 @@ private:
     bool estRouteValide(XMLElement* wayactuel);
     std::map<std::string, std::vector<std::vector<double>>> inverserMapRouteNds(std::map<std::string, std::vector<std::string>> linkswayrefnode);
     std::array<double, 2> recupererCoordonneesNd(XMLNode* root, std::string refnode);
+    std::string osmextract::recupererTypeRoute(XMLNode* root, std::string refroute);
 };
 
 #endif

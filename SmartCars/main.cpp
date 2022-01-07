@@ -13,13 +13,13 @@ using namespace std;
 int main(int argc, char* argv[]) {
     osmextract extracteur("map_test.osm");
     extracteur.extraire();
-    std::vector<Noeud*> noeuds = extracteur.noeuds();
+    std::vector<Rue> rues = extracteur.rues();
     
     QApplication a(argc, argv);
 
     QWidget* window = new QWidget;
 
-    SmartCars* roads = new SmartCars(noeuds);
+    SmartCars* roads = new SmartCars(rues);
     roads->setFixedSize(roads->getHexMeshWidth(), roads->getHexMeshHeight());
     
     QPushButton* button2 = new QPushButton("Two");

@@ -9,15 +9,18 @@
 class Rue {
 public:
     // Constructeurs
-    Rue(std::string reference, Noeud* noeud, int nombrenoeuds) : v_reference{ reference }, v_noeuds{ std::vector<Noeud*>(nombrenoeuds, noeud) } {};
+    Rue(std::string reference, std::string type, Noeud* noeud, int nombrenoeuds) : v_reference{ reference }, v_type{ type }, v_noeuds{ std::vector<Noeud*>(nombrenoeuds, noeud) } {};
     // Déstructeurs
     ~Rue() = default;
     // Accesseurs
-    std::vector<Noeud*> noeuds() const {
-        return v_noeuds;
-    }
     std::string reference() const {
         return v_reference;
+    }
+    std::string type() const {
+        return v_type;
+    }
+    std::vector<Noeud*> noeuds() const {
+        return v_noeuds;
     }
     // Méthodes
     int nombrenoeuds() const;
@@ -26,6 +29,7 @@ public:
 private:
     // Attributs
     std::string v_reference;
+    std::string v_type;
     std::vector<Noeud*> v_noeuds;
 };
 
