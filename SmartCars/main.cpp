@@ -17,8 +17,6 @@ int main(int argc, char* argv[]) {
     
     QApplication a(argc, argv);
 
-    //QMainWindow mainWindow;
-
     QWidget* window = new QWidget;
 
     SmartCars* roads = new SmartCars(noeuds);
@@ -41,10 +39,6 @@ int main(int argc, char* argv[]) {
     layout->addWidget(button2);
 
     window->setLayout(layout);
-
-    //mainWindow.setCentralWidget(window);
-    //window->resize(640, 480);
-    //mainWindow.show();
 
     window->show();
 

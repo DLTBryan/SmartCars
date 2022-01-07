@@ -19,19 +19,17 @@ public:
     int getHexMeshWidth();
     int getHexMeshHeight();
     void createMesh();
-    virtual void mouseReleaseEvent(QMouseEvent* event);
 
 private:
     vector<Noeud*> v_noeuds;
 
     struct Cell {
         Cell(const QPolygon& p, int l, int r, int c)
-            : polygon(p), id_cell(l), num_row(r), num_col(c), selected(false) {}
+            : polygon(p), id_cell(l), num_row(r), num_col(c) {}
         QPolygon polygon;
         int id_cell;
         int num_row;
         int num_col;
-        bool selected;
     };
     std::vector<std::vector<Cell>> cells;
     int widget_width = 806;
