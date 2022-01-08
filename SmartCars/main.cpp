@@ -16,6 +16,8 @@
 #include <QtWidgets/qpushbutton.h>
 #include <QHBoxLayout>
 
+#include "Application.h"
+
 using namespace tinyxml2;
 using namespace std;
 using namespace std::chrono;
@@ -68,10 +70,11 @@ int main(int argc, char* argv[]) {
 
     // Generation de toutes les voitures
     vector<Voiture*> voitures;
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 100; i++) {
         int rue = 0 + rand() % ((osm->ways().size()) - 0);;
         int noeud = 0 + rand() % ((osm->ways().at(rue)->noeuds().size()) - 0);
-        voitures.push_back(new Voiture("Voiture " + i, 10, osm->ways().at(rue)->noeuds().at(noeud)));
+        int vitesse = 10 + rand() % (30 - 10) + 1;
+        voitures.push_back(new Voiture("Voiture " + i, vitesse, osm->ways().at(rue)->noeuds().at(noeud)));
     }
 
     // Je gette tous les noeuds
@@ -83,8 +86,9 @@ int main(int argc, char* argv[]) {
 
     QApplication a(argc, argv);
 
-    SmartCars w(noeuds, voitures);
+    SmartCars* w = new SmartCars(noeuds, voitures);
+    Application* app = new Application(w);
 
-    w.show();
+    app->show();
     return a.exec();
 }

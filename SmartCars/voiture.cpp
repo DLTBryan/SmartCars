@@ -24,12 +24,6 @@ void Voiture::avancer(int multiplicateur, float distanceRestance)
 
 	float pourcentageParcouru = distanceAparcourir / distance;
 
-	//cout << "distanceAparcourir : " << distanceAparcourir;
-
-	//cout << ", distance : " << distance;
-
-	//cout << ", % : " << pourcentageParcouru << endl;
-
 	if (pourcentageParcouru >= 1) {
 		Noeud* tmp = noeudArrivee;
 
@@ -37,13 +31,18 @@ void Voiture::avancer(int multiplicateur, float distanceRestance)
 
 		//cout << "voisins : " << tmp->voisins().size() << endl;
 
-		if (tmp->voisins().size() != 1) {
+		if (tmp->voisins().size() > 2) {
 			while (this->noeudArrivee == this->noeudDepart || this->noeudArrivee == tmp) {
 				int rd = random(0, tmp->voisins().size() - 1);
 				this->noeudArrivee = tmp->voisins().at(rd);
 			}
-		}
-		else {
+		} else if (tmp->voisins().size() == 2) {
+			if (tmp->voisins().at(0) == this->noeudDepart) {
+				this->noeudArrivee = tmp->voisins().at(1);
+			} else {
+				this->noeudArrivee = tmp->voisins().at(0);
+			}
+		} else {
 			this->noeudArrivee = this->noeudDepart;
 		}
 

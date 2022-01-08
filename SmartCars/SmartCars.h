@@ -13,6 +13,7 @@ class SmartCars : public QMainWindow
 public:
     SmartCars(std::vector<Noeud*> noeuds, std::vector<Voiture*> voitures, QWidget* parent = Q_NULLPTR);
     virtual void paintEvent(QPaintEvent* event);
+    vector<Voiture*> getVoitures() { return v_voitures; }
 
 private:
     Ui::SmartCarsClass ui;

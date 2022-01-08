@@ -95,6 +95,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Application.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="noeud.cpp" />
     <ClCompile Include="OsmProcessor.cpp" />
@@ -114,6 +115,7 @@
     <QtRcc Include="SmartCars.qrc" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="Application.h" />
     <ClInclude Include="noeud.h" />
     <ClInclude Include="OsmProcessor.h" />
     <ClInclude Include="point.h" />
