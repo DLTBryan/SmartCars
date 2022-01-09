@@ -4,10 +4,11 @@
 #include <random>
 #include <QMouseEvent>
 
-SmartCars::SmartCars(std::vector<Rue> rues, QWidget *parent)
+SmartCars::SmartCars(std::vector<Rue> rues, std::vector<Voiture*> voitures, QWidget *parent)
     : QMainWindow(parent)
 {
     v_rues = rues;
+    v_voitures = voitures;
 
     createMesh();
 }
@@ -147,5 +148,11 @@ void SmartCars::paintEvent(QPaintEvent* event)
             painter.setBrush(cellColor);
             painter.drawPath(path);
         }
+    }
+
+    for (Voiture* v : v_voitures) {
+        float x = (xmax - v->getCoordonnees().x()) * 1000 / (xmax - xmin);
+        float y = (ymax - v->getCoordonnees().y()) * 800 / (ymax - ymin);
+        painter.drawEllipse(QPointF(x, y), 5, 5);
     }
 }

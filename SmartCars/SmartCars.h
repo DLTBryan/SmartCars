@@ -3,6 +3,7 @@
 #include <QtWidgets/QMainWindow>
 #include <QPainter>
 #include "osmextract.h"
+#include "Voiture.h"
 
 #include <vector>
 
@@ -13,7 +14,7 @@ class SmartCars : public QMainWindow
     Q_OBJECT
 
 public:
-    SmartCars(std::vector<Rue> rues, QWidget *parent = Q_NULLPTR);
+    SmartCars(std::vector<Rue> rues, std::vector<Voiture*> voitures, QWidget* parent = Q_NULLPTR);
     virtual void paintEvent(QPaintEvent* event);
 
     int getHexMeshWidth();
@@ -22,6 +23,7 @@ public:
 
 private:
     vector<Rue> v_rues;
+    vector<Voiture*> v_voitures;
 
     struct Cell {
         Cell(const QPolygon& p, int l, int r, int c)

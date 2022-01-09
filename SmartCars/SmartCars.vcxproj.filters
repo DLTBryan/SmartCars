@@ -26,6 +26,9 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Voiture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="SmartCars.qrc">
@@ -74,6 +77,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Rue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Voiture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
