@@ -21,6 +21,9 @@ public:
     double y() const {
         return v_coordonnees.v_y;
     }
+    Point coordonnees() const {
+        return v_coordonnees;
+    }
     // Méthodes
     void ajouteVoisin(Noeud* v);
 private:

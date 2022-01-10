@@ -129,6 +129,16 @@ void SmartCars::paintEvent(QPaintEvent* event)
                 painter.drawLine(QLine((xmax - noeud->x()) * widget_width / (xmax - xmin), (ymax - noeud->y()) * widget_height / (ymax - ymin), (xmax - noeudvoisin->x()) * widget_width / (xmax - xmin), (ymax - noeudvoisin->y()) * widget_height / (ymax - ymin)));
         }
     }
+
+    pen.setWidth(1);
+    painter.setPen(pen);
+    painter.setBrush(QBrush("green"));
+    for (Voiture* v : v_voitures) {
+        float x = (xmax - v->getCoordonnees().x()) * widget_width / (xmax - xmin);
+        float y = (ymax - v->getCoordonnees().y()) * widget_height / (ymax - ymin);
+        painter.drawEllipse(QPointF(x, y), 5, 5);
+    }
+
     //-------------------------
     //RGB
     QColor borderColor(200, 200, 200);
@@ -148,11 +158,5 @@ void SmartCars::paintEvent(QPaintEvent* event)
             painter.setBrush(cellColor);
             painter.drawPath(path);
         }
-    }
-
-    for (Voiture* v : v_voitures) {
-        float x = (xmax - v->getCoordonnees().x()) * 1000 / (xmax - xmin);
-        float y = (ymax - v->getCoordonnees().y()) * 800 / (ymax - ymin);
-        painter.drawEllipse(QPointF(x, y), 5, 5);
     }
 }
