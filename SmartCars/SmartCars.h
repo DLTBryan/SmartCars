@@ -22,6 +22,8 @@ public:
     void createMesh();
 
     vector<Voiture*> getVoitures() { return v_voitures; }
+    void setVoitures(vector<Voiture*> voitures) { v_voitures = voitures; }
+    vector<Rue> getRues() { return v_rues; }
 private:
     vector<Rue> v_rues;
     vector<Voiture*> v_voitures;

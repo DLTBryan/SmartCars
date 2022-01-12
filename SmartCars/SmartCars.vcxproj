@@ -113,6 +113,8 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Application.h" />
+    <QtMoc Include="WorkerSimulation.h" />
+    <QtMoc Include="WorkerController.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Noeud.h" />
     <ClInclude Include="osmextract.h" />
