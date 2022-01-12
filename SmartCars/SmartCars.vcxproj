@@ -103,6 +103,7 @@
   <ItemGroup>
     <ClCompile Include="osmextract.cpp" />
     <ClCompile Include="Rue.cpp" />
+    <ClCompile Include="SetupSelectionHelper.cpp" />
     <ClCompile Include="SmartCars.cpp" />
     <ClCompile Include="Noeud.cpp" />
     <ClCompile Include="Voiture.cpp" />
@@ -117,6 +118,7 @@
     <ClInclude Include="Noeud.h" />
     <ClInclude Include="osmextract.h" />
     <ClInclude Include="Rue.h" />
+    <ClInclude Include="SetupSelectionHelper.h" />
     <ClInclude Include="tinyxml2.h" />
     <ClInclude Include="Voiture.h" />
     <ClInclude Include="WGS84toCartesian.hpp" />
