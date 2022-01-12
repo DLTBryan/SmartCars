@@ -30,6 +30,10 @@ public:
 		return coordonnees;
 	}
 
+	int getVitesse() {
+		return vitesse;
+	}
+
 private:
 	std::string nom;
 	int vitesse;
