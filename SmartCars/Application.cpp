@@ -11,6 +11,10 @@ Application::Application(SmartCars* sc, QWidget* parent) : QMainWindow(parent) {
 	QWidget* window = new QWidget();
 
 	smart_cars = sc;
+    setupHelper = new SetupSelectionHelper();
+    setupHelper->fillComboBox(sc->getVoitures().size());
+    setupHelper->modifyCurrentVitesseInInput(sc->getVoitures());
+
 	avancer = new QPushButton("Avancer");
 
     QScrollArea* scrollArea = new QScrollArea();
@@ -51,6 +55,7 @@ Application::Application(SmartCars* sc, QWidget* parent) : QMainWindow(parent) {
     vbox = new QVBoxLayout();
     vbox->addWidget(avancer);
     vbox->addWidget(vitesseSimulationBox);
+    vbox->addWidget(setupHelper->box());
     commandPrompt->setLayout(vbox);
 
     layout->addWidget(commandPrompt);
@@ -61,6 +66,9 @@ Application::Application(SmartCars* sc, QWidget* parent) : QMainWindow(parent) {
     connect(avancer, &QPushButton::clicked, this, &Application::handleAvancer);
     connect(plus, &QPushButton::clicked, this, &Application::handleSpeedSimulation);
     connect(moins, &QPushButton::clicked, this, &Application::handleSlowSimulation);
+    connect(setupHelper->buttonSelectCar(), &QPushButton::clicked, this, &Application::handleSelectCar);
+    connect(setupHelper->buttonModification(), &QPushButton::clicked, this, &Application::handleChangeSpeed);
+
     return;
 }
 
@@ -93,4 +101,13 @@ void Application::handleSlowSimulation() {
     moins->setEnabled(vitesse > 50);
     QString vitesseString = QString("Vitesse actuelle : %1").arg(vitesse);
     vitesseLabel->setText(vitesseString);
+}
+
+void Application::handleChangeSpeed() {
+    int nvSpeedValue = setupHelper->getValueOfSpeedInput();
+    //cout << nvSpeedValue << "<= NEW SPEED" << endl;
+}
+
+void Application::handleSelectCar() {
+    setupHelper->modifyCurrentVitesseInInput(smart_cars->getVoitures());
 }
