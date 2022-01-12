@@ -13,7 +13,7 @@
 using namespace std;
 
 int main(int argc, char* argv[]) {
-    osmextract extracteur("map_test.osm");
+    osmextract extracteur("map.osm");
     extracteur.extraire();
     std::vector<Rue> rues = extracteur.rues();
 
@@ -35,25 +35,7 @@ int main(int argc, char* argv[]) {
     
     Application* app = new Application(roads);
 
-    QPushButton* button2 = new QPushButton("it wodsfrk");
-
-    QScrollArea* scrollArea = new QScrollArea();
-    int scrollbarWidth = 25; // +25px pour scrollbar
-    int scrollMaxWidth = roads->getHexMeshWidth() + scrollbarWidth;
-    int scrollMaxHeight = roads->getHexMeshHeight() + scrollbarWidth;
-    scrollArea->setWidget(roads);
-    scrollArea->setMaximumSize(scrollMaxWidth, scrollMaxHeight); 
-    scrollArea->setWidgetResizable(true);
-    scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-    scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-
-    QHBoxLayout* layout = new QHBoxLayout(window);
-    layout->addWidget(scrollArea);
-    layout->addWidget(button2);
-
-    window->setLayout(layout);
-
-    window->show();
+    app->show();
 
     return a.exec();
 }

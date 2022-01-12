@@ -21,6 +21,7 @@ public:
     int getHexMeshHeight();
     void createMesh();
 
+    vector<Voiture*> getVoitures() { return v_voitures; }
 private:
     vector<Rue> v_rues;
     vector<Voiture*> v_voitures;
