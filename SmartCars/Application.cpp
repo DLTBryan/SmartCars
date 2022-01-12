@@ -110,4 +110,5 @@ void Application::handleChangeSpeed() {
 
 void Application::handleSelectCar() {
     setupHelper->modifyCurrentVitesseInInput(smart_cars->getVoitures());
+    smart_cars->repaint();
 }

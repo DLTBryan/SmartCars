@@ -34,10 +34,20 @@ public:
 		return vitesse;
 	}
 
+	bool getSelected() {
+		return selected;
+	}
+
+	void setSelected(bool value) {
+		selected = value;
+	}
+
 private:
 	std::string nom;
 	int vitesse;
 	Point coordonnees;
+
+	bool selected;
 
 	Noeud* noeudDepart;
 	Noeud* noeudArrivee;

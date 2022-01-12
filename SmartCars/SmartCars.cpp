@@ -132,8 +132,9 @@ void SmartCars::paintEvent(QPaintEvent* event)
 
     pen.setWidth(1);
     painter.setPen(pen);
-    painter.setBrush(QBrush("green"));
     for (Voiture* v : v_voitures) {
+        if (v->getSelected()) painter.setBrush(QBrush("blue"));
+        else painter.setBrush(QBrush("green"));
         float x = (xmax - v->getCoordonnees().x()) * widget_width / (xmax - xmin);
         float y = (ymax - v->getCoordonnees().y()) * widget_height / (ymax - ymin);
         painter.drawEllipse(QPointF(x, y), 5, 5);

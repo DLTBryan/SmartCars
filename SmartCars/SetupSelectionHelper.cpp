@@ -41,6 +41,7 @@ QGroupBox* SetupSelectionHelper::box() const {
 
 void SetupSelectionHelper::modifyCurrentVitesseInInput(vector<Voiture*> voitures) {
 	indexComboBox(d_comboBoxListCars->currentIndex());
+	for (Voiture* v : voitures) v->setSelected(v == voitures.at(d_indexSelectedCar));
 	d_speedInput->setText(QString(to_string(voitures.at(d_indexSelectedCar)->getVitesse()).c_str()));
 }
 
