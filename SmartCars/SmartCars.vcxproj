@@ -94,7 +94,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Application_SC.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -112,7 +112,7 @@
     <QtMoc Include="SmartCars.h" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="Application.h" />
+    <QtMoc Include="Application_SC.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Noeud.h" />
     <ClInclude Include="osmextract.h" />

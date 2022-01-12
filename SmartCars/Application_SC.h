@@ -7,18 +7,18 @@
 #include <QtWidgets/qscrollarea.h>
 
 #include "SmartCars.h"
+#include "Rue.h"
+#include "Voiture.h"
 
-class Application : public QMainWindow
+class Application_SC : public QMainWindow
 {
 	Q_OBJECT
 public:
-	Application(SmartCars* smart_cars, QWidget* parent = Q_NULLPTR);
-	//virtual void paintEvent(QPaintEvent* event);
+	Application_SC(vector<Rue> rues, vector<Voiture*> voitures, QWidget* parent = Q_NULLPTR);
 
 private:
 	QPushButton* avancer;
 	SmartCars* smart_cars;
-	bool active = false;
 
 private slots:
 	void handleAvancer();

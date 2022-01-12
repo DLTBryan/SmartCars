@@ -1,9 +1,9 @@
-#include "Application.h"
+#include "Application_SC.h"
 
-Application::Application(SmartCars* sc, QWidget* parent) : QMainWindow(parent)
+Application_SC::Application_SC(vector<Rue> rues, vector<Voiture*> voitures, QWidget* parent) : QMainWindow(parent)
 {
-    QWidget* widget = new QWidget;
-    smart_cars = sc;
+    QWidget* widget = new QWidget();
+    smart_cars = new SmartCars(rues, voitures);
 
     avancer = new QPushButton("Avancer");
 
@@ -11,10 +11,10 @@ Application::Application(SmartCars* sc, QWidget* parent) : QMainWindow(parent)
 
     QScrollArea* scrollArea = new QScrollArea();
     int scrollbarWidth = 25; // +25px pour scrollbar
-    int scrollMaxWidth = sc->getHexMeshWidth() + scrollbarWidth;
-    int scrollMaxHeight = sc->getHexMeshHeight() + scrollbarWidth;
+    int scrollMaxWidth = smart_cars->getHexMeshWidth() + scrollbarWidth;
+    int scrollMaxHeight = smart_cars->getHexMeshHeight() + scrollbarWidth;
 
-    scrollArea->setWidget(sc);
+    scrollArea->setWidget(smart_cars);
     scrollArea->setMaximumSize(scrollMaxWidth, scrollMaxHeight);
     scrollArea->setWidgetResizable(true);
     scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
@@ -24,11 +24,12 @@ Application::Application(SmartCars* sc, QWidget* parent) : QMainWindow(parent)
     layout->addWidget(avancer);
 
     widget->setLayout(layout);
+    setCentralWidget(widget);
 
-    connect(avancer, &QPushButton::clicked, this, &Application::handleAvancer);
+    connect(avancer, &QPushButton::clicked, this, &Application_SC::handleAvancer);
 }
 
-void Application::handleAvancer() {
+void Application_SC::handleAvancer() {
     while (1) {
         for (Voiture* v : smart_cars->getVoitures()) v->avancer(200);
         smart_cars->repaint();

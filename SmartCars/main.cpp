@@ -1,23 +1,16 @@
 #include "SmartCars.h"
 #include "Voiture.h"
-#include "Application.h"
+#include "Application_SC.h"
 
 #include <QtWidgets/QApplication>
-#include <QPushButton>
-#include <QHBoxLayout>
-#include <QtWidgets/qmainwindow.h>
-#include <QtWidgets/qscrollarea.h>
-
-#include <iostream>
-#include <Windows.h>
 
 using namespace std;
-SmartCars* roads;
 
 int main(int argc, char* argv[]) {
     osmextract extracteur("map_test.osm");
     extracteur.extraire();
-    std::vector<Rue> rues = extracteur.rues();
+    
+    vector<Rue> rues = extracteur.rues();
 
     // Generation de toutes les voitures
     vector<Voiture*> voitures;
@@ -30,12 +23,8 @@ int main(int argc, char* argv[]) {
     
     QApplication a(argc, argv);
 
-    SmartCars* sc = new SmartCars(rues, voitures);
-    roads->setFixedSize(roads->getHexMeshWidth(), roads->getHexMeshHeight());
-
-    Application* app = new Application(sc);
+    Application_SC* app = new Application_SC(rues, voitures);
 
     app->show();
-
     return a.exec();
 }

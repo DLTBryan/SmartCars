@@ -29,7 +29,7 @@
     <ClCompile Include="Voiture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Application.cpp">
+    <ClCompile Include="Application_SC.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -87,7 +87,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="Application.h">
+    <QtMoc Include="Application_SC.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
