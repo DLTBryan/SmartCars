@@ -1,5 +1,6 @@
 #include "SmartCars.h"
 #include "Voiture.h"
+#include "Application.h"
 
 #include <QtWidgets/QApplication>
 #include <QPushButton>
@@ -8,8 +9,10 @@
 #include <QtWidgets/qscrollarea.h>
 
 #include <iostream>
+#include <Windows.h>
 
 using namespace std;
+SmartCars* roads;
 
 int main(int argc, char* argv[]) {
     osmextract extracteur("map_test.osm");
@@ -27,30 +30,12 @@ int main(int argc, char* argv[]) {
     
     QApplication a(argc, argv);
 
-    QWidget* window = new QWidget;
-
-    SmartCars* roads = new SmartCars(rues, voitures);
+    SmartCars* sc = new SmartCars(rues, voitures);
     roads->setFixedSize(roads->getHexMeshWidth(), roads->getHexMeshHeight());
-    
-    QPushButton* button2 = new QPushButton("Two");
 
-    QScrollArea* scrollArea = new QScrollArea();
-    int scrollbarWidth = 25; // +25px pour scrollbar
-    int scrollMaxWidth = roads->getHexMeshWidth() + scrollbarWidth;
-    int scrollMaxHeight = roads->getHexMeshHeight() + scrollbarWidth;
-    scrollArea->setWidget(roads);
-    scrollArea->setMaximumSize(scrollMaxWidth, scrollMaxHeight); 
-    scrollArea->setWidgetResizable(true);
-    scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-    scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    Application* app = new Application(sc);
 
-    QHBoxLayout* layout = new QHBoxLayout(window);
-    layout->addWidget(scrollArea);
-    layout->addWidget(button2);
-
-    window->setLayout(layout);
-
-    window->show();
+    app->show();
 
     return a.exec();
 }
