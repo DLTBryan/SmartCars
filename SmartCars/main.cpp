@@ -8,6 +8,7 @@
 #include <QtWidgets/qscrollarea.h>
 
 #include <iostream>
+#include "Application.h"
 
 using namespace std;
 
@@ -32,7 +33,9 @@ int main(int argc, char* argv[]) {
     SmartCars* roads = new SmartCars(rues, voitures);
     roads->setFixedSize(roads->getHexMeshWidth(), roads->getHexMeshHeight());
     
-    QPushButton* button2 = new QPushButton("Two");
+    Application* app = new Application(roads);
+
+    QPushButton* button2 = new QPushButton("it wodsfrk");
 
     QScrollArea* scrollArea = new QScrollArea();
     int scrollbarWidth = 25; // +25px pour scrollbar
