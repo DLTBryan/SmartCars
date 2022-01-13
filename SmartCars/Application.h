@@ -3,9 +3,8 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/qpushbutton.h>
-#include <QThread>
 #include "SmartCars.h"
-#include "WorkerController.h"
+#include <thread>
 
 class Application : public QMainWindow
 {
@@ -16,11 +15,17 @@ public:
 
 private:
 	QPushButton* avancer;
+	QPushButton* arreter;
 	QLineEdit* nbrevoituresagenerer;
 	SmartCars* smart_cars;
+	bool continuer;
+	char caractere;
+	static void executer(bool* continuer, char* caractere);
+	std::thread threadsimulation;
 
 private slots:
 	void handleAvancer();
+	void handleArreter();
 	void handleGenerateCars();	
 };
 

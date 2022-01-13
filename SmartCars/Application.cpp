@@ -3,14 +3,14 @@
 #include <QtWidgets/qscrollarea.h>
 #include <QtWidgets/qgroupbox.h>
 #include <chrono>
-#include <thread>
 
 Application::Application(SmartCars* sc, QWidget* parent) : QMainWindow(parent) {
 
 	QWidget* window = new QWidget();
 
 	smart_cars = sc;
-	avancer = new QPushButton("Avancer");
+	avancer = new QPushButton("Start");
+    arreter = new QPushButton("Stop");
 
     QScrollArea* scrollArea = new QScrollArea();
     int scrollbarWidth = 25; // +25px pour scrollbar
@@ -49,6 +49,7 @@ Application::Application(SmartCars* sc, QWidget* parent) : QMainWindow(parent) {
     boxSelection->setTitle(QString("Simulation"));
     QVBoxLayout* vboxSelection = new QVBoxLayout;
     vboxSelection->addWidget(avancer);
+    vboxSelection->addWidget(arreter);
     vboxSelection->addStretch(1);
     boxSelection->setLayout(vboxSelection);
 
@@ -64,18 +65,28 @@ Application::Application(SmartCars* sc, QWidget* parent) : QMainWindow(parent) {
     window->setMinimumSize(800, 500);
     setCentralWidget(window);
 
-	//connect(avancer, &QPushButton::clicked, this, &Application::handleAvancer);
-
     connect(avancer, &QPushButton::clicked, this, &Application::handleAvancer);
+    connect(arreter, &QPushButton::clicked, this, &Application::handleArreter);
 
 	return;
 }
 
+void Application::executer(bool* continuer, char* caractere) {
+    while (continuer)
+        std::cout << *caractere;
+    std::cout << "STOP" << std::endl;
+}
+
 void Application::handleAvancer() {
-    //connect(&workerThread, &QThread::finished, workerSimulation, &QObject::deleteLater);
-    //connect(this, &operate, workerSimulation, &WorkerSimulation::doWork);
-    //workerThread.start();
-    WorkerController* workerController = new WorkerController;
+    // Starting
+    continuer = true;
+    caractere = '.';
+    threadsimulation = std::thread(executer, &continuer, &caractere);
+}
+
+void Application::handleArreter() {
+    continuer = false;
+    threadsimulation.join();
 }
 
 void Application::handleGenerateCars() {

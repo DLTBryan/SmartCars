@@ -90,11 +90,5 @@
     <QtMoc Include="Application.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="WorkerSimulation.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="WorkerController.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
   </ItemGroup>
 </Project>
