@@ -20,6 +20,8 @@ public:
     int getHexMeshHeight();
     void createMesh();
     virtual void mouseReleaseEvent(QMouseEvent* event);
+    void getCellFromCoord(double x_coord, double y_coord);
+    inline int getCellWidth() { return cellWidth; }
 
 private:
     vector<Noeud*> v_noeuds;
@@ -38,4 +40,5 @@ private:
     std::vector<std::vector<Cell>> cells;
     int widget_width = 806;
     int widget_height = 641;
+    int cellWidth = 50; // est le diametre sur une représentation en cercle où chaque sommet touche le cercle
 };
