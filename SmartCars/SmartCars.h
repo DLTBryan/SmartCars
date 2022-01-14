@@ -3,6 +3,7 @@
 #include <QtWidgets/QMainWindow>
 #include <QPainter>
 #include "osmextract.h"
+#include "Cell.h"
 
 #include <vector>
 
@@ -20,23 +21,13 @@ public:
     int getHexMeshHeight();
     void createMesh();
     virtual void mouseReleaseEvent(QMouseEvent* event);
-    void getCellFromCoord(double x_coord, double y_coord);
+    Cell* getCellFromCoord(/*Point point*/ double x, double y);
     inline int getCellWidth() { return cellWidth; }
+    vector<Cell*> getVoisin(Cell* cell);
 
 private:
     vector<Noeud*> v_noeuds;
 
-    struct Cell {
-        Cell(const QPolygon& p, int l, int r, int c, double cx, double cy)
-            : polygon(p), id_cell(l), num_row(r), num_col(c), centerX(cx), centerY(cy), selected(false) {}
-        QPolygon polygon;
-        int id_cell;
-        int num_row;
-        int num_col;
-        bool selected;
-        double centerX;
-        double centerY;
-    };
     std::vector<std::vector<Cell>> cells;
     int widget_width = 806;
     int widget_height = 641;
