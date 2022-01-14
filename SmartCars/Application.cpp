@@ -6,6 +6,8 @@
 #include <qgroupbox.h>
 #include <qradiobutton.h>
 #include <QThread>
+#include <iostream>
+
 
 Application::Application(SmartCars* sc, QWidget* parent) : QMainWindow(parent) {
 
@@ -147,11 +149,28 @@ void Application::handleSlowSimulation() {
 }
 
 void Application::handleChangeSpeed() {
-    int nvSpeedValue = setupHelper->getValueOfSpeedInput();
-    //cout << nvSpeedValue << "<= NEW SPEED" << endl;
+    string nvSpeedValue = setupHelper->getValueOfSpeedInput();
+    if (isNumber(nvSpeedValue)) {
+        int nvValue = stoi(nvSpeedValue);
+        smart_cars->getVoitures().at(setupHelper->getCurrentIndexCombo())->setVitesse(nvValue);
+    }
+    else {
+        setupHelper->setValueOfInput(
+            smart_cars->getVoitures().at(setupHelper->getCurrentIndexCombo())->getVitesse()
+        );
+    }
+        
 }
 
 void Application::handleSelectCar() {
     setupHelper->modifyCurrentVitesseInInput(smart_cars->getVoitures());
     smart_cars->repaint();
+}
+
+bool Application::isNumber(const string& str)
+{
+    for (char const& c : str) {
+        if (std::isdigit(c) == 0) return false;
+    }
+    return true;
 }

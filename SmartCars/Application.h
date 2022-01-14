@@ -25,6 +25,7 @@ private:
 	SmartCars* smart_cars;
 	SetupSelectionHelper* setupHelper;
 	bool* active = new bool(false);
+	bool isNumber(const string& str);
 
 private slots:
 	void handleAvancer();
