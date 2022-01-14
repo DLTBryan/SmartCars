@@ -42,6 +42,10 @@ public:
 		selected = value;
 	}
 
+	void setVitesse(int value) {
+		vitesse = value;
+	}
+
 private:
 	std::string nom;
 	int vitesse;
