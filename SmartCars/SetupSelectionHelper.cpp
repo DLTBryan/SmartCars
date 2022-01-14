@@ -4,6 +4,7 @@
 SetupSelectionHelper::SetupSelectionHelper() {
 	d_box = new QGroupBox();
 	d_speedBox = new QGroupBox();
+	d_selectionBox = new QGroupBox();
 
 	d_btn = new QPushButton("Modifier");
 	d_box->setTitle(QString(d_title.c_str()));
@@ -15,21 +16,28 @@ SetupSelectionHelper::SetupSelectionHelper() {
 
 	d_layoutSpeedBox->addWidget(d_speedLabel);
 	d_layoutSpeedBox->addWidget(d_speedInput);
-	d_layoutSpeedBox->addWidget(d_btnSelect);
+	d_layoutSpeedBox->addWidget(d_btn);
 
 	d_layoutSpeedBox->addStretch();
 	d_speedBox->setLayout(d_layoutSpeedBox);
+	
+	d_comboBoxListCars = new QComboBox();
+	d_comboBoxListCars->setFixedWidth(150);
 
+	d_layoutSelection = new QHBoxLayout();
+	d_layoutSelection->addWidget(d_comboBoxListCars);
+	d_layoutSelection->addWidget(d_btnSelect);
+	d_layoutSelection->addStretch();
+	d_selectionBox->setLayout(d_layoutSelection);
 	//make meta comboBox
 
-	d_comboBoxListCars = new QComboBox();
+	
 
 	d_layoutBox = new QVBoxLayout();
 
-	d_layoutBox->addWidget(d_comboBoxListCars);
+	d_layoutBox->addWidget(d_selectionBox);
 	d_layoutBox->addWidget(d_speedBox);
-	d_layoutBox->addWidget(d_btn);
-	d_layoutBox->addStretch(1);
+	d_layoutBox->addStretch();
 	d_box->setLayout(d_layoutBox);
 
 }

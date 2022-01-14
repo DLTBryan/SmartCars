@@ -32,8 +32,16 @@ public:
 		return d_indexSelectedCar;
 	}
 	
-	int getValueOfSpeedInput() {
-		return d_speedInput->text().toInt();
+	string getValueOfSpeedInput() {
+		return d_speedInput->text().toStdString();
+	}
+
+	int getCurrentIndexCombo() {
+		return d_comboBoxListCars->currentIndex();
+	}
+	
+	void setValueOfInput(int value) {
+		d_speedInput->setText(QString(to_string(value).c_str()));
 	}
 
 	void modifyCurrentVitesseInInput(vector<Voiture*> voitures);
@@ -41,8 +49,10 @@ public:
 private:
 	QGroupBox* d_box;
 	QGroupBox* d_speedBox;
+	QGroupBox* d_selectionBox;
 	QVBoxLayout* d_layoutBox;
 	QHBoxLayout* d_layoutSpeedBox;
+	QHBoxLayout* d_layoutSelection;
 	QLineEdit* d_speedInput;
 	QLabel* d_speedLabel;
 	QComboBox* d_comboBoxListCars;
