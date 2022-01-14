@@ -379,7 +379,7 @@ Cell* SmartCars::getCellFromCoord(Point point) {
 	return cell_temp;
 }
 
-vector<Cell*> SmartCars::getVoisin(Cell* cell)
+vector<Cell*> SmartCars::getVoisins(Cell* cell)
 {
 	vector<Cell*> voisins;
 

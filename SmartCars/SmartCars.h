@@ -23,7 +23,7 @@ public:
     void createMesh();
     Cell* getCellFromCoord(Point point);
     inline int getCellWidth() { return cellWidth; }
-    vector<Cell*> getVoisin(Cell* cell);
+    vector<Cell*> getVoisins(Cell* cell);
 
     vector<Voiture*> getVoitures() { return v_voitures; }
     int getVitesse() { return v_vitesse; }
