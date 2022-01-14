@@ -4,6 +4,7 @@
 #include <QPainter>
 #include "osmextract.h"
 #include "Voiture.h"
+#include "Cell.h"
 
 #include <vector>
 
@@ -20,6 +21,9 @@ public:
     int getHexMeshWidth();
     int getHexMeshHeight();
     void createMesh();
+    Cell* getCellFromCoord(Point point);
+    inline int getCellWidth() { return cellWidth; }
+    vector<Cell*> getVoisin(Cell* cell);
 
     vector<Voiture*> getVoitures() { return v_voitures; }
     int getVitesse() { return v_vitesse; }
@@ -31,15 +35,8 @@ private:
     vector<Voiture*> v_voitures;
     int v_vitesse;
 
-    struct Cell {
-        Cell(const QPolygon& p, int l, int r, int c)
-            : polygon(p), id_cell(l), num_row(r), num_col(c) {}
-        QPolygon polygon;
-        int id_cell;
-        int num_row;
-        int num_col;
-    };
     std::vector<std::vector<Cell>> cells;
     int widget_width = 806;
     int widget_height = 641;
+    int cellWidth = 50; // est le diametre sur une représentation en cercle où chaque sommet touche le cercle
 };
