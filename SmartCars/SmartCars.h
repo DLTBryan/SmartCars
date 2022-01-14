@@ -24,19 +24,29 @@ public:
     Cell* getCellFromCoord(Point point);
     inline int getCellWidth() { return cellWidth; }
     vector<Cell*> getVoisins(Cell* cell);
+    vector<Cell*> getAllCells() { return allCells; }
 
     vector<Voiture*> getVoitures() { return v_voitures; }
     int getVitesse() { return v_vitesse; }
     vector<Rue> getRues() { return v_rues; }
     void setVitesse(int v) { v_vitesse = v; }
     void setVoitures(vector<Voiture*> voitures) { v_voitures = voitures; }
+
 private:
     vector<Rue> v_rues;
     vector<Voiture*> v_voitures;
     int v_vitesse;
 
-    std::vector<std::vector<Cell>> cells;
+    vector<vector<Cell*>> cells;
+    vector<Cell*> allCells;
+
     int widget_width = 806;
     int widget_height = 641;
+
+    double xmax;
+    double xmin;
+    double ymin;
+    double ymax;
+
     int cellWidth = 50; // est le diametre sur une représentation en cercle où chaque sommet touche le cercle
 };

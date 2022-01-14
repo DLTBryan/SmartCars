@@ -23,6 +23,7 @@ int SmartCars::getHexMeshHeight() {
 
 void SmartCars::createMesh() {
     cells.clear();
+	allCells.clear();
     const int cellWidth = getCellWidth();
     const int rows = widget_height / (sqrt(3) * cellWidth / 2);
     const int columns = widget_width / (0.75 * cellWidth);
@@ -37,7 +38,7 @@ void SmartCars::createMesh() {
 
     for (int row = 0; row < rows; ++row) {
         double cx = margin + cellWidth / 2;
-        std::vector<Cell> oneRowCells;
+        std::vector<Cell*> oneRowCells;
         for (int column = 0; column < columns; ++column) {
             double cy = margin + y / 2 + row * y;
             if (column % 2 == 1)
@@ -50,7 +51,9 @@ void SmartCars::createMesh() {
             polygon.setPoint(4, cx - cellWidth / 2, cy); //9h
             polygon.setPoint(5, cx - x / 2, cy - y / 2); //11h
             polygon.setPoint(6, cx + x / 2, cy - y / 2); //1h
-            oneRowCells.push_back(Cell(polygon, i, row, column, cx, cy));
+			Cell* c = new Cell(polygon, i, row, column, cx, cy);
+            oneRowCells.push_back(c);
+			allCells.push_back(c);
             i++;
             cx += (x + cellWidth) / 2;
         }
@@ -74,10 +77,10 @@ void SmartCars::paintEvent(QPaintEvent* event)
         vector<Noeud*> noeudsrue = rue.noeuds();
         v_noeuds.insert(v_noeuds.end(), noeudsrue.begin(), noeudsrue.end());
     }
-    double xmin = v_noeuds[0]->x();
-    double xmax = xmin;
-    double ymin = v_noeuds[0]->y();
-    double ymax = ymin;
+    xmin = v_noeuds[0]->x();
+    xmax = xmin;
+    ymin = v_noeuds[0]->y();
+    ymax = ymin;
     for (Noeud* noeud : v_noeuds) {
         if (noeud->x() < xmin)
             xmin = noeud->x();
@@ -150,23 +153,27 @@ void SmartCars::paintEvent(QPaintEvent* event)
     QColor cellColor(255, 255, 255);
     cellColor.setAlphaF(0); // 0 is transparent -> 1 is opaque
 
+	QColor cellSelectedColor(255, 255, 0);
+	cellSelectedColor.setAlphaF(0.3);
+
     painter.setRenderHint(QPainter::Antialiasing);
-    for (std::vector<Cell>& row : cells)
+    for (std::vector<Cell*>& row : cells)
     {
-        for (Cell cell : row) {
+        for (Cell* cell : row) {
             QPainterPath path;
-            path.addPolygon(cell.polygon);
+            path.addPolygon(cell->polygon);
             QPen pen(borderColor, 2);
             painter.setPen(pen);
-            painter.setBrush(cellColor);
-            painter.drawPath(path);
+			if (cell->getSelected()) painter.setBrush(cellSelectedColor);
+			else painter.setBrush(cellColor);
+			painter.drawPath(path);
         }
     }
 }
 
 Cell* SmartCars::getCellFromCoord(Point point) {
-	double x_coord = point.x();
-	double y_coord = point.y();
+	double x_coord = (xmax - point.x()) * widget_width / (xmax - xmin);
+	double y_coord = (ymax - point.y()) * widget_height / (ymax - ymin);
 	bool out_of_range_of_mesh = false;
 
 	// segment [a,b] de l'hexagone => cf createMesh() -> polygon.setPoint()
@@ -208,7 +215,7 @@ Cell* SmartCars::getCellFromCoord(Point point) {
 
 	// CAS zone de décalage vers le bas sur la 1ere ligne top des colonnes impaires
 	else if (oneH_col % 2 == 1 && y_coord < decalage_bas_col_imp) {
-		cell_temp = &cells[oneH_row][oneH_col - 1];
+		cell_temp = cells[oneH_row][oneH_col - 1];
 		double cx = cell_temp->getCenterX();
 		double cy = cell_temp->getCenterY();
 		double zeroX = cx + demi_hauteur_de_cell_sinus;
@@ -226,7 +233,7 @@ Cell* SmartCars::getCellFromCoord(Point point) {
 	else if (oneH_col == columns && oneH_row <= rows) {
 		// 1ere ligne zone du decalage_bas_col_imp
 		if (y_coord < decalage_bas_col_imp) {
-			cell_temp = &cells[oneH_row][oneH_col - 1];
+			cell_temp = cells[oneH_row][oneH_col - 1];
 			double cx = cell_temp->getCenterX();
 			double cy = cell_temp->getCenterY();
 			double zeroX = cx + demi_hauteur_de_cell_sinus;
@@ -245,7 +252,7 @@ Cell* SmartCars::getCellFromCoord(Point point) {
 		}
 		else {
 			// colonne 21 vers colonne 20 sur meme ligne (haut gauche)
-			cell_temp = &cells[oneH_row][oneH_col - 1];
+			cell_temp = cells[oneH_row][oneH_col - 1];
 			// utiliser une cell_temp existante pour savoir si notre point est sur la meme ligne ou une ligne plus basse
 			double cx = cell_temp->getCenterX();
 			double cy = cell_temp->getCenterY();
@@ -273,7 +280,7 @@ Cell* SmartCars::getCellFromCoord(Point point) {
 						out_of_range_of_mesh = true;
 					}
 					else {
-						cell_temp = &cells[oneH_row + 1][oneH_col - 1];
+						cell_temp = cells[oneH_row + 1][oneH_col - 1];
 						double cx = cell_temp->getCenterX();
 						double cy = cell_temp->getCenterY();
 						double zeroX = cx + demi_hauteur_de_cell_sinus;
@@ -294,7 +301,7 @@ Cell* SmartCars::getCellFromCoord(Point point) {
 	// CAS zone de décalage vers le bas sur la derniere ligne top des colonnes paires
 	else if (oneH_col % 2 == 0 && oneH_col < columns && oneH_col > 0 && oneH_row == rows) {
 		// utiliser la cellule haut gauche
-		cell_temp = &cells[oneH_row - 1][oneH_col - 1];
+		cell_temp = cells[oneH_row - 1][oneH_col - 1];
 		double cx = cell_temp->getCenterX();
 		double cy = cell_temp->getCenterY();
 		double unX = cx + demi_hauteur_de_cell;
@@ -310,7 +317,7 @@ Cell* SmartCars::getCellFromCoord(Point point) {
 
 	// CAS cell interne qui fonctionne aussi pour CAS pour bordure gauche
 	else if (oneH_col < columns && oneH_row < rows) {
-		cell_temp = &cells[oneH_row][oneH_col];
+		cell_temp = cells[oneH_row][oneH_col];
 		double cx = cell_temp->getCenterX();
 		double cy = cell_temp->getCenterY();
 		double troisX = cx - demi_hauteur_de_cell_sinus;
@@ -327,7 +334,7 @@ Cell* SmartCars::getCellFromCoord(Point point) {
 				if (d > 0) {
 					if (oneH_col % 2 == 1) {
 						if (oneH_col >= 1) {
-							cell_temp = &cells[oneH_row][oneH_col - 1];
+							cell_temp = cells[oneH_row][oneH_col - 1];
 						}
 						else {
 							out_of_range_of_mesh = true;
@@ -335,7 +342,7 @@ Cell* SmartCars::getCellFromCoord(Point point) {
 					}
 					else {
 						if (oneH_row >= 1 && oneH_col >= 1) {
-							cell_temp = &cells[oneH_row - 1][oneH_col - 1];
+							cell_temp = cells[oneH_row - 1][oneH_col - 1];
 						}
 						else {
 							out_of_range_of_mesh = true;
@@ -350,7 +357,7 @@ Cell* SmartCars::getCellFromCoord(Point point) {
 				if (d > 0) {
 					if (oneH_col % 2 == 1) {
 						if (oneH_col >= 1 && oneH_row + 1 < rows) {
-							cell_temp = &cells[oneH_row + 1][oneH_col - 1];
+							cell_temp = cells[oneH_row + 1][oneH_col - 1];
 						}
 						else {
 							out_of_range_of_mesh = true;
@@ -358,7 +365,7 @@ Cell* SmartCars::getCellFromCoord(Point point) {
 					}
 					else {
 						if (oneH_col >= 1) {
-							cell_temp = &cells[oneH_row][oneH_col - 1];
+							cell_temp = cells[oneH_row][oneH_col - 1];
 						}
 						else {
 							out_of_range_of_mesh = true;
@@ -392,41 +399,41 @@ vector<Cell*> SmartCars::getVoisins(Cell* cell)
 	// commence par le voisin du dessus et continue sens horaire
 
 	if (row_init - 1 >= 0) {
-		voisins.push_back(&cells[row_init - 1][col_init]);
+		voisins.push_back(cells[row_init - 1][col_init]);
 	}
 	if (col_init + 1 < columns) {
 		if (col_init % 2 == 1) {
-			voisins.push_back(&cells[row_init][col_init + 1]);
+			voisins.push_back(cells[row_init][col_init + 1]);
 		}
 		else if (row_init - 1 >= 0) {
-			voisins.push_back(&cells[row_init - 1][col_init + 1]);
+			voisins.push_back(cells[row_init - 1][col_init + 1]);
 		}
 	}
 	if (col_init + 1 < columns) {
 		if (col_init % 2 == 0) {
-			voisins.push_back(&cells[row_init][col_init + 1]);
+			voisins.push_back(cells[row_init][col_init + 1]);
 		}
 		else if (row_init + 1 < rows) {
-			voisins.push_back(&cells[row_init + 1][col_init + 1]);
+			voisins.push_back(cells[row_init + 1][col_init + 1]);
 		}
 	}
 	if (row_init + 1 < rows) {
-		voisins.push_back(&cells[row_init + 1][col_init]);
+		voisins.push_back(cells[row_init + 1][col_init]);
 	}
 	if (col_init - 1 >= 0) {
 		if (col_init % 2 == 0) {
-			voisins.push_back(&cells[row_init][col_init - 1]);
+			voisins.push_back(cells[row_init][col_init - 1]);
 		}
 		else if (row_init + 1 < rows) {
-			voisins.push_back(&cells[row_init + 1][col_init - 1]);
+			voisins.push_back(cells[row_init + 1][col_init - 1]);
 		}
 	}
 	if (col_init - 1 >= 0) {
 		if (col_init % 2 == 1) {
-			voisins.push_back(&cells[row_init][col_init - 1]);
+			voisins.push_back(cells[row_init][col_init - 1]);
 		}
 		else if (row_init - 1 >= 0) {
-			voisins.push_back(&cells[row_init - 1][col_init - 1]);
+			voisins.push_back(cells[row_init - 1][col_init - 1]);
 		}
 	}
 

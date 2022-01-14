@@ -11,7 +11,7 @@ public:
 	inline int getNumRow() { return num_row; }
 	inline int getNumCol() { return num_col; }
 	inline bool getSelected() { return selected; }
-	inline void setSelected() { selected = !selected; }
+	inline void setSelected(bool value) { selected = value; }
 	inline double getCenterX() { return centerX; }
 	inline double getCenterY() { return centerY; }
 
