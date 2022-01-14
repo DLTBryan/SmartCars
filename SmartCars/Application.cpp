@@ -5,6 +5,7 @@
 #include <thread>
 #include <qgroupbox.h>
 #include <qradiobutton.h>
+#include <QThread>
 
 Application::Application(SmartCars* sc, QWidget* parent) : QMainWindow(parent) {
 
@@ -15,7 +16,7 @@ Application::Application(SmartCars* sc, QWidget* parent) : QMainWindow(parent) {
     setupHelper->fillComboBox(sc->getVoitures().size());
     setupHelper->modifyCurrentVitesseInInput(sc->getVoitures());
 
-	avancer = new QPushButton("Avancer");
+	avancer = new QPushButton("Lancer la simulation");
 
     QScrollArea* scrollArea = new QScrollArea();
     int scrollbarWidth = 25; // +25px pour scrollbar
@@ -39,7 +40,7 @@ Application::Application(SmartCars* sc, QWidget* parent) : QMainWindow(parent) {
     QHBoxLayout* hbox = new QHBoxLayout;
     QVBoxLayout* vbox = new QVBoxLayout();
 
-    QString vitesseString = QString("Vitesse actuelle : %1").arg(vitesse);
+    QString vitesseString = QString("Vitesse actuelle : %1").arg(smart_cars->getVitesse());
 
     vitesseLabel = new QLabel(vitesseString, this);
     vbox->addWidget(vitesseLabel);
@@ -69,20 +70,29 @@ Application::Application(SmartCars* sc, QWidget* parent) : QMainWindow(parent) {
     connect(setupHelper->buttonSelectCar(), &QPushButton::clicked, this, &Application::handleSelectCar);
     connect(setupHelper->buttonModification(), &QPushButton::clicked, this, &Application::handleChangeSpeed);
 
-    return;
+    SimulationThread* workerThread = new SimulationThread();
+
+    workerThread->smart_cars = smart_cars;
+    workerThread->active = active;
+
+    connect(workerThread, &SimulationThread::needRepaint, this, &Application::repaintSmartCars);
+    connect(workerThread, &SimulationThread::finished, workerThread, &QObject::deleteLater);
+
+    workerThread->start();
+}
+
+void Application::repaintSmartCars() {
+    smart_cars->repaint();
 }
 
 void Application::handleAvancer() {
-    while (1) {
-        for (Voiture* v : smart_cars->getVoitures()) v->avancer(vitesse);
-        smart_cars->repaint();
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    }
-    return;
+    *active = !*active;
+    if (*active) avancer->setText("Stopper la simulation");
+    else avancer->setText("Lancer la simulation");
 }
 
 void Application::handleSpeedSimulation() {
-    vitesse += 100;
+    int vitesse = smart_cars->getVitesse() + 100;
     if (vitesse >= 600) {
         vitesse = 600;
     }
@@ -90,10 +100,11 @@ void Application::handleSpeedSimulation() {
     moins->setEnabled(vitesse > 50);
     QString vitesseString = QString("Vitesse actuelle : %1").arg(vitesse);
     vitesseLabel->setText(vitesseString);
+    smart_cars->setVitesse(vitesse);
 }
 
 void Application::handleSlowSimulation() {
-    vitesse -= 50;
+    int vitesse = smart_cars->getVitesse() - 100;
     if (vitesse <= 50) {
         vitesse = 50;
     }
@@ -101,6 +112,7 @@ void Application::handleSlowSimulation() {
     moins->setEnabled(vitesse > 50);
     QString vitesseString = QString("Vitesse actuelle : %1").arg(vitesse);
     vitesseLabel->setText(vitesseString);
+    smart_cars->setVitesse(vitesse);
 }
 
 void Application::handleChangeSpeed() {

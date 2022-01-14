@@ -22,9 +22,12 @@ public:
     void createMesh();
 
     vector<Voiture*> getVoitures() { return v_voitures; }
+    int getVitesse() { return v_vitesse; }
+    void setVitesse(int v) { v_vitesse = v; }
 private:
     vector<Rue> v_rues;
     vector<Voiture*> v_voitures;
+    int v_vitesse;
 
     struct Cell {
         Cell(const QPolygon& p, int l, int r, int c)

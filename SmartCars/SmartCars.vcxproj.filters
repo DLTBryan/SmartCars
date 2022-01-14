@@ -29,10 +29,10 @@
     <ClCompile Include="Voiture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Application.cpp">
+    <ClCompile Include="SetupSelectionHelper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SetupSelectionHelper.cpp">
+    <ClCompile Include="Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -94,6 +94,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="Application.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="SimulationThread.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

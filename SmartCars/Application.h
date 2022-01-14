@@ -1,10 +1,12 @@
 #pragma once
 
 #include <QtWidgets/QMainWindow>
-#include <QtWidgets/qpushbutton.h>
+#include <QtWidgets/QPushButton>
 #include "SmartCars.h"
+#include "SimulationThread.h"
 #include "SetupSelectionHelper.h"
-#include <qlabel.h>
+#include <QLabel>
+#include <QtWidgets/QApplication>
 
 class Application : public QMainWindow
 {
@@ -20,7 +22,7 @@ private:
 	QLabel* vitesseLabel;
 	SmartCars* smart_cars;
 	SetupSelectionHelper* setupHelper;
-	int vitesse = 200;
+	bool* active = new bool(false);
 
 private slots:
 	void handleAvancer();
@@ -28,5 +30,6 @@ private slots:
 	void handleSlowSimulation();
 	void handleSelectCar();
 	void handleChangeSpeed();
+	void repaintSmartCars();
 };
 
