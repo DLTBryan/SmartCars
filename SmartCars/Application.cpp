@@ -101,6 +101,13 @@ Application::Application(SmartCars* sc, QWidget* parent) : QMainWindow(parent) {
 
 void Application::repaintSmartCars() {
     smart_cars->repaint();
+    vector<Voiture*> voisins;
+    for (Voiture* v : smart_cars->getVoitures()) {
+        if (v->getVoisin()) {
+            voisins.push_back(v);
+        }
+    }
+    setupHelper->fillVoisinsLayout(voisins);
 }
 
 void Application::handleAvancer() {
@@ -118,10 +125,14 @@ void Application::handleGenerateCars() {
         int rue = 0 + rand() % (rues.size() - 0);
         int noeud = 0 + rand() % (rues.at(rue).noeuds().size() - 0);
         int vitesse = 10 + rand() % (30 - 10) + 1;
-        voitures.push_back(new Voiture("Voiture " + i, vitesse, rues.at(rue).noeuds().at(noeud)));
+        string nom = "Voiture " + to_string(i);
+        voitures.push_back(new Voiture(nom, vitesse, rues.at(rue).noeuds().at(noeud)));
     }
     smart_cars->setVoitures(voitures);
-    setupHelper->fillComboBox(smart_cars->getVoitures().size());
+    for (Cell* c : smart_cars->getAllCells()) {
+        c->setSelected(0);
+    }
+    setupHelper->fillComboBox(voitures);
     setupHelper->modifyCurrentVitesseInInput(smart_cars->getVoitures());
     smart_cars->repaint();
 }

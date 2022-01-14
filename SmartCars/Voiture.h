@@ -52,6 +52,8 @@ public:
 
 	bool getVoisin() { return voisin; }
 
+	string getNom() { return nom; }
+
 private:
 	std::string nom;
 	int vitesse;

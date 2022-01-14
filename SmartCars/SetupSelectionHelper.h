@@ -14,6 +14,7 @@
 #include <QtWidgets/qlineedit.h>
 #include <qobject.h>
 #include "Voiture.h"
+#include <QtWidgets/qlistwidget.h>
 
 using namespace std;
 
@@ -24,7 +25,7 @@ public:
 	QGroupBox* box() const;
 	QPushButton* buttonSelectCar() const { return d_btnSelect; };
 	QPushButton* buttonModification() const { return d_btn; };
-	void fillComboBox(int nbCars);
+	void fillComboBox(vector<Voiture*> voitures);
 	void indexComboBox(int nvIndex) {
 		d_indexSelectedCar = nvIndex;
 	}
@@ -46,21 +47,19 @@ public:
 
 	void modifyCurrentVitesseInInput(vector<Voiture*> voitures);
 
+	void fillVoisinsLayout(vector<Voiture*> voitures);
+
 private:
 	QGroupBox* d_box;
-	QGroupBox* d_speedBox;
-	QGroupBox* d_selectionBox;
-	QVBoxLayout* d_layoutBox;
-	QHBoxLayout* d_layoutSpeedBox;
-	QHBoxLayout* d_layoutSelection;
 	QLineEdit* d_speedInput;
-	QLabel* d_speedLabel;
 	QComboBox* d_comboBoxListCars;
 	QPushButton* d_btn;
 	QPushButton* d_btnSelect;
-	string d_title = "Selection";
-	string d_labelSpeedText = "Vitesse";
+
+	QVBoxLayout* d_voisinsLayout;
 
 	int d_indexSelectedCar = 0;
+
+	void clearLayout(QLayout* layout);
 };
 

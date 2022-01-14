@@ -3,43 +3,52 @@
 
 SetupSelectionHelper::SetupSelectionHelper() {
 	d_box = new QGroupBox();
-	d_speedBox = new QGroupBox();
-	d_selectionBox = new QGroupBox();
+	d_box->setTitle(QString(u8"Sélection"));
 
-	d_btn = new QPushButton("Modifier");
-	d_box->setTitle(QString(d_title.c_str()));
+	QGroupBox* optionsBox = new QGroupBox();
+	optionsBox->setTitle(QString("Options"));
 
-	d_layoutSpeedBox = new QHBoxLayout();
-	d_speedLabel = new QLabel(QString(d_labelSpeedText.c_str()));
-	d_speedInput = new QLineEdit();
-	d_btnSelect = new QPushButton("Choisir voiture");
-
-	d_layoutSpeedBox->addWidget(d_speedLabel);
-	d_layoutSpeedBox->addWidget(d_speedInput);
-	d_layoutSpeedBox->addWidget(d_btn);
-
-	d_layoutSpeedBox->addStretch();
-	d_speedBox->setLayout(d_layoutSpeedBox);
+	QVBoxLayout* optionsLayout = new QVBoxLayout();
+	QHBoxLayout* speedLayout = new QHBoxLayout();
 	
+	d_speedInput = new QLineEdit();
+	d_speedInput->setAlignment(Qt::AlignRight);
+	
+	speedLayout->addWidget(new QLabel(QString("Vitesse :")));
+	speedLayout->addStretch();
+	speedLayout->addWidget(d_speedInput);
+	speedLayout->addWidget(new QLabel(QString("km/h")));
+
+	d_btn = new QPushButton(QString(u8"Mettre à jour"));
+	optionsLayout->addLayout(speedLayout);
+	// Ajouter options à modifier ici
+	optionsLayout->addWidget(d_btn);
+	optionsBox->setLayout(optionsLayout);
+	
+	QHBoxLayout* selectionLayout = new QHBoxLayout();
+
 	d_comboBoxListCars = new QComboBox();
 	d_comboBoxListCars->setFixedWidth(150);
 
-	d_layoutSelection = new QHBoxLayout();
-	d_layoutSelection->addWidget(d_comboBoxListCars);
-	d_layoutSelection->addWidget(d_btnSelect);
-	d_layoutSelection->addStretch();
-	d_selectionBox->setLayout(d_layoutSelection);
-	//make meta comboBox
+	d_btnSelect = new QPushButton(u8"Sélectionner");
 
-	
+	selectionLayout->addWidget(d_comboBoxListCars);
+	selectionLayout->addWidget(d_btnSelect);
 
-	d_layoutBox = new QVBoxLayout();
+	QGroupBox* voisinsBox = new QGroupBox();
+	voisinsBox->setTitle(QString(u8"Voitures à portée"));
 
-	d_layoutBox->addWidget(d_selectionBox);
-	d_layoutBox->addWidget(d_speedBox);
-	d_layoutBox->addStretch();
-	d_box->setLayout(d_layoutBox);
+	d_voisinsLayout = new QVBoxLayout();
 
+	voisinsBox->setLayout(d_voisinsLayout);
+
+	QVBoxLayout* layoutBox = new QVBoxLayout();
+
+	layoutBox->addLayout(selectionLayout);
+	layoutBox->addWidget(optionsBox);
+	layoutBox->addWidget(voisinsBox);
+
+	d_box->setLayout(layoutBox);
 }
 
 
@@ -53,10 +62,32 @@ void SetupSelectionHelper::modifyCurrentVitesseInInput(vector<Voiture*> voitures
 	d_speedInput->setText(QString(to_string(voitures.at(d_indexSelectedCar)->getVitesse()).c_str()));
 }
 
-void SetupSelectionHelper::fillComboBox(int nbCars) {
+void SetupSelectionHelper::fillComboBox(vector<Voiture*> voitures) {
 	d_comboBoxListCars->clear();
 
-	for (int i = 0; i < nbCars; i++) {
-		d_comboBoxListCars->addItem(QString(("Voiture Number " + to_string(i)).c_str()));
+	for (Voiture* v : voitures) {
+		d_comboBoxListCars->addItem(QString((v->getNom().c_str())));
+	}
+}
+
+void SetupSelectionHelper::fillVoisinsLayout(vector<Voiture*> voitures) {
+	clearLayout(d_voisinsLayout);
+
+	for (Voiture* v : voitures) {
+		d_voisinsLayout->addWidget(new QLabel(v->getNom().c_str()));
+	}
+}
+
+void SetupSelectionHelper::clearLayout(QLayout* layout) {
+	QLayoutItem* item;
+	while ((item = layout->takeAt(0))) {
+		if (item->layout()) {
+			clearLayout(item->layout());
+			delete item->layout();
+		}
+		if (item->widget()) {
+			delete item->widget();
+		}
+		delete item;
 	}
 }

@@ -30,7 +30,7 @@ class SimulationThread : public QThread
                 }
                 for (Voiture* v : smart_cars->getVoitures()) {
                     Cell* c = smart_cars->getCellFromCoord(v->getCoordonnees());
-                    v->setVoisin(c != nullptr && c->getSelected() > 0);
+                    v->setVoisin(c != nullptr && c->getSelected() > 0 && !v->getSelected());
                 }
                 emit needRepaint(result);
             }
