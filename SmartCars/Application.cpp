@@ -30,7 +30,7 @@ Application::Application(SmartCars* sc, QWidget* parent) : QMainWindow(parent) {
 
     
     QHBoxLayout* layout = new QHBoxLayout(window);
-    layout->addWidget(scrollArea);
+    layout->addWidget(scrollArea,10);
 
     QGroupBox* vitesseSimulationBox = new QGroupBox(tr("Changement de vitesse de simulation"));
 
@@ -75,12 +75,12 @@ Application::Application(SmartCars* sc, QWidget* parent) : QMainWindow(parent) {
     vbox->addWidget(setupHelper->box());
     commandPrompt->setLayout(vbox);
 
-    layout->addWidget(commandPrompt);
+    layout->addWidget(commandPrompt,1);
 
     window->setLayout(layout);
     setCentralWidget(window);
 
-    window->setMinimumSize(900, 700);
+    window->setMinimumSize(1150, 700);
 
     connect(avancer, &QPushButton::clicked, this, &Application::handleAvancer);
     connect(plus, &QPushButton::clicked, this, &Application::handleSpeedSimulation);
