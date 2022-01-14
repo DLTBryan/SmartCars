@@ -80,6 +80,8 @@ Application::Application(SmartCars* sc, QWidget* parent) : QMainWindow(parent) {
     window->setLayout(layout);
     setCentralWidget(window);
 
+    window->setMinimumSize(900, 700);
+
     connect(avancer, &QPushButton::clicked, this, &Application::handleAvancer);
     connect(plus, &QPushButton::clicked, this, &Application::handleSpeedSimulation);
     connect(moins, &QPushButton::clicked, this, &Application::handleSlowSimulation);
