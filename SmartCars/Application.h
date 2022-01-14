@@ -17,6 +17,8 @@ public:
 
 private:
 	QPushButton* avancer;
+	QPushButton* buttoninitialisation;
+	QLineEdit* nbrevoituresagenerer;
 	QPushButton* plus;
 	QPushButton* moins;
 	QLabel* vitesseLabel;
@@ -26,6 +28,7 @@ private:
 
 private slots:
 	void handleAvancer();
+	void handleGenerateCars();
 	void handleSpeedSimulation();
 	void handleSlowSimulation();
 	void handleSelectCar();

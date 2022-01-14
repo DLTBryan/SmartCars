@@ -13,8 +13,6 @@ Application::Application(SmartCars* sc, QWidget* parent) : QMainWindow(parent) {
 
 	smart_cars = sc;
     setupHelper = new SetupSelectionHelper();
-    setupHelper->fillComboBox(sc->getVoitures().size());
-    setupHelper->modifyCurrentVitesseInInput(sc->getVoitures());
 
 	avancer = new QPushButton("Lancer la simulation");
 
@@ -55,6 +53,22 @@ Application::Application(SmartCars* sc, QWidget* parent) : QMainWindow(parent) {
     QGroupBox* commandPrompt = new QGroupBox(tr("Commandes de la simulation"));
     vbox = new QVBoxLayout();
     vbox->addWidget(avancer);
+    
+    // Partie génération
+    QGroupBox* boxGeneration = new QGroupBox();
+    boxGeneration->setTitle(QString("Generation des voitures"));
+    nbrevoituresagenerer = new QLineEdit;
+    nbrevoituresagenerer->setPlaceholderText("Number of cars to generate...");
+    nbrevoituresagenerer->setFocus();
+    buttoninitialisation = new QPushButton("Generate");
+    connect(buttoninitialisation, &QPushButton::released, this, &Application::handleGenerateCars);
+    QVBoxLayout* layoutinitialisation = new QVBoxLayout;
+    layoutinitialisation->addWidget(nbrevoituresagenerer);
+    layoutinitialisation->addWidget(buttoninitialisation);
+    layoutinitialisation->addStretch(1);
+    boxGeneration->setLayout(layoutinitialisation);
+    vbox->addWidget(boxGeneration);
+
     vbox->addWidget(vitesseSimulationBox);
     vbox->addWidget(setupHelper->box());
     commandPrompt->setLayout(vbox);
@@ -89,6 +103,23 @@ void Application::handleAvancer() {
     *active = !*active;
     if (*active) avancer->setText("Stopper la simulation");
     else avancer->setText("Lancer la simulation");
+}
+
+void Application::handleGenerateCars() {
+    QString NBREVOITURES = nbrevoituresagenerer->text();
+    int nbrevoitures = NBREVOITURES.toInt();
+    vector<Voiture*> voitures;
+    for (int i = 0; i < nbrevoitures; i++) {
+        vector<Rue> rues = smart_cars->getRues();
+        int rue = 0 + rand() % (rues.size() - 0);
+        int noeud = 0 + rand() % (rues.at(rue).noeuds().size() - 0);
+        int vitesse = 10 + rand() % (30 - 10) + 1;
+        voitures.push_back(new Voiture("Voiture " + i, vitesse, rues.at(rue).noeuds().at(noeud)));
+    }
+    smart_cars->setVoitures(voitures);
+    setupHelper->fillComboBox(smart_cars->getVoitures().size());
+    setupHelper->modifyCurrentVitesseInInput(smart_cars->getVoitures());
+    smart_cars->repaint();
 }
 
 void Application::handleSpeedSimulation() {

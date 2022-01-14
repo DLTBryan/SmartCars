@@ -23,7 +23,9 @@ public:
 
     vector<Voiture*> getVoitures() { return v_voitures; }
     int getVitesse() { return v_vitesse; }
+    vector<Rue> getRues() { return v_rues; }
     void setVitesse(int v) { v_vitesse = v; }
+    void setVoitures(vector<Voiture*> voitures) { v_voitures = voitures; }
 private:
     vector<Rue> v_rues;
     vector<Voiture*> v_voitures;
