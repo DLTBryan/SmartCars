@@ -18,15 +18,19 @@ class SimulationThread : public QThread
         while (1) {
             if (*active) {
                 vector<Cell*> cells = smart_cars->getAllCells();
-                for (Cell* c : cells) c->setSelected(false);
+                for (Cell* c : cells) c->setSelected(0);
                 for (Voiture* v : smart_cars->getVoitures()) {
                     v->avancer(smart_cars->getVitesse());
                     Cell* c = smart_cars->getCellFromCoord(v->getCoordonnees());
                     if (c != nullptr && v->getSelected()) {
-                        c->setSelected(true);
+                        c->setSelected(1);
                         vector<Cell*> voisins = smart_cars->getVoisins(c);
-                        for (Cell* element : voisins) element->setSelected(true);
+                        for (Cell* element : voisins) element->setSelected(2);
                     }
+                }
+                for (Voiture* v : smart_cars->getVoitures()) {
+                    Cell* c = smart_cars->getCellFromCoord(v->getCoordonnees());
+                    v->setVoisin(c != nullptr && c->getSelected() > 0);
                 }
                 emit needRepaint(result);
             }

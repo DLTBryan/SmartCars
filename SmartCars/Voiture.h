@@ -46,12 +46,19 @@ public:
 		vitesse = value;
 	}
 
+	void setVoisin(bool value) {
+		voisin = value;
+	}
+
+	bool getVoisin() { return voisin; }
+
 private:
 	std::string nom;
 	int vitesse;
 	Point coordonnees;
 
 	bool selected;
+	bool voisin = false;
 
 	Noeud* noeudDepart;
 	Noeud* noeudArrivee;

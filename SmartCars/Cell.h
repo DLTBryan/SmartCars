@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QPainter>
+#include "Voiture.h"
 
 class Cell {
 public:
@@ -10,17 +11,16 @@ public:
 	inline int getIdCell() { return id_cell; }
 	inline int getNumRow() { return num_row; }
 	inline int getNumCol() { return num_col; }
-	inline bool getSelected() { return selected; }
-	inline void setSelected(bool value) { selected = value; }
+	inline int getSelected() { return selected; }
+	inline void setSelected(int value) { selected = value; }
 	inline double getCenterX() { return centerX; }
 	inline double getCenterY() { return centerY; }
 
 private:
-	//std::vector<Voiture> voitures;
 	int id_cell;
 	int num_row;
 	int num_col;
-	bool selected;
+	int selected;
 	double centerX;
 	double centerY;
 };

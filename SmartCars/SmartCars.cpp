@@ -134,16 +134,6 @@ void SmartCars::paintEvent(QPaintEvent* event)
         }
     }
 
-    pen.setWidth(1);
-    painter.setPen(pen);
-    for (Voiture* v : v_voitures) {
-        if (v->getSelected()) painter.setBrush(QBrush("blue"));
-        else painter.setBrush(QBrush("green"));
-        float x = (xmax - v->getCoordonnees().x()) * widget_width / (xmax - xmin);
-        float y = (ymax - v->getCoordonnees().y()) * widget_height / (ymax - ymin);
-        painter.drawEllipse(QPointF(x, y), 5, 5);
-    }
-
     //-------------------------
     // hexagonal mesh part
     //RGB
@@ -153,8 +143,11 @@ void SmartCars::paintEvent(QPaintEvent* event)
     QColor cellColor(255, 255, 255);
     cellColor.setAlphaF(0); // 0 is transparent -> 1 is opaque
 
-	QColor cellSelectedColor(255, 255, 0);
-	cellSelectedColor.setAlphaF(0.3);
+	QColor cellSelectedColor(255, 0, 255);
+	cellSelectedColor.setAlphaF(0.5);
+
+	QColor cellVoisinColor(255, 0, 255);
+	cellVoisinColor.setAlphaF(0.25);
 
     painter.setRenderHint(QPainter::Antialiasing);
     for (std::vector<Cell*>& row : cells)
@@ -164,11 +157,23 @@ void SmartCars::paintEvent(QPaintEvent* event)
             path.addPolygon(cell->polygon);
             QPen pen(borderColor, 2);
             painter.setPen(pen);
-			if (cell->getSelected()) painter.setBrush(cellSelectedColor);
-			else painter.setBrush(cellColor);
+			if (cell->getSelected() == 0) painter.setBrush(cellColor);
+			if (cell->getSelected() == 1) painter.setBrush(cellSelectedColor);
+			if (cell->getSelected() == 2) painter.setBrush(cellVoisinColor);
 			painter.drawPath(path);
         }
     }
+
+	pen.setWidth(1);
+	painter.setPen(pen);
+	for (Voiture* v : v_voitures) {
+		if (v->getSelected()) painter.setBrush(QBrush("blue"));
+		else if(v->getVoisin()) painter.setBrush(QBrush("red"));
+		else painter.setBrush(QBrush("green"));
+		float x = (xmax - v->getCoordonnees().x()) * widget_width / (xmax - xmin);
+		float y = (ymax - v->getCoordonnees().y()) * widget_height / (ymax - ymin);
+		painter.drawEllipse(QPointF(x, y), 5, 5);
+	}
 }
 
 Cell* SmartCars::getCellFromCoord(Point point) {
