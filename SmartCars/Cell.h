@@ -2,8 +2,7 @@
 
 #include <QPainter>
 
-class Cell
-{
+class Cell {
 public:
 	Cell(const QPolygon& p, int l, int r, int c, double cx, double cy)
 		: polygon(p), id_cell(l), num_row(r), num_col(c), centerX(cx), centerY(cy), selected(false) {}
