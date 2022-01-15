@@ -103,11 +103,11 @@ void SmartCars::paintEvent(QPaintEvent* event)
             pen.setColor("orange");
             painter.setPen(pen);
         } else if (typeroute == "primary" || typeroute == "primary_link") {
-            pen.setWidth(10);
+            pen.setWidth(15);
             pen.setColor("orange");
             painter.setPen(pen);
         } else if (typeroute == "secondary" || typeroute == "secondary_link") {
-            pen.setWidth(10);
+            pen.setWidth(13);
             pen.setColor("yellow");
             painter.setPen(pen);
         } else if (typeroute == "tertiary" || typeroute == "tertiary_link") {
@@ -115,13 +115,21 @@ void SmartCars::paintEvent(QPaintEvent* event)
             pen.setColor("yellow");
             painter.setPen(pen);
         } else if (typeroute == "unclassified") {
-            pen.setWidth(5);
+            pen.setWidth(9);
             pen.setColor("grey");
             painter.setPen(pen);
         } else if (typeroute == "residential") {
-            pen.setWidth(5);
+            pen.setWidth(9);
             pen.setColor("grey");
             painter.setPen(pen);
+		} else if (typeroute == "service") {
+			pen.setWidth(5);
+			pen.setColor("lightgrey");
+			painter.setPen(pen);
+		} else if (typeroute == "living_street") {
+			pen.setWidth(5);
+			pen.setColor("lightgrey");
+			painter.setPen(pen);
         } else {
             pen.setWidth(5);
             pen.setColor("black");

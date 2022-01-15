@@ -33,7 +33,7 @@ std::pair<std::string, std::vector<std::string>> osmextract::construirePaireRout
 
 // Détermine si la route est valide ou pas
 bool osmextract::estRouteValide(XMLElement* wayactuel) {
-    std::string stringsattributvpermis[] = { "motorway", "motorway_link", "trunk", "trunk_link", "primary", "primary_link", "secondary", "secondary_link", "tertiary", "tertiary_link", "unclassified", "residential"};
+    std::string stringsattributvpermis[] = { "motorway", "motorway_link", "trunk", "trunk_link", "primary", "primary_link", "secondary", "secondary_link", "tertiary", "tertiary_link", "unclassified", "residential", "service", "living_street" };
     // On parcours les "tag"
     XMLElement* tagactuel = wayactuel->FirstChildElement("tag");
     while (tagactuel != nullptr) {
