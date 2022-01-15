@@ -1,6 +1,6 @@
 #include "Rue.h"
 
-int Rue::nombrenoeuds() const {
+int Rue::nombreNoeuds() const {
     return (int)v_noeuds.size();
 }
 

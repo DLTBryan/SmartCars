@@ -136,6 +136,9 @@ std::string osmextract::recupererTypeRoute(XMLNode* root, std::string refroute) 
     }
 }
 
+void osmextract::trierRoutesSelonType() {
+}
+
 void osmextract::extraire() {
     XMLDocument map;
     XMLError eResult = map.LoadFile(v_nomfichier.c_str());

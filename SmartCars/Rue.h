@@ -23,7 +23,7 @@ public:
         return v_noeuds;
     }
     // Méthodes
-    int nombrenoeuds() const;
+    int nombreNoeuds() const;
     void ajouteNoeud(Noeud* n, int indicenoeud);
     void creerLiens();
 private:

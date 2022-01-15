@@ -12,7 +12,7 @@ public:
     // Déstructeurs
     ~Noeud() = default;
     // Accesseurs
-    std::vector<Noeud*> noeudsvoisins() const {
+    std::vector<Noeud*> noeudsVoisins() const {
         return v_noeudsvoisins;
     }
     double x() const {
@@ -30,6 +30,7 @@ public:
     // Méthodes
     void ajouteVoisin(Noeud* v);
     void estVoiturable(bool voiturable);
+    std::vector<Noeud*> noeudsVoisinsVoiturables() const;
 private:
     // Attributs
     Point v_coordonnees;

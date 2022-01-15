@@ -131,7 +131,7 @@ void SmartCars::paintEvent(QPaintEvent* event)
         }
         vector<Noeud*> noeudsrue = rue.noeuds();
         for (Noeud* noeud : noeudsrue) {
-			for (Noeud* noeudvoisin : noeud->noeudsvoisins()) {
+			for (Noeud* noeudvoisin : noeud->noeudsVoisins()) {
 				// Dessin de la "bordure"
 				/*pen.setWidth(tailleroute + 1);
 				pen.setColor(QColor(0, 0, 0));

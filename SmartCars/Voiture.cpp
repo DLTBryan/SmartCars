@@ -5,8 +5,9 @@ Voiture::Voiture(string nom, int vitesse, Noeud* depart)
 	this->nom = nom;
 	this->vitesse = vitesse;
 	this->noeudDepart = depart;
-	int rd = random(0, depart->noeudsvoisins().size() - 1);
-	this->noeudArrivee = depart->noeudsvoisins().at(rd);
+	std::vector<Noeud*> noeudsvoisinsvoiturables = depart->noeudsVoisinsVoiturables();
+	int rd = random(0, noeudsvoisinsvoiturables.size() - 1);
+	this->noeudArrivee = noeudsvoisinsvoiturables.at(rd);
 	this->coordonnees = depart->coordonnees();
 }
 
@@ -31,18 +32,20 @@ void Voiture::avancer(int multiplicateur, float distanceRestance)
 
 		//cout << "voisins : " << tmp->voisins().size() << endl;
 
-		if (tmp->noeudsvoisins().size() > 2) {
-			while ((this->noeudArrivee == this->noeudDepart || this->noeudArrivee == tmp) && !this->noeudArrivee->estVoiturable()) {
-				int rd = random(0, tmp->noeudsvoisins().size() - 1);
-				this->noeudArrivee = tmp->noeudsvoisins().at(rd);
+		std::vector<Noeud*> noeudsvoisinsvoiturables = tmp->noeudsVoisinsVoiturables();
+
+		if (noeudsvoisinsvoiturables.size() > 2) {
+			while (this->noeudArrivee == this->noeudDepart || this->noeudArrivee == tmp) {
+				int rd = random(0, noeudsvoisinsvoiturables.size() - 1);
+				this->noeudArrivee = noeudsvoisinsvoiturables.at(rd);
 			}
 		}
-		else if (tmp->noeudsvoisins().size() == 2) {
-			if (tmp->noeudsvoisins().at(0) == this->noeudDepart) {
-				this->noeudArrivee = tmp->noeudsvoisins().at(1);
+		else if (noeudsvoisinsvoiturables.size() == 2) {
+			if (noeudsvoisinsvoiturables.at(0) == this->noeudDepart) {
+				this->noeudArrivee = noeudsvoisinsvoiturables.at(1);
 			}
 			else {
-				this->noeudArrivee = tmp->noeudsvoisins().at(0);
+				this->noeudArrivee = noeudsvoisinsvoiturables.at(0);
 			}
 		}
 		else {
