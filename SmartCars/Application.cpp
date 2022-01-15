@@ -103,8 +103,8 @@ Application::Application(SmartCars* sc, QWidget* parent) : QMainWindow(parent) {
     window->setLayout(globalLayout);
     setCentralWidget(window);
 
-    resize(1200, 700);
-    setMaximumSize(1200, 700);
+    resize(1165, 678);
+    setMaximumSize(1165, 678);
 
     // Liaison de l'ensemble des inputs
     connect(lancerSimulation, &QPushButton::clicked, this, &Application::handleAvancer);
