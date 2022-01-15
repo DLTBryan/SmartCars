@@ -16,14 +16,15 @@ public:
 	Application(SmartCars* sc, QWidget* parent = Q_NULLPTR);
 
 private:
-	QPushButton* avancer;
-	QPushButton* buttoninitialisation;
-	QLineEdit* nbrevoituresagenerer;
-	QPushButton* plus;
-	QPushButton* moins;
+	QPushButton* lancerSimulation;
+	QPushButton* generateNewSimulation;
+	QLineEdit* inputSizeGeneration;
+	QPushButton* decrementSpeed;
+	QPushButton* incrementSpeed;
 	QLabel* vitesseLabel;
 	SmartCars* smart_cars;
 	SetupSelectionHelper* setupHelper;
+	QGroupBox* commandPrompt;
 	bool* active = new bool(false);
 	bool isNumber(const string& str);
 

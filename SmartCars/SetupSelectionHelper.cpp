@@ -38,9 +38,19 @@ SetupSelectionHelper::SetupSelectionHelper() {
 	QGroupBox* voisinsBox = new QGroupBox();
 	voisinsBox->setTitle(QString(u8"Voitures à portée"));
 
+	QVBoxLayout* voisinsLayout = new QVBoxLayout();
 	d_voisinsLayout = new QVBoxLayout();
 
-	voisinsBox->setLayout(d_voisinsLayout);
+	QScrollArea* scrollArea = new QScrollArea();
+	int scrollbarWidth = 25; // +25px pour scrollbar
+	scrollArea->setMaximumHeight(500);
+	scrollArea->setWidgetResizable(false);
+	scrollArea->setLayout(d_voisinsLayout);
+	scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+
+	voisinsLayout->addWidget(scrollArea);
+
+	voisinsBox->setLayout(voisinsLayout);
 
 	QVBoxLayout* layoutBox = new QVBoxLayout();
 

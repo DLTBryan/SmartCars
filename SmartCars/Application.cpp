@@ -16,87 +16,109 @@ Application::Application(SmartCars* sc, QWidget* parent) : QMainWindow(parent) {
 	smart_cars = sc;
     setupHelper = new SetupSelectionHelper();
 
-	avancer = new QPushButton("Lancer la simulation");
-
-    QScrollArea* scrollArea = new QScrollArea();
+    // Création de la zone d'affichage de la carte
+    QScrollArea* mapArea = new QScrollArea();
     int scrollbarWidth = 25; // +25px pour scrollbar
     int scrollMaxWidth = smart_cars->getHexMeshWidth() + scrollbarWidth;
     int scrollMaxHeight = smart_cars->getHexMeshHeight() + scrollbarWidth;
-    scrollArea->setWidget(smart_cars);
-    scrollArea->setMaximumSize(scrollMaxWidth, scrollMaxHeight);
-    scrollArea->setWidgetResizable(true);
-    scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-    scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    mapArea->setWidget(smart_cars);
+    mapArea->setMaximumSize(scrollMaxWidth, scrollMaxHeight);
+    mapArea->setWidgetResizable(true);
+    mapArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    mapArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 
-    
-    QHBoxLayout* layout = new QHBoxLayout(window);
-    layout->addWidget(scrollArea,10);
-
+    // Création de la partie gestion de vitesse de simulation
     QGroupBox* vitesseSimulationBox = new QGroupBox(tr("Changement de vitesse de simulation"));
 
-    plus  = new QPushButton("+");
-    moins = new QPushButton("-");
+    decrementSpeed = new QPushButton("-");
+    incrementSpeed = new QPushButton("+");
 
-    QHBoxLayout* hbox = new QHBoxLayout;
-    QVBoxLayout* vbox = new QVBoxLayout();
+    QHBoxLayout* vitesseSimulationHLayout = new QHBoxLayout();
+    QVBoxLayout* vitesseSimulationVLayout = new QVBoxLayout();
 
     QString vitesseString = QString("Vitesse actuelle : %1").arg(smart_cars->getVitesse());
 
+    QVBoxLayout* vitesseBox = new QVBoxLayout();
+
+    vitesseSimulationHLayout->addWidget(decrementSpeed);
+    vitesseSimulationHLayout->addWidget(incrementSpeed);
+
     vitesseLabel = new QLabel(vitesseString, this);
-    vbox->addWidget(vitesseLabel);
 
-    hbox->addWidget(moins);
-    hbox->addWidget(plus);
+    vitesseSimulationVLayout->addWidget(vitesseLabel);
+    vitesseSimulationVLayout->addLayout(vitesseSimulationHLayout);
 
-    vbox->addLayout(hbox);
+    vitesseBox->addLayout(vitesseSimulationVLayout);
 
-    vitesseSimulationBox->setLayout(vbox);
+    // Création de la partie panneau de contrôle
+    commandPrompt = new QGroupBox(tr(u8"Panneau de contrôle"));
+    QVBoxLayout* commandPromptLayout = new QVBoxLayout();
 
-    QGroupBox* commandPrompt = new QGroupBox(tr("Commandes de la simulation"));
-    vbox = new QVBoxLayout();
-    vbox->addWidget(avancer);
+    // Ajout du bouton de lancement de simulation
+    lancerSimulation = new QPushButton("Lancer la simulation");
+    lancerSimulation->setStyleSheet("font: bold;");
+    commandPromptLayout->addWidget(lancerSimulation);
     
-    // Partie génération
-    QGroupBox* boxGeneration = new QGroupBox();
-    boxGeneration->setTitle(QString("Generation des voitures"));
-    nbrevoituresagenerer = new QLineEdit;
-    nbrevoituresagenerer->setPlaceholderText("Number of cars to generate...");
-    nbrevoituresagenerer->setFocus();
-    buttoninitialisation = new QPushButton("Generate");
-    connect(buttoninitialisation, &QPushButton::released, this, &Application::handleGenerateCars);
-    QVBoxLayout* layoutinitialisation = new QVBoxLayout;
-    layoutinitialisation->addWidget(nbrevoituresagenerer);
-    layoutinitialisation->addWidget(buttoninitialisation);
-    layoutinitialisation->addStretch(1);
-    boxGeneration->setLayout(layoutinitialisation);
-    vbox->addWidget(boxGeneration);
+    // Partie génération de solution
+    QGroupBox* generationBox = new QGroupBox();
+    generationBox->setTitle(QString(u8"Générateur de solution"));
 
-    vbox->addWidget(vitesseSimulationBox);
-    vbox->addWidget(setupHelper->box());
-    commandPrompt->setLayout(vbox);
+    inputSizeGeneration = new QLineEdit();
+    inputSizeGeneration->setPlaceholderText(u8"Nombre de voitures à générer...");
+    inputSizeGeneration->setFocus();
 
-    layout->addWidget(commandPrompt,1);
+    generateNewSimulation = new QPushButton(u8"Générer");
 
-    window->setLayout(layout);
+    QVBoxLayout* generationLayout = new QVBoxLayout;
+
+    generationLayout->addWidget(inputSizeGeneration);
+    generationLayout->addWidget(generateNewSimulation);
+
+    generationBox->setLayout(generationLayout);
+
+    commandPromptLayout->addLayout(vitesseBox);
+
+    // Partie Sélection et modification
+    commandPromptLayout->addWidget(setupHelper->box());
+
+    commandPrompt->setLayout(commandPromptLayout);
+
+    commandPrompt->setDisabled(true);
+
+    QVBoxLayout* commandesLayout = new QVBoxLayout();
+    commandesLayout->addWidget(generationBox);
+    commandesLayout->addWidget(commandPrompt);
+
+    // Création du layout général
+    QHBoxLayout* globalLayout = new QHBoxLayout(window);
+    globalLayout->addWidget(mapArea, 10);
+    globalLayout->addLayout(commandesLayout);
+
+    window->setLayout(globalLayout);
     setCentralWidget(window);
 
-    window->setMinimumSize(1150, 700);
+    //window->setMinimumSize(1150, 700);
+    resize(1200, 700);
+    setMaximumSize(1200, 700);
 
-    connect(avancer, &QPushButton::clicked, this, &Application::handleAvancer);
-    connect(plus, &QPushButton::clicked, this, &Application::handleSpeedSimulation);
-    connect(moins, &QPushButton::clicked, this, &Application::handleSlowSimulation);
+    // Liaison de l'ensemble des inputs
+    connect(lancerSimulation, &QPushButton::clicked, this, &Application::handleAvancer);
+    connect(incrementSpeed, &QPushButton::clicked, this, &Application::handleSpeedSimulation);
+    connect(decrementSpeed, &QPushButton::clicked, this, &Application::handleSlowSimulation);
     connect(setupHelper->buttonSelectCar(), &QPushButton::clicked, this, &Application::handleSelectCar);
     connect(setupHelper->buttonModification(), &QPushButton::clicked, this, &Application::handleChangeSpeed);
+    connect(generateNewSimulation, &QPushButton::released, this, &Application::handleGenerateCars);
 
-    SimulationThread* workerThread = new SimulationThread();
+    // Création du thread de simulation
+    SimulationThread* simulationThread = new SimulationThread();
 
-    workerThread->smart_cars = smart_cars;
-    workerThread->active = active;
+    simulationThread->smart_cars = smart_cars;
+    simulationThread->active = active;
 
-    connect(workerThread, &SimulationThread::needRepaint, this, &Application::repaintSmartCars);
-    connect(workerThread, &SimulationThread::finished, workerThread, &QObject::deleteLater);
+    connect(simulationThread, &SimulationThread::needRepaint, this, &Application::repaintSmartCars);
+    connect(simulationThread, &SimulationThread::finished, simulationThread, &QObject::deleteLater);
 
-    workerThread->start();
+    simulationThread->start();
 }
 
 void Application::repaintSmartCars() {
@@ -112,12 +134,18 @@ void Application::repaintSmartCars() {
 
 void Application::handleAvancer() {
     *active = !*active;
-    if (*active) avancer->setText("Stopper la simulation");
-    else avancer->setText("Lancer la simulation");
+    if (*active) {
+        lancerSimulation->setText("Stopper la simulation");
+        lancerSimulation->setStyleSheet("background-color: darkred; color: white; font: bold;");
+    }
+    else {
+        lancerSimulation->setText("Lancer la simulation");
+        lancerSimulation->setStyleSheet("background-color: green; color: white; font: bold;");
+    }
 }
 
 void Application::handleGenerateCars() {
-    QString NBREVOITURES = nbrevoituresagenerer->text();
+    QString NBREVOITURES = inputSizeGeneration->text();
     int nbrevoitures = NBREVOITURES.toInt();
     vector<Voiture*> voitures;
     for (int i = 0; i < nbrevoitures; i++) {
@@ -134,6 +162,10 @@ void Application::handleGenerateCars() {
     }
     setupHelper->fillComboBox(voitures);
     setupHelper->modifyCurrentVitesseInInput(smart_cars->getVoitures());
+    commandPrompt->setDisabled(false);
+    *active = false;
+    lancerSimulation->setText("Lancer la simulation");
+    lancerSimulation->setStyleSheet("background-color: green; color: white; font: bold;");
     smart_cars->repaint();
 }
 
@@ -142,8 +174,8 @@ void Application::handleSpeedSimulation() {
     if (vitesse >= 600) {
         vitesse = 600;
     }
-    plus->setEnabled(vitesse < 600);
-    moins->setEnabled(vitesse > 50);
+    incrementSpeed->setEnabled(vitesse < 600);
+    decrementSpeed->setEnabled(vitesse > 50);
     QString vitesseString = QString("Vitesse actuelle : %1").arg(vitesse);
     vitesseLabel->setText(vitesseString);
     smart_cars->setVitesse(vitesse);
@@ -154,8 +186,8 @@ void Application::handleSlowSimulation() {
     if (vitesse <= 50) {
         vitesse = 50;
     }
-    plus->setEnabled(vitesse < 600);
-    moins->setEnabled(vitesse > 50);
+    incrementSpeed->setEnabled(vitesse < 600);
+    decrementSpeed->setEnabled(vitesse > 50);
     QString vitesseString = QString("Vitesse actuelle : %1").arg(vitesse);
     vitesseLabel->setText(vitesseString);
     smart_cars->setVitesse(vitesse);
