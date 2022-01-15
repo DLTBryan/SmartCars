@@ -154,29 +154,40 @@ void Application::handleShowRange() {
 }
 
 void Application::handleGenerateCars() {
-    QString NBREVOITURES = inputSizeGeneration->text();
-    int nbrevoitures = NBREVOITURES.toInt();
-    vector<Voiture*> voitures;
-    for (int i = 0; i < nbrevoitures; i++) {
-        vector<Noeud*> noeuds = smart_cars->getNoeuds();
-        int noeud = 0 + rand() % (noeuds.size() - 0);
-        while (!noeuds.at(noeud)->estVoiturable())
-            noeud = 0 + rand() % (noeuds.size() - 0);
-        int vitesse = 10 + rand() % (30 - 10) + 1;
-        string nom = "Voiture " + to_string(i);
-        voitures.push_back(new Voiture(nom, vitesse, noeuds.at(noeud)));
-    }
-    smart_cars->setVoitures(voitures);
-    for (Cell* c : smart_cars->getAllCells()) {
-        c->setSelected(0);
-    }
-    setupHelper->fillComboBox(voitures);
-    setupHelper->modifyCurrentVitesseInInput(smart_cars->getVoitures());
-    commandPrompt->setDisabled(false);
-    *active = false;
-    lancerSimulation->setText("Lancer la simulation");
-    lancerSimulation->setStyleSheet("background-color: green; color: white; font: bold;");
-    smart_cars->repaint();
+    std::string stringnbrevoitures = inputSizeGeneration->text().toStdString();
+    if (isNumber(stringnbrevoitures)) {
+        int nbrevoitures = stoi(stringnbrevoitures);
+        if (nbrevoitures < 1) {
+            nbrevoitures = 1;
+            inputSizeGeneration->setText(QString(to_string(nbrevoitures).c_str()));
+        }
+        else if (nbrevoitures > 250) {
+            nbrevoitures = 250;
+            inputSizeGeneration->setText(QString(to_string(nbrevoitures).c_str()));
+        }
+        vector<Voiture*> voitures;
+        for (int i = 0; i < nbrevoitures; i++) {
+            vector<Noeud*> noeuds = smart_cars->getNoeuds();
+            int noeud = 0 + rand() % (noeuds.size() - 0);
+            while (!noeuds.at(noeud)->estVoiturable())
+                noeud = 0 + rand() % (noeuds.size() - 0);
+            int vitesse = 10 + rand() % (30 - 10) + 1;
+            string nom = "Voiture " + to_string(i+1);
+            voitures.push_back(new Voiture(nom, vitesse, noeuds.at(noeud)));
+        }
+        smart_cars->setVoitures(voitures);
+        for (Cell* c : smart_cars->getAllCells()) {
+            c->setSelected(0);
+        }
+        setupHelper->fillComboBox(voitures);
+        setupHelper->modifyCurrentVitesseInInput(smart_cars->getVoitures());
+        commandPrompt->setDisabled(false);
+        *active = false;
+        lancerSimulation->setText("Lancer la simulation");
+        lancerSimulation->setStyleSheet("background-color: green; color: white; font: bold;");
+        smart_cars->repaint();
+    } else
+        inputSizeGeneration->setText(QString(""));
 }
 
 void Application::handleChangeSpeedSimulation() {
@@ -191,6 +202,14 @@ void Application::handleChangeSpeed() {
     string nvSpeedValue = setupHelper->getValueOfSpeedInput();
     if (isNumber(nvSpeedValue)) {
         int nvValue = stoi(nvSpeedValue);
+        if (nvValue < 1) {
+            nvValue = 1;
+            setupHelper->setValueOfInput(nvValue);
+        }
+        else if (nvValue > 250) {
+            nvValue = 250;
+            setupHelper->setValueOfInput(nvValue);
+        }
         smart_cars->getVoitures().at(setupHelper->getCurrentIndexCombo())->setVitesse(nvValue);
     }
     else {
