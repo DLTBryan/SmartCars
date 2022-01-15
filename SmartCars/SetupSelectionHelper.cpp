@@ -39,16 +39,12 @@ SetupSelectionHelper::SetupSelectionHelper() {
 	voisinsBox->setTitle(QString(u8"Voitures à portée"));
 
 	QVBoxLayout* voisinsLayout = new QVBoxLayout();
-	d_voisinsLayout = new QVBoxLayout();
+	QVBoxLayout* voisinsListLayout = new QVBoxLayout();
+	d_voisinsList = new QListWidget();
 
-	QScrollArea* scrollArea = new QScrollArea();
-	int scrollbarWidth = 25; // +25px pour scrollbar
-	scrollArea->setMaximumHeight(500);
-	scrollArea->setWidgetResizable(false);
-	scrollArea->setLayout(d_voisinsLayout);
-	scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+	voisinsListLayout->addWidget(d_voisinsList);
 
-	voisinsLayout->addWidget(scrollArea);
+	voisinsLayout->addLayout(voisinsListLayout);
 
 	voisinsBox->setLayout(voisinsLayout);
 
@@ -81,23 +77,10 @@ void SetupSelectionHelper::fillComboBox(vector<Voiture*> voitures) {
 }
 
 void SetupSelectionHelper::fillVoisinsLayout(vector<Voiture*> voitures) {
-	clearLayout(d_voisinsLayout);
+	d_voisinsList->clear();
 
 	for (Voiture* v : voitures) {
-		d_voisinsLayout->addWidget(new QLabel(v->getNom().c_str()));
-	}
-}
+		new QListWidgetItem(QString((v->getNom().c_str())), d_voisinsList);
 
-void SetupSelectionHelper::clearLayout(QLayout* layout) {
-	QLayoutItem* item;
-	while ((item = layout->takeAt(0))) {
-		if (item->layout()) {
-			clearLayout(item->layout());
-			delete item->layout();
-		}
-		if (item->widget()) {
-			delete item->widget();
-		}
-		delete item;
 	}
 }

@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QThread>
 #include <QString>
+#include <QCheckBox>
 
 #include "SmartCars.h"
 #include "Voiture.h"

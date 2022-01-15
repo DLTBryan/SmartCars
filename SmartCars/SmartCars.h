@@ -32,6 +32,8 @@ public:
     void setVitesse(int v) { v_vitesse = v; }
     void setVoitures(vector<Voiture*> voitures) { v_voitures = voitures; }
 
+    bool* showRange = new bool(true);
+
 private:
     vector<Rue> v_rues;
     vector<Voiture*> v_voitures;

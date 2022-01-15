@@ -150,19 +150,21 @@ void SmartCars::paintEvent(QPaintEvent* event)
 	cellVoisinColor.setAlphaF(0.25);
 
     painter.setRenderHint(QPainter::Antialiasing);
-    for (std::vector<Cell*>& row : cells)
-    {
-        for (Cell* cell : row) {
-            QPainterPath path;
-            path.addPolygon(cell->polygon);
-            QPen pen(borderColor, 2);
-            painter.setPen(pen);
-			if (cell->getSelected() == 0) painter.setBrush(cellColor);
-			if (cell->getSelected() == 1) painter.setBrush(cellSelectedColor);
-			if (cell->getSelected() == 2) painter.setBrush(cellVoisinColor);
-			painter.drawPath(path);
-        }
-    }
+		for (std::vector<Cell*>& row : cells)
+		{
+			for (Cell* cell : row) {
+				QPainterPath path;
+				path.addPolygon(cell->polygon);
+				QPen pen(borderColor, 2);
+				painter.setPen(pen);
+				painter.setBrush(cellColor);
+				if (*showRange) {
+					if (cell->getSelected() == 1) painter.setBrush(cellSelectedColor);
+					if (cell->getSelected() == 2) painter.setBrush(cellVoisinColor);
+				}
+				painter.drawPath(path);
+			}
+		}
 
 	pen.setWidth(1);
 	painter.setPen(pen);

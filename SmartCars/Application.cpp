@@ -14,6 +14,7 @@ Application::Application(SmartCars* sc, QWidget* parent) : QMainWindow(parent) {
 	QWidget* window = new QWidget();
 
 	smart_cars = sc;
+    sc->showRange = showRange;
     setupHelper = new SetupSelectionHelper();
 
     // Création de la zone d'affichage de la carte
@@ -50,6 +51,10 @@ Application::Application(SmartCars* sc, QWidget* parent) : QMainWindow(parent) {
 
     vitesseBox->addLayout(vitesseSimulationVLayout);
 
+    QCheckBox* showRangeCheckBox = new QCheckBox(u8"Afficher la portée de la fréquence : ", this);
+    showRangeCheckBox->setLayoutDirection(Qt::RightToLeft);
+    showRangeCheckBox->setCheckState(Qt::Checked);
+
     // Création de la partie panneau de contrôle
     commandPrompt = new QGroupBox(tr(u8"Panneau de contrôle"));
     QVBoxLayout* commandPromptLayout = new QVBoxLayout();
@@ -77,6 +82,7 @@ Application::Application(SmartCars* sc, QWidget* parent) : QMainWindow(parent) {
     generationBox->setLayout(generationLayout);
 
     commandPromptLayout->addLayout(vitesseBox);
+    commandPromptLayout->addWidget(showRangeCheckBox);
 
     // Partie Sélection et modification
     commandPromptLayout->addWidget(setupHelper->box());
@@ -108,6 +114,7 @@ Application::Application(SmartCars* sc, QWidget* parent) : QMainWindow(parent) {
     connect(setupHelper->buttonSelectCar(), &QPushButton::clicked, this, &Application::handleSelectCar);
     connect(setupHelper->buttonModification(), &QPushButton::clicked, this, &Application::handleChangeSpeed);
     connect(generateNewSimulation, &QPushButton::released, this, &Application::handleGenerateCars);
+    connect(showRangeCheckBox, &QCheckBox::stateChanged, this, &Application::handleShowRange);
 
     // Création du thread de simulation
     SimulationThread* simulationThread = new SimulationThread();
@@ -142,6 +149,10 @@ void Application::handleAvancer() {
         lancerSimulation->setText("Lancer la simulation");
         lancerSimulation->setStyleSheet("background-color: green; color: white; font: bold;");
     }
+}
+
+void Application::handleShowRange() {
+    *showRange = !*showRange;
 }
 
 void Application::handleGenerateCars() {

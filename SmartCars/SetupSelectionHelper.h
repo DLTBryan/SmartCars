@@ -56,10 +56,8 @@ private:
 	QPushButton* d_btn;
 	QPushButton* d_btnSelect;
 
-	QVBoxLayout* d_voisinsLayout;
+	QListWidget* d_voisinsList;
 
 	int d_indexSelectedCar = 0;
-
-	void clearLayout(QLayout* layout);
 };
 

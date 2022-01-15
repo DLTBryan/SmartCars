@@ -7,6 +7,7 @@
 #include "SetupSelectionHelper.h"
 #include <QLabel>
 #include <QtWidgets/QApplication>
+#include <QCheckBox>
 
 class Application : public QMainWindow
 {
@@ -25,6 +26,9 @@ private:
 	SmartCars* smart_cars;
 	SetupSelectionHelper* setupHelper;
 	QGroupBox* commandPrompt;
+	
+	bool* showRange = new bool(true);
+
 	bool* active = new bool(false);
 	bool isNumber(const string& str);
 
@@ -36,5 +40,6 @@ private slots:
 	void handleSelectCar();
 	void handleChangeSpeed();
 	void repaintSmartCars();
+	void handleShowRange();
 };
 
