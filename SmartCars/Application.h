@@ -20,8 +20,7 @@ private:
 	QPushButton* lancerSimulation;
 	QPushButton* generateNewSimulation;
 	QLineEdit* inputSizeGeneration;
-	QPushButton* decrementSpeed;
-	QPushButton* incrementSpeed;
+	QSlider* speedSlider;
 	QLabel* vitesseLabel;
 	SmartCars* smart_cars;
 	SetupSelectionHelper* setupHelper;
@@ -35,8 +34,7 @@ private:
 private slots:
 	void handleAvancer();
 	void handleGenerateCars();
-	void handleSpeedSimulation();
-	void handleSlowSimulation();
+	void handleChangeSpeedSimulation();
 	void handleSelectCar();
 	void handleChangeSpeed();
 	void repaintSmartCars();

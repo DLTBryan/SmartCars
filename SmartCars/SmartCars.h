@@ -27,9 +27,9 @@ public:
     vector<Cell*> getAllCells() { return allCells; }
 
     vector<Voiture*> getVoitures() { return v_voitures; }
-    int getVitesse() { return v_vitesse; }
+    double getVitesse() { return v_vitesse; }
     vector<Rue> getRues() { return v_rues; }
-    void setVitesse(int v) { v_vitesse = v; }
+    void setVitesse(double v) { v_vitesse = v; }
     void setVoitures(vector<Voiture*> voitures) { v_voitures = voitures; }
 
     bool* showRange = new bool(true);
@@ -37,7 +37,7 @@ public:
 private:
     vector<Rue> v_rues;
     vector<Voiture*> v_voitures;
-    int v_vitesse;
+    double v_vitesse;
 
     vector<vector<Cell*>> cells;
     vector<Cell*> allCells;

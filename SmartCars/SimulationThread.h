@@ -21,7 +21,7 @@ class SimulationThread : public QThread
                 vector<Cell*> cells = smart_cars->getAllCells();
                 for (Cell* c : cells) c->setSelected(0);
                 for (Voiture* v : smart_cars->getVoitures()) {
-                    v->avancer(smart_cars->getVitesse());
+                    v->avancer(smart_cars->getVitesse() * 200);
                     Cell* c = smart_cars->getCellFromCoord(v->getCoordonnees());
                     if (c != nullptr && v->getSelected()) {
                         c->setSelected(1);
