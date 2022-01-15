@@ -65,6 +65,7 @@ void SmartCars::createMesh() {
 void SmartCars::paintEvent(QPaintEvent* event)
 {
     QPainter painter(this);
+	painter.fillRect(rect(), QColor(205, 235, 176));
     
     QPen pen;
     pen.setWidth(5);
@@ -94,51 +95,53 @@ void SmartCars::paintEvent(QPaintEvent* event)
     // Je dessine une par une des rues
     for (Rue rue : v_rues) {
         std::string typeroute = rue.type();
+		QColor couleurroute;
+		int tailleroute;
         if (typeroute == "motorway" || typeroute == "motorway_link") {
-            pen.setWidth(15);
-            pen.setColor("red");
-            painter.setPen(pen);
+			tailleroute = 13;
+			couleurroute = QColor(233, 144, 160);
         } else if (typeroute == "trunk" || typeroute == "trunk_link") {
-            pen.setWidth(15);
-            pen.setColor("orange");
-            painter.setPen(pen);
+			tailleroute = 13;
+			couleurroute = QColor(251, 192, 172);
         } else if (typeroute == "primary" || typeroute == "primary_link") {
-            pen.setWidth(15);
-            pen.setColor("orange");
-            painter.setPen(pen);
+			tailleroute = 13;
+			couleurroute = QColor(253, 215, 161);
         } else if (typeroute == "secondary" || typeroute == "secondary_link") {
-            pen.setWidth(13);
-            pen.setColor("yellow");
-            painter.setPen(pen);
+			tailleroute = 11;
+			couleurroute = QColor(246, 250, 187);
         } else if (typeroute == "tertiary" || typeroute == "tertiary_link") {
-            pen.setWidth(10);
-            pen.setColor("yellow");
-            painter.setPen(pen);
+			tailleroute = 10;
+			couleurroute = QColor(196, 195, 194);
         } else if (typeroute == "unclassified") {
-            pen.setWidth(9);
-            pen.setColor("grey");
-            painter.setPen(pen);
+			tailleroute = 9;
+			couleurroute = QColor(208, 207, 206);
         } else if (typeroute == "residential") {
-            pen.setWidth(9);
-            pen.setColor("grey");
-            painter.setPen(pen);
+			tailleroute = 9;
+			couleurroute = QColor(220, 219, 218);
 		} else if (typeroute == "service") {
-			pen.setWidth(5);
-			pen.setColor("lightgrey");
-			painter.setPen(pen);
+			tailleroute = 5;
+			couleurroute = QColor(237, 237, 237);
 		} else if (typeroute == "living_street") {
-			pen.setWidth(5);
-			pen.setColor("lightgrey");
-			painter.setPen(pen);
+			tailleroute = 5;
+			couleurroute = QColor(237, 237, 237);
         } else {
-            pen.setWidth(5);
-            pen.setColor("black");
-            painter.setPen(pen);
+			tailleroute = 2;
+			couleurroute = QColor(211, 185, 159);
         }
         vector<Noeud*> noeudsrue = rue.noeuds();
         for (Noeud* noeud : noeudsrue) {
-            for (Noeud* noeudvoisin : noeud->noeudsvoisins())
-                painter.drawLine(QLine((xmax - noeud->x()) * widget_width / (xmax - xmin), (ymax - noeud->y()) * widget_height / (ymax - ymin), (xmax - noeudvoisin->x()) * widget_width / (xmax - xmin), (ymax - noeudvoisin->y()) * widget_height / (ymax - ymin)));
+			for (Noeud* noeudvoisin : noeud->noeudsvoisins()) {
+				// Dessin de la "bordure"
+				/*pen.setWidth(tailleroute + 1);
+				pen.setColor(QColor(0, 0, 0));
+				painter.setPen(pen);
+				painter.drawLine(QLine(((xmax - noeud->x()) * widget_width / (xmax - xmin)), ((ymax - noeud->y()) * widget_height / (ymax - ymin)), ((xmax - noeudvoisin->x()) * widget_width / (xmax - xmin)), ((ymax - noeudvoisin->y()) * widget_height / (ymax - ymin))));*/
+				// Dessin de la route lui-même
+				pen.setWidth(tailleroute);
+				pen.setColor(couleurroute);
+				painter.setPen(pen);
+				painter.drawLine(QLine((xmax - noeud->x()) * widget_width / (xmax - xmin), (ymax - noeud->y()) * widget_height / (ymax - ymin), (xmax - noeudvoisin->x()) * widget_width / (xmax - xmin), (ymax - noeudvoisin->y()) * widget_height / (ymax - ymin)));
+			}
         }
     }
 

@@ -45,8 +45,10 @@ bool osmextract::estRouteValide(XMLElement* wayactuel) {
         if (attributktagactuel != nullptr && attributvtagactuel != nullptr) {
             std::string stringattributktagactuel = attributktagactuel;
             std::string stringattributvtagactuel = attributvtagactuel;
-            if (stringattributktagactuel == "highway" && std::find(std::begin(stringsattributvpermis), std::end(stringsattributvpermis), stringattributvtagactuel) != std::end(stringsattributvpermis))
+            if (stringattributktagactuel == "highway")
                 return true;
+            /*if (stringattributktagactuel == "highway" && std::find(std::begin(stringsattributvpermis), std::end(stringsattributvpermis), stringattributvtagactuel) != std::end(stringsattributvpermis))
+                return true;*/
         }
         tagactuel = tagactuel->NextSiblingElement("tag");
     }
