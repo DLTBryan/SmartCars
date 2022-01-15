@@ -136,7 +136,40 @@ std::string osmextract::recupererTypeRoute(XMLNode* root, std::string refroute) 
     }
 }
 
-void osmextract::trierRoutesSelonType() {
+void osmextract::trierRoutesSelonType(bool descendant) {
+    std::vector<std::vector<Rue>> trimanuelroutes(10, std::vector<Rue>());
+    for (Rue rue : v_rues) {
+        std::string typeroute = rue.type();
+        if (typeroute == "motorway" || typeroute == "motorway_link")
+            trimanuelroutes[0].push_back(rue);
+        else if (typeroute == "trunk" || typeroute == "trunk_link")
+            trimanuelroutes[1].push_back(rue);
+        else if (typeroute == "primary" || typeroute == "primary_link")
+            trimanuelroutes[2].push_back(rue);
+        else if (typeroute == "secondary" || typeroute == "secondary_link")
+            trimanuelroutes[3].push_back(rue);
+        else if (typeroute == "tertiary" || typeroute == "tertiary_link")
+            trimanuelroutes[4].push_back(rue);
+        else if (typeroute == "unclassified")
+            trimanuelroutes[5].push_back(rue);
+        else if (typeroute == "residential")
+            trimanuelroutes[6].push_back(rue);
+        else if (typeroute == "service")
+            trimanuelroutes[7].push_back(rue);
+        else if (typeroute == "living_street")
+            trimanuelroutes[8].push_back(rue);
+        else
+            trimanuelroutes[9].push_back(rue);
+    }
+    if (descendant) {
+        for (int i = 1; i < 10; i++)
+            trimanuelroutes[0].insert(std::end(trimanuelroutes[0]), std::begin(trimanuelroutes[i]), std::end(trimanuelroutes[i]));
+        v_rues = trimanuelroutes[0];
+    } else {
+        for (int i = 8; i >= 0; i--)
+            trimanuelroutes[9].insert(std::end(trimanuelroutes[9]), std::begin(trimanuelroutes[i]), std::end(trimanuelroutes[i]));
+        v_rues = trimanuelroutes[9];
+    }
 }
 
 void osmextract::extraire() {
@@ -204,4 +237,6 @@ void osmextract::extraire() {
     // On rajoute des liens entre les noeuds
     for (Rue rue : v_rues)
         rue.creerLiens();
+    // On trie les routes selon leurs types
+    trierRoutesSelonType(true);
 }
