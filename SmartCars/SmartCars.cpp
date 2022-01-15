@@ -7,7 +7,7 @@
 SmartCars::SmartCars(std::vector<Rue> rues, std::vector<Voiture*> voitures, QWidget *parent)
     : QMainWindow(parent)
 {
-    v_vitesse = 200;
+    v_vitesse = 1.;
     v_rues = rues;
     v_voitures = voitures;
 

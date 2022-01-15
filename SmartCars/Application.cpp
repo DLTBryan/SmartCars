@@ -31,25 +31,24 @@ Application::Application(SmartCars* sc, QWidget* parent) : QMainWindow(parent) {
     // Création de la partie gestion de vitesse de simulation
     QGroupBox* vitesseSimulationBox = new QGroupBox(tr("Changement de vitesse de simulation"));
 
-    decrementSpeed = new QPushButton("-");
-    incrementSpeed = new QPushButton("+");
+    speedSlider = new QSlider(Qt::Horizontal);
+    speedSlider->setTickInterval(2);
+    speedSlider->setMinimum(1);
+    speedSlider->setMaximum(31);
+    speedSlider->setValue(10);
 
-    QHBoxLayout* vitesseSimulationHLayout = new QHBoxLayout();
-    QVBoxLayout* vitesseSimulationVLayout = new QVBoxLayout();
+    QVBoxLayout* vitesseSimulationLayout = new QVBoxLayout();
 
-    QString vitesseString = QString("Vitesse actuelle : %1").arg(smart_cars->getVitesse());
+    QString vitesseString = QString("Multiplicateur de vitesse : x%1").arg((double) smart_cars->getVitesse());
 
     QVBoxLayout* vitesseBox = new QVBoxLayout();
 
-    vitesseSimulationHLayout->addWidget(decrementSpeed);
-    vitesseSimulationHLayout->addWidget(incrementSpeed);
-
     vitesseLabel = new QLabel(vitesseString, this);
 
-    vitesseSimulationVLayout->addWidget(vitesseLabel);
-    vitesseSimulationVLayout->addLayout(vitesseSimulationHLayout);
+    vitesseSimulationLayout->addWidget(vitesseLabel);
+    vitesseSimulationLayout->addWidget(speedSlider);
 
-    vitesseBox->addLayout(vitesseSimulationVLayout);
+    vitesseBox->addLayout(vitesseSimulationLayout);
 
     QCheckBox* showRangeCheckBox = new QCheckBox(u8"Afficher la portée de la fréquence : ", this);
     showRangeCheckBox->setLayoutDirection(Qt::RightToLeft);
@@ -71,6 +70,7 @@ Application::Application(SmartCars* sc, QWidget* parent) : QMainWindow(parent) {
     inputSizeGeneration = new QLineEdit();
     inputSizeGeneration->setPlaceholderText(u8"Nombre de voitures à générer...");
     inputSizeGeneration->setFocus();
+    inputSizeGeneration->setAlignment(Qt::AlignRight);
 
     generateNewSimulation = new QPushButton(u8"Générer");
 
@@ -109,8 +109,7 @@ Application::Application(SmartCars* sc, QWidget* parent) : QMainWindow(parent) {
 
     // Liaison de l'ensemble des inputs
     connect(lancerSimulation, &QPushButton::clicked, this, &Application::handleAvancer);
-    connect(incrementSpeed, &QPushButton::clicked, this, &Application::handleSpeedSimulation);
-    connect(decrementSpeed, &QPushButton::clicked, this, &Application::handleSlowSimulation);
+    connect(speedSlider, &QSlider::sliderMoved, this, &Application::handleChangeSpeedSimulation);
     connect(setupHelper->buttonSelectCar(), &QPushButton::clicked, this, &Application::handleSelectCar);
     connect(setupHelper->buttonModification(), &QPushButton::clicked, this, &Application::handleChangeSpeed);
     connect(generateNewSimulation, &QPushButton::released, this, &Application::handleGenerateCars);
@@ -180,26 +179,10 @@ void Application::handleGenerateCars() {
     smart_cars->repaint();
 }
 
-void Application::handleSpeedSimulation() {
-    int vitesse = smart_cars->getVitesse() + 100;
-    if (vitesse >= 600) {
-        vitesse = 600;
-    }
-    incrementSpeed->setEnabled(vitesse < 600);
-    decrementSpeed->setEnabled(vitesse > 50);
-    QString vitesseString = QString("Vitesse actuelle : %1").arg(vitesse);
-    vitesseLabel->setText(vitesseString);
+void Application::handleChangeSpeedSimulation() {
+    double vitesse = (double) speedSlider->value() / 10;
     smart_cars->setVitesse(vitesse);
-}
-
-void Application::handleSlowSimulation() {
-    int vitesse = smart_cars->getVitesse() - 100;
-    if (vitesse <= 50) {
-        vitesse = 50;
-    }
-    incrementSpeed->setEnabled(vitesse < 600);
-    decrementSpeed->setEnabled(vitesse > 50);
-    QString vitesseString = QString("Vitesse actuelle : %1").arg(vitesse);
+    QString vitesseString = QString("Multiplicateur de vitesse : x%1").arg(smart_cars->getVitesse());
     vitesseLabel->setText(vitesseString);
     smart_cars->setVitesse(vitesse);
 }
