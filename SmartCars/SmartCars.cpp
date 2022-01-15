@@ -4,11 +4,12 @@
 #include <random>
 #include <QMouseEvent>
 
-SmartCars::SmartCars(std::vector<Rue> rues, std::vector<Voiture*> voitures, QWidget *parent)
+SmartCars::SmartCars(std::vector<Rue> rues, std::vector<Noeud*> noeuds, std::vector<Voiture*> voitures, QWidget *parent)
     : QMainWindow(parent)
 {
     v_vitesse = 1.;
     v_rues = rues;
+	v_noeuds = noeuds;
     v_voitures = voitures;
 
     createMesh();

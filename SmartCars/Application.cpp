@@ -103,7 +103,6 @@ Application::Application(SmartCars* sc, QWidget* parent) : QMainWindow(parent) {
     window->setLayout(globalLayout);
     setCentralWidget(window);
 
-    //window->setMinimumSize(1150, 700);
     resize(1200, 700);
     setMaximumSize(1200, 700);
 
@@ -159,12 +158,13 @@ void Application::handleGenerateCars() {
     int nbrevoitures = NBREVOITURES.toInt();
     vector<Voiture*> voitures;
     for (int i = 0; i < nbrevoitures; i++) {
-        vector<Rue> rues = smart_cars->getRues();
-        int rue = 0 + rand() % (rues.size() - 0);
-        int noeud = 0 + rand() % (rues.at(rue).noeuds().size() - 0);
+        vector<Noeud*> noeuds = smart_cars->getNoeuds();
+        int noeud = 0 + rand() % (noeuds.size() - 0);
+        while (!noeuds.at(noeud)->estVoiturable())
+            noeud = 0 + rand() % (noeuds.size() - 0);
         int vitesse = 10 + rand() % (30 - 10) + 1;
         string nom = "Voiture " + to_string(i);
-        voitures.push_back(new Voiture(nom, vitesse, rues.at(rue).noeuds().at(noeud)));
+        voitures.push_back(new Voiture(nom, vitesse, noeuds.at(noeud)));
     }
     smart_cars->setVoitures(voitures);
     for (Cell* c : smart_cars->getAllCells()) {

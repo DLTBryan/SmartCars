@@ -24,12 +24,17 @@ public:
     Point coordonnees() const {
         return v_coordonnees;
     }
+    bool estVoiturable() const {
+        return v_voiturable;
+    }
     // Méthodes
     void ajouteVoisin(Noeud* v);
+    void estVoiturable(bool voiturable);
 private:
     // Attributs
     Point v_coordonnees;
     std::vector<Noeud*> v_noeudsvoisins;
+    bool v_voiturable = false;
 };
 
 #endif

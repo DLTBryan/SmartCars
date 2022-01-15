@@ -32,7 +32,7 @@ void Voiture::avancer(int multiplicateur, float distanceRestance)
 		//cout << "voisins : " << tmp->voisins().size() << endl;
 
 		if (tmp->noeudsvoisins().size() > 2) {
-			while (this->noeudArrivee == this->noeudDepart || this->noeudArrivee == tmp) {
+			while ((this->noeudArrivee == this->noeudDepart || this->noeudArrivee == tmp) && !this->noeudArrivee->estVoiturable()) {
 				int rd = random(0, tmp->noeudsvoisins().size() - 1);
 				this->noeudArrivee = tmp->noeudsvoisins().at(rd);
 			}

@@ -17,6 +17,7 @@ int main(int argc, char* argv[]) {
     osmextract extracteur("map.osm");
     extracteur.extraire();
     std::vector<Rue> rues = extracteur.rues();
+    std::vector<Noeud*> noeuds = extracteur.noeuds();
 
     vector<Voiture*> voitures;
 
@@ -24,7 +25,7 @@ int main(int argc, char* argv[]) {
 
     QWidget* window = new QWidget;
 
-    SmartCars* roads = new SmartCars(rues, voitures);
+    SmartCars* roads = new SmartCars(rues, noeuds, voitures);
     roads->setFixedSize(roads->getHexMeshWidth(), roads->getHexMeshHeight());
     
     Application* app = new Application(roads);

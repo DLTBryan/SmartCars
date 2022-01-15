@@ -15,7 +15,7 @@ class SmartCars : public QMainWindow
     Q_OBJECT
 
 public:
-    SmartCars(std::vector<Rue> rues, std::vector<Voiture*> voitures, QWidget* parent = Q_NULLPTR);
+    SmartCars(std::vector<Rue> rues, std::vector<Noeud*> noeuds, std::vector<Voiture*> voitures, QWidget* parent = Q_NULLPTR);
     virtual void paintEvent(QPaintEvent* event);
 
     int getHexMeshWidth();
@@ -29,6 +29,7 @@ public:
     vector<Voiture*> getVoitures() { return v_voitures; }
     double getVitesse() { return v_vitesse; }
     vector<Rue> getRues() { return v_rues; }
+    vector<Noeud*> getNoeuds() { return v_noeuds; }
     void setVitesse(double v) { v_vitesse = v; }
     void setVoitures(vector<Voiture*> voitures) { v_voitures = voitures; }
 
@@ -36,6 +37,7 @@ public:
 
 private:
     vector<Rue> v_rues;
+    vector<Noeud*> v_noeuds;
     vector<Voiture*> v_voitures;
     double v_vitesse;
 
