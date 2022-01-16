@@ -26,6 +26,7 @@ public:
     int nombreNoeuds() const;
     void ajouteNoeud(Noeud* n, int indicenoeud);
     void creerLiens();
+    bool estVoiturable() const;
 private:
     // Attributs
     std::string v_reference;

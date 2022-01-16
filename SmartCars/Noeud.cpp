@@ -4,14 +4,12 @@ void Noeud::ajouteVoisin(Noeud* v) {
     v_noeudsvoisins.push_back(v);
 }
 
-void Noeud::estVoiturable(bool voiturable) {
-    v_voiturable = voiturable;
+void Noeud::ajouteVoisinVoiturable(Noeud* v) {
+    v_noeudsvoisinsvoiturables.push_back(v);
 }
 
-std::vector<Noeud*> Noeud::noeudsVoisinsVoiturables() const {
-    std::vector<Noeud*> noeudsvoisinsvoiturables;
-    for (Noeud* noeudvoisin : v_noeudsvoisins)
-        if (noeudvoisin->estVoiturable())
-            noeudsvoisinsvoiturables.push_back(noeudvoisin);
-    return noeudsvoisinsvoiturables;
+bool Noeud::estVoiturable() const {
+    if (v_noeudsvoisinsvoiturables.size() > 0)
+        return true;
+    return false;
 }

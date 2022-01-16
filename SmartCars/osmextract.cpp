@@ -219,19 +219,13 @@ void osmextract::extraire() {
                 }
             }
             // Si oui, alors on y ajoute juste le noeud
-            std::string typeroute;
-            if (indicerueexistante != -1) {
-                typeroute = v_rues[indicerueexistante].type();
+            if (indicerueexistante != -1)
                 v_rues[indicerueexistante].ajouteNoeud(nouveaunoeud, (int)ensembleinformationsway[1]);
-            } else {
+            else {
                 // Peut être mieux de récupérer ces informations directement au début (quand validation de la route) ?
-                typeroute = recupererTypeRoute(root, std::to_string((int)ensembleinformationsway[0]));
+                std::string typeroute = recupererTypeRoute(root, std::to_string((int)ensembleinformationsway[0]));
                 v_rues.push_back(Rue(std::to_string(ensembleinformationsway[0]), typeroute, nouveaunoeud, (int)ensembleinformationsway[2]));
             }
-            // On store dans le nouveau noeud l'information s'il est voiturable ou pas
-            std::string stringsattributvpermis[] = { "motorway", "motorway_link", "trunk", "trunk_link", "primary", "primary_link", "secondary", "secondary_link", "tertiary", "tertiary_link", "unclassified", "residential", "service", "living_street" };
-            if (std::find(std::begin(stringsattributvpermis), std::end(stringsattributvpermis), typeroute) != std::end(stringsattributvpermis))
-                nouveaunoeud->estVoiturable(true);
         }
     }
     // On rajoute des liens entre les noeuds

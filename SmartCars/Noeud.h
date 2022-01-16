@@ -15,6 +15,9 @@ public:
     std::vector<Noeud*> noeudsVoisins() const {
         return v_noeudsvoisins;
     }
+    std::vector<Noeud*> noeudsVoisinsVoiturables() const {
+        return v_noeudsvoisinsvoiturables;
+    }
     double x() const {
         return v_coordonnees.v_x;
     }
@@ -24,18 +27,15 @@ public:
     Point coordonnees() const {
         return v_coordonnees;
     }
-    bool estVoiturable() const {
-        return v_voiturable;
-    }
     // Méthodes
     void ajouteVoisin(Noeud* v);
-    void estVoiturable(bool voiturable);
-    std::vector<Noeud*> noeudsVoisinsVoiturables() const;
+    void ajouteVoisinVoiturable(Noeud* v);
+    bool estVoiturable() const;
 private:
     // Attributs
     Point v_coordonnees;
     std::vector<Noeud*> v_noeudsvoisins;
-    bool v_voiturable = false;
+    std::vector<Noeud*> v_noeudsvoisinsvoiturables;
 };
 
 #endif
