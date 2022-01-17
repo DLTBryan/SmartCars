@@ -14,7 +14,7 @@
 using namespace std;
 
 int main(int argc, char* argv[]) {
-    osmextract extracteur("mapmul.osm");
+    osmextract extracteur("map.osm");
     extracteur.extraire();
     std::vector<Rue> rues = extracteur.rues();
     std::vector<Noeud*> noeuds = extracteur.noeuds();
