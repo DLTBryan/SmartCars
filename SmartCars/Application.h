@@ -10,7 +10,7 @@
 #include <QCheckBox>
 
 
-// Classe permettant de creer la fenêtre Qt par defaut
+// Classe permettant de creer la fenetre Qt par defaut
 class Application : public QMainWindow
 {
 	Q_OBJECT
