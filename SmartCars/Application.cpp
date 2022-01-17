@@ -17,7 +17,7 @@ Application::Application(SmartCars* sc, QWidget* parent) : QMainWindow(parent) {
     sc->showRange = showRange;
     setupHelper = new SetupSelectionHelper();
 
-    // Création de la zone d'affichage de la carte
+    // Creation de la zone d'affichage de la carte
     QScrollArea* mapArea = new QScrollArea();
     int scrollbarWidth = 25; // +25px pour scrollbar
     int scrollMaxWidth = smart_cars->getHexMeshWidth() + scrollbarWidth;
@@ -28,7 +28,7 @@ Application::Application(SmartCars* sc, QWidget* parent) : QMainWindow(parent) {
     mapArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     mapArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 
-    // Création de la partie gestion de vitesse de simulation
+    // Creation de la partie gestion de vitesse de simulation
     QGroupBox* vitesseSimulationBox = new QGroupBox(tr("Changement de vitesse de simulation"));
 
     speedSlider = new QSlider(Qt::Horizontal);
@@ -50,11 +50,11 @@ Application::Application(SmartCars* sc, QWidget* parent) : QMainWindow(parent) {
 
     vitesseBox->addLayout(vitesseSimulationLayout);
 
-    QCheckBox* showRangeCheckBox = new QCheckBox(u8"Afficher la portée de la fréquence : ", this);
+    QCheckBox* showRangeCheckBox = new QCheckBox(u8"Afficher la portee de la frequence : ", this);
     showRangeCheckBox->setLayoutDirection(Qt::RightToLeft);
     showRangeCheckBox->setCheckState(Qt::Checked);
 
-    // Création de la partie panneau de contrôle
+    // Creation de la partie panneau de contrôle
     commandPrompt = new QGroupBox(tr(u8"Panneau de contrôle"));
     QVBoxLayout* commandPromptLayout = new QVBoxLayout();
 
@@ -63,16 +63,16 @@ Application::Application(SmartCars* sc, QWidget* parent) : QMainWindow(parent) {
     lancerSimulation->setStyleSheet("font: bold;");
     commandPromptLayout->addWidget(lancerSimulation);
     
-    // Partie génération de solution
+    // Partie generation de solution
     QGroupBox* generationBox = new QGroupBox();
-    generationBox->setTitle(QString(u8"Générateur de solution"));
+    generationBox->setTitle(QString(u8"Generateur de solution"));
 
     inputSizeGeneration = new QLineEdit();
-    inputSizeGeneration->setPlaceholderText(u8"Nombre de voitures à générer...");
+    inputSizeGeneration->setPlaceholderText(u8"Nombre de voitures a generer...");
     inputSizeGeneration->setFocus();
     inputSizeGeneration->setAlignment(Qt::AlignRight);
 
-    generateNewSimulation = new QPushButton(u8"Générer");
+    generateNewSimulation = new QPushButton(u8"Generer");
 
     QVBoxLayout* generationLayout = new QVBoxLayout;
 
@@ -84,7 +84,7 @@ Application::Application(SmartCars* sc, QWidget* parent) : QMainWindow(parent) {
     commandPromptLayout->addLayout(vitesseBox);
     commandPromptLayout->addWidget(showRangeCheckBox);
 
-    // Partie Sélection et modification
+    // Partie Selection et modification
     commandPromptLayout->addWidget(setupHelper->box());
 
     commandPrompt->setLayout(commandPromptLayout);
@@ -95,7 +95,7 @@ Application::Application(SmartCars* sc, QWidget* parent) : QMainWindow(parent) {
     commandesLayout->addWidget(generationBox);
     commandesLayout->addWidget(commandPrompt);
 
-    // Création du layout général
+    // Creation du layout general
     QHBoxLayout* globalLayout = new QHBoxLayout(window);
     globalLayout->addWidget(mapArea, 10);
     globalLayout->addLayout(commandesLayout);
@@ -103,8 +103,8 @@ Application::Application(SmartCars* sc, QWidget* parent) : QMainWindow(parent) {
     window->setLayout(globalLayout);
     setCentralWidget(window);
 
-    resize(1165, 678);
-    setMaximumSize(1165, 678);
+    resize(1200, 700);
+    setMaximumSize(1200, 700);
 
     // Liaison de l'ensemble des inputs
     connect(lancerSimulation, &QPushButton::clicked, this, &Application::handleAvancer);
@@ -114,7 +114,7 @@ Application::Application(SmartCars* sc, QWidget* parent) : QMainWindow(parent) {
     connect(generateNewSimulation, &QPushButton::released, this, &Application::handleGenerateCars);
     connect(showRangeCheckBox, &QCheckBox::stateChanged, this, &Application::handleShowRange);
 
-    // Création du thread de simulation
+    // Creation du thread de simulation
     SimulationThread* simulationThread = new SimulationThread();
 
     simulationThread->smart_cars = smart_cars;
@@ -126,6 +126,7 @@ Application::Application(SmartCars* sc, QWidget* parent) : QMainWindow(parent) {
     simulationThread->start();
 }
 
+// Fonction pour repeindre smart_cars et afficher les voisins dans le gestionnaire de selection
 void Application::repaintSmartCars() {
     smart_cars->repaint();
     vector<Voiture*> voisins;
@@ -137,6 +138,7 @@ void Application::repaintSmartCars() {
     setupHelper->fillVoisinsLayout(voisins);
 }
 
+// Activer ou desactiver la simulation et gerer le bouton associe
 void Application::handleAvancer() {
     *active = !*active;
     if (*active) {
@@ -149,10 +151,12 @@ void Application::handleAvancer() {
     }
 }
 
+// Activer ou desactiver l'affichage de la range
 void Application::handleShowRange() {
     *showRange = !*showRange;
 }
 
+// Generer une nouvelle simulation
 void Application::handleGenerateCars() {
     std::string stringnbrevoitures = inputSizeGeneration->text().toStdString();
     if (isNumber(stringnbrevoitures)) {
@@ -190,6 +194,7 @@ void Application::handleGenerateCars() {
         inputSizeGeneration->setText(QString(""));
 }
 
+// Changer la vitesse de la simulation et mettre a jour le texte associe
 void Application::handleChangeSpeedSimulation() {
     double vitesse = (double) speedSlider->value() / 10;
     smart_cars->setVitesse(vitesse);
@@ -198,6 +203,7 @@ void Application::handleChangeSpeedSimulation() {
     smart_cars->setVitesse(vitesse);
 }
 
+// Changer la vitesse de la voiture selectionnee
 void Application::handleChangeSpeed() {
     string nvSpeedValue = setupHelper->getValueOfSpeedInput();
     if (isNumber(nvSpeedValue)) {
@@ -220,11 +226,13 @@ void Application::handleChangeSpeed() {
         
 }
 
+// Selectionner une nouvelle voiture
 void Application::handleSelectCar() {
     setupHelper->modifyCurrentVitesseInInput(smart_cars->getVoitures());
     smart_cars->repaint();
 }
 
+// Detecter si le string est un nombre ou non
 bool Application::isNumber(const string& str)
 {
     for (char const& c : str) {

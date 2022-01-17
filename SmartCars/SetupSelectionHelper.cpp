@@ -2,12 +2,14 @@
 
 
 SetupSelectionHelper::SetupSelectionHelper() {
+	// Creation de la box parente
 	d_box = new QGroupBox();
-	d_box->setTitle(QString(u8"Sélection"));
+	d_box->setTitle(QString(u8"Selection"));
 
 	QGroupBox* optionsBox = new QGroupBox();
 	optionsBox->setTitle(QString("Options"));
 
+	// Partie de modification des attributs de la voiture
 	QVBoxLayout* optionsLayout = new QVBoxLayout();
 	QHBoxLayout* speedLayout = new QHBoxLayout();
 	
@@ -19,24 +21,27 @@ SetupSelectionHelper::SetupSelectionHelper() {
 	speedLayout->addWidget(d_speedInput);
 	speedLayout->addWidget(new QLabel(QString("km/h")));
 
-	d_btn = new QPushButton(QString(u8"Mettre à jour"));
+	// Bouton de mise a jour de la selection
+	d_btn = new QPushButton(QString(u8"Mettre a jour"));
 	optionsLayout->addLayout(speedLayout);
-	// Ajouter options à modifier ici
+	// Ajouter options a modifier ici
 	optionsLayout->addWidget(d_btn);
 	optionsBox->setLayout(optionsLayout);
 	
+	// Partie de selection de la voiture a afficher
 	QHBoxLayout* selectionLayout = new QHBoxLayout();
 
 	d_comboBoxListCars = new QComboBox();
 	d_comboBoxListCars->setFixedWidth(150);
 
-	d_btnSelect = new QPushButton(u8"Sélectionner");
+	d_btnSelect = new QPushButton(u8"Selectionner");
 
 	selectionLayout->addWidget(d_comboBoxListCars);
 	selectionLayout->addWidget(d_btnSelect);
 
+	// Partie de l'affichage des voisins de la voiture selectionnee
 	QGroupBox* voisinsBox = new QGroupBox();
-	voisinsBox->setTitle(QString(u8"Voitures à portée"));
+	voisinsBox->setTitle(QString(u8"Voitures a portee"));
 
 	QVBoxLayout* voisinsLayout = new QVBoxLayout();
 	QVBoxLayout* voisinsListLayout = new QVBoxLayout();
@@ -57,17 +62,19 @@ SetupSelectionHelper::SetupSelectionHelper() {
 	d_box->setLayout(layoutBox);
 }
 
-
+// Retourne la box parente
 QGroupBox* SetupSelectionHelper::box() const {
 	return d_box;
 }
 
+// Modifie la vitesse de la voiture selectionnee
 void SetupSelectionHelper::modifyCurrentVitesseInInput(vector<Voiture*> voitures) {
 	indexComboBox(d_comboBoxListCars->currentIndex());
 	for (Voiture* v : voitures) v->setSelected(v == voitures.at(d_indexSelectedCar));
 	d_speedInput->setText(QString(to_string(voitures.at(d_indexSelectedCar)->getVitesse()).c_str()));
 }
 
+// Met a jour la combobox avec les voitures
 void SetupSelectionHelper::fillComboBox(vector<Voiture*> voitures) {
 	d_comboBoxListCars->clear();
 
@@ -76,6 +83,7 @@ void SetupSelectionHelper::fillComboBox(vector<Voiture*> voitures) {
 	}
 }
 
+// Met a jour les voisins avec la liste des voitures
 void SetupSelectionHelper::fillVoisinsLayout(vector<Voiture*> voitures) {
 	d_voisinsList->clear();
 

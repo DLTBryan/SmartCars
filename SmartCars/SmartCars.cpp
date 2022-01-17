@@ -15,6 +15,7 @@ SmartCars::SmartCars(std::vector<Rue> rues, std::vector<Noeud*> noeuds, std::vec
     createMesh();
 }
 
+// Recuperer les dimensions de la map
 int SmartCars::getHexMeshWidth() {
     return widget_width;
 }
@@ -22,13 +23,14 @@ int SmartCars::getHexMeshHeight() {
     return widget_height;
 }
 
+// Creation du maillage hexagonal de la map
 void SmartCars::createMesh() {
     cells.clear();
 	allCells.clear();
     const int cellWidth = getCellWidth();
     const int rows = widget_height / (sqrt(3) * cellWidth / 2);
     const int columns = widget_width / (0.75 * cellWidth);
-    const int margin = 2; // => borderColor: pour que le maillage soit collé aux bords haut et gauche
+    const int margin = 2; // => borderColor: pour que le maillage soit colle aux bords haut et gauche
 
     std::random_device dev;
     std::mt19937 engine(dev());
@@ -62,7 +64,7 @@ void SmartCars::createMesh() {
     }
 }
 
-
+// Fonction pour repeindre (= mettre a jour) la fenetre et afficher les infos
 void SmartCars::paintEvent(QPaintEvent* event)
 {
     QPainter painter(this);
@@ -137,7 +139,7 @@ void SmartCars::paintEvent(QPaintEvent* event)
 				pen.setColor(QColor(0, 0, 0));
 				painter.setPen(pen);
 				painter.drawLine(QLine(((xmax - noeud->x()) * widget_width / (xmax - xmin)), ((ymax - noeud->y()) * widget_height / (ymax - ymin)), ((xmax - noeudvoisin->x()) * widget_width / (xmax - xmin)), ((ymax - noeudvoisin->y()) * widget_height / (ymax - ymin))));*/
-				// Dessin de la route lui-même
+				// Dessin de la route lui-meme
 				pen.setWidth(tailleroute);
 				pen.setColor(couleurroute);
 				painter.setPen(pen);
@@ -149,8 +151,8 @@ void SmartCars::paintEvent(QPaintEvent* event)
     //-------------------------
     // hexagonal mesh part
     //RGB
-    QColor borderColor(200, 200, 200);
-    borderColor.setAlphaF(0.3);
+    QColor borderColor(0, 0, 0);
+    borderColor.setAlphaF(0.07);
 
     QColor cellColor(255, 255, 255);
     cellColor.setAlphaF(0); // 0 is transparent -> 1 is opaque
@@ -178,9 +180,11 @@ void SmartCars::paintEvent(QPaintEvent* event)
 			}
 		}
 
+	// Dessin de l'ensemble des voitures
 	pen.setWidth(1);
 	painter.setPen(pen);
 	for (Voiture* v : v_voitures) {
+		// Couleur bleue si selectionnee, rouge si voisine, verte sinon
 		if (v->getSelected()) painter.setBrush(QBrush("blue"));
 		else if(v->getVoisin()) painter.setBrush(QBrush("red"));
 		else painter.setBrush(QBrush("green"));
@@ -190,6 +194,7 @@ void SmartCars::paintEvent(QPaintEvent* event)
 	}
 }
 
+// Recuperation d'une cellule depuis des coordonnees
 Cell* SmartCars::getCellFromCoord(Point point) {
 	double x_coord = (xmax - point.x()) * widget_width / (xmax - xmin);
 	double y_coord = (ymax - point.y()) * widget_height / (ymax - ymin);
@@ -197,7 +202,7 @@ Cell* SmartCars::getCellFromCoord(Point point) {
 
 	// segment [a,b] de l'hexagone => cf createMesh() -> polygon.setPoint()
 
-	// valeurs génériques
+	// valeurs generiques
 	const double pi = 3.14159265358979323846264338327950288;
 	const int cellWidth = getCellWidth();
 	double decalage_bas_col_imp = cellWidth * std::cos(pi / 6) / 2;
@@ -206,7 +211,7 @@ Cell* SmartCars::getCellFromCoord(Point point) {
 	const int rows = widget_height / (sqrt(3) * cellWidth / 2);
 	const int columns = widget_width / (0.75 * cellWidth);
 
-	//premier calcul maille en carré pour avoir une idée de la row et col de la cell
+	//premier calcul maille en carre pour avoir une idee de la row et col de la cell
 	int oneH_col = (x_coord - 1) / (0.75 * 50);
 	int oneH_row = 0;
 	double pY = y_coord;
@@ -214,7 +219,7 @@ Cell* SmartCars::getCellFromCoord(Point point) {
 		pY -= decalage_bas_col_imp;
 	oneH_row = (pY - 1) / (sqrt(3) * 50 / 2);
 
-	//je cherche à obtenir les valeurs exactes (row, col) tout en rejetant les coordonnées extérieurs à la hex mesh
+	//je cherche a obtenir les valeurs exactes (row, col) tout en rejetant les coordonnees exterieurs a la hex mesh
 	Cell* cell_temp;
 
 	/*
@@ -232,7 +237,7 @@ Cell* SmartCars::getCellFromCoord(Point point) {
 		out_of_range_of_mesh = true;
 	}
 
-	// CAS zone de décalage vers le bas sur la 1ere ligne top des colonnes impaires
+	// CAS zone de decalage vers le bas sur la 1ere ligne top des colonnes impaires
 	else if (oneH_col % 2 == 1 && y_coord < decalage_bas_col_imp) {
 		cell_temp = cells[oneH_row][oneH_col - 1];
 		double cx = cell_temp->getCenterX();
@@ -278,12 +283,12 @@ Cell* SmartCars::getCellFromCoord(Point point) {
 			double unX = cx + demi_hauteur_de_cell;
 			double deuxY = cy + decalage_bas_col_imp;
 
-			//le point x sort à droite de la hex mesh
+			//le point x sort a droite de la hex mesh
 			if (x_coord > unX) {
 				out_of_range_of_mesh = true;
 			}
 			else {
-				// utiliser la cellule heut gauche => garder cellule actuellement sélectionné et calculer valeurs manquantes
+				// utiliser la cellule heut gauche => garder cellule actuellement selectionne et calculer valeurs manquantes
 				if (y_coord < deuxY) {
 					double unY = cy;
 					double deuxX = cx + demi_hauteur_de_cell_sinus;
@@ -317,7 +322,7 @@ Cell* SmartCars::getCellFromCoord(Point point) {
 		}
 	}
 
-	// CAS zone de décalage vers le bas sur la derniere ligne top des colonnes paires
+	// CAS zone de decalage vers le bas sur la derniere ligne top des colonnes paires
 	else if (oneH_col % 2 == 0 && oneH_col < columns && oneH_col > 0 && oneH_row == rows) {
 		// utiliser la cellule haut gauche
 		cell_temp = cells[oneH_row - 1][oneH_col - 1];
@@ -394,17 +399,16 @@ Cell* SmartCars::getCellFromCoord(Point point) {
 			}
 		}
 	}
-
 	else {
 		out_of_range_of_mesh = true;
 	}
-
 	if (out_of_range_of_mesh) {
 		cell_temp = nullptr;
 	}
 	return cell_temp;
 }
 
+// Recuperer toutes les cellules voisines autour d'une rentree en paramètre
 vector<Cell*> SmartCars::getVoisins(Cell* cell)
 {
 	vector<Cell*> voisins;
@@ -455,6 +459,5 @@ vector<Cell*> SmartCars::getVoisins(Cell* cell)
 			voisins.push_back(cells[row_init - 1][col_init - 1]);
 		}
 	}
-
 	return voisins;
 }
