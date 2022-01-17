@@ -22,7 +22,7 @@ class osmextract {
 public:
     // Constructeurs
     osmextract(std::string nomfichier) : v_nomfichier{ nomfichier } {}
-    // Déstructeurs
+    // Destructeurs
     ~osmextract() = default;
     // Accesseurs
     std::vector<Noeud*> noeuds() const {
@@ -31,14 +31,14 @@ public:
     std::vector<Rue> rues() const {
         return v_rues;
     }
-    // Méthodes
+    // Methodes
     void extraire();
 private:
     // Attributs
     std::string v_nomfichier;
     std::vector<Noeud*> v_noeuds;
     std::vector<Rue> v_rues;
-    // Méthodes
+    // Methodes
     std::vector<std::string> extraireNdsRoute(XMLElement* wayactuel);
     std::pair<std::string, std::vector<std::string>> construirePaireRouteNds(XMLElement* wayactuel, std::vector<std::string> stringsattributsrefnds);
     bool estRouteValide(XMLElement* wayactuel);

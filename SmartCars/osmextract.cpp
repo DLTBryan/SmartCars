@@ -2,7 +2,7 @@
 
 #include <string>
 
-// Extrait les références des noeuds constituant la route
+// Extrait les references des noeuds constituant la route
 std::vector<std::string> osmextract::extraireNdsRoute(XMLElement* wayactuel) {
     std::vector<std::string> stringsattributsrefnds;
     // On parcourt les "nd"
@@ -19,7 +19,7 @@ std::vector<std::string> osmextract::extraireNdsRoute(XMLElement* wayactuel) {
     return stringsattributsrefnds;
 }
 
-// Renvoie une paire associant une route à ses noeuds
+// Renvoie une paire associant une route a ses noeuds
 std::pair<std::string, std::vector<std::string>> osmextract::construirePaireRouteNds(XMLElement* wayactuel, std::vector<std::string> stringsattributsrefnds) {
     // On stocke les attributs "ref" de tous les "nd" dans une map
     const char* attributidwayactuel = nullptr;
@@ -31,12 +31,12 @@ std::pair<std::string, std::vector<std::string>> osmextract::construirePaireRout
     return std::pair<std::string, std::vector<std::string>>();
 }
 
-// Détermine si la route est valide ou pas
+// Determine si la route est valide ou pas
 bool osmextract::estRouteValide(XMLElement* wayactuel) {
     // On parcours les "tag"
     XMLElement* tagactuel = wayactuel->FirstChildElement("tag");
     while (tagactuel != nullptr) {
-        // On stocke les "way" ayant k="highway" et v appartenant au tableau défini au début de la fonction
+        // On stocke les "way" ayant k="highway" et v appartenant au tableau defini au debut de la fonction
         const char* attributktagactuel = nullptr;
         attributktagactuel = tagactuel->Attribute("k");
         const char* attributvtagactuel = nullptr;
@@ -52,12 +52,12 @@ bool osmextract::estRouteValide(XMLElement* wayactuel) {
     return false;
 }
 
-// Fonction renvoyant une map inversée : un noeud sera associé à ses routes (pour chaque route associée on spécifie son identifiant, l'emplacement du noeud associé dans cette route et le nombre total de noeuds dans cette route)
+// Fonction renvoyant une map inversee : un noeud sera associe a ses routes (pour chaque route associee on specifie son identifiant, l'emplacement du noeud associe dans cette route et le nombre total de noeuds dans cette route)
 std::map<std::string, std::vector<std::vector<double>>> osmextract::inverserMapRouteNds(std::map<std::string, std::vector<std::string>> linkswayrefnode) {
     std::map<std::string, std::vector<std::vector<double>>> linksrefnodeway;
     for (auto i = linkswayrefnode.begin(); i != linkswayrefnode.end(); ++i) {
         for (size_t j = 0; j < i->second.size(); j++) {
-            // On vérifie si la clé existe déjà dans la nouvelle map
+            // On verifie si la cle existe deja dans la nouvelle map
             if (linksrefnodeway.find(i->second[j]) != linksrefnodeway.end()) {
                 for (auto k = linksrefnodeway.begin(); k != linksrefnodeway.end(); ++k)
                     if (k->first == i->second[j]) {
@@ -74,10 +74,10 @@ std::map<std::string, std::vector<std::vector<double>>> osmextract::inverserMapR
     return linksrefnodeway;
 }
 
-// Va récupérer les coordonnées WSG84 depuis le fichier
+// Va recuperer les coordonnees WSG84 depuis le fichier
 std::array<double, 2> osmextract::recupererCoordonneesNd(XMLNode* root, std::string refnode) {
     std::array<double, 2> coordonneeswsg84;
-    // On retrouve le "node" correspondant avec l'attribut "id" qui est la référence d'un noeud
+    // On retrouve le "node" correspondant avec l'attribut "id" qui est la reference d'un noeud
     XMLElement* nodeactuel = root->FirstChildElement("node");
     while (nodeactuel != nullptr) {
         const char* attributidnodeactuel = nullptr;
@@ -85,7 +85,7 @@ std::array<double, 2> osmextract::recupererCoordonneesNd(XMLNode* root, std::str
         if (attributidnodeactuel != nullptr) {
             std::string stringattributidnodeactuel = attributidnodeactuel;
             if (stringattributidnodeactuel == refnode) {
-                // On récupère les coordonnées de cet "node"
+                // On recupère les coordonnees de cet "node"
                 const char* attributlatnodeactuel = nullptr;
                 attributlatnodeactuel = nodeactuel->Attribute("lat");
                 const char* attributlonnodeactuel = nullptr;
@@ -104,9 +104,9 @@ std::array<double, 2> osmextract::recupererCoordonneesNd(XMLNode* root, std::str
     return coordonneeswsg84;
 }
 
-// Va récupérer le type de la route depuis le fichier
+// Va recuperer le type de la route depuis le fichier
 std::string osmextract::recupererTypeRoute(XMLNode* root, std::string refroute) {
-    // On retrouve le "way" correspondant avec l'attribut "id" qui est la référence d'une route
+    // On retrouve le "way" correspondant avec l'attribut "id" qui est la reference d'une route
     XMLElement* wayactuel = root->FirstChildElement("way");
     while (wayactuel != nullptr) {
         const char* attributidwayactuel = nullptr;
@@ -177,20 +177,20 @@ void osmextract::extraire() {
     XMLError eResult = map.LoadFile(v_nomfichier.c_str());
     XMLCheckResult(eResult);
 
-    // Une map associant un id de "way" à des références de "node"
+    // Une map associant un id de "way" a des references de "node"
     std::map<std::string, std::vector<std::string>> linkswayrefnode;
-    // Une map associant une référence de "node" à des ensembles d'informations sur les "way"
+    // Une map associant une reference de "node" a des ensembles d'informations sur les "way"
     std::map<std::string, std::vector<std::vector<double>>> linksrefnodeway;
 
-    // L'élément principal (vérification si le fichier fourni est bien en XML)
+    // L'element principal (verification si le fichier fourni est bien en XML)
     XMLNode* root = map.FirstChildElement("osm");
     if (root == nullptr)
         exit(1);
-    // On vérifie que le fichier fournit contient des routes
+    // On verifie que le fichier fournit contient des routes
     XMLElement* wayactuel = root->FirstChildElement("way");
     if (wayactuel == nullptr)
         exit(1);
-    // Premier parcours de tous les éléments "way" pour savoir quels sont les "node" concernés et auquel élément "way" ils appartiennent
+    // Premier parcours de tous les elements "way" pour savoir quels sont les "node" concernes et auquel element "way" ils appartiennent
     while (wayactuel != nullptr) {
         if (estRouteValide(wayactuel)) {
             std::vector<std::string> stringsattributsrefnds = extraireNdsRoute(wayactuel);
@@ -198,19 +198,19 @@ void osmextract::extraire() {
         }
         wayactuel = wayactuel->NextSiblingElement("way");
     }
-    // On inverse la map pour savoir quels "node" sont associés auxquels "way"
+    // On inverse la map pour savoir quels "node" sont associes auxquels "way"
     linksrefnodeway = inverserMapRouteNds(linkswayrefnode);
-    // "node" par "node" on commence à créer nos objets
+    // "node" par "node" on commence a creer nos objets
     for (auto i = linksrefnodeway.begin(); i != linksrefnodeway.end(); ++i) {
         std::array<double, 2> coordonneeswsg84 = recupererCoordonneesNd(root, i->first);
         // Conversion en Lambert93
         std::array<double, 2> coordonneeslambert = wgs84::toCartesian({ 47.7334, 7.30404 }, { coordonneeswsg84[0], -coordonneeswsg84[1] });
-        // On crée un nouveau noeud dans la mémoire et on rajoute son adresse mémoire dans le tableau v_noeuds
+        // On cree un nouveau noeud dans la memoire et on rajoute son adresse memoire dans le tableau v_noeuds
         Noeud* nouveaunoeud = new Noeud(coordonneeslambert[0], coordonneeslambert[1]);
         v_noeuds.push_back(nouveaunoeud);
         // On rajoute ce nouveau noeud dans chaque rue auxquelle il appartient
         for (std::vector<double> ensembleinformationsway : i->second) {
-            // Recherche si la "way" existe déjà
+            // Recherche si la "way" existe deja
             int indicerueexistante = -1;
             for (size_t j = 0; j < v_rues.size(); j++) {
                 if (v_rues[j].reference() == std::to_string(ensembleinformationsway[0])) {
@@ -222,7 +222,7 @@ void osmextract::extraire() {
             if (indicerueexistante != -1)
                 v_rues[indicerueexistante].ajouteNoeud(nouveaunoeud, (int)ensembleinformationsway[1]);
             else {
-                // Peut être mieux de récupérer ces informations directement au début (quand validation de la route) ?
+                // Peut etre mieux de recuperer ces informations directement au debut (quand validation de la route) ?
                 std::string typeroute = recupererTypeRoute(root, std::to_string((int)ensembleinformationsway[0]));
                 v_rues.push_back(Rue(std::to_string(ensembleinformationsway[0]), typeroute, nouveaunoeud, (int)ensembleinformationsway[2]));
             }

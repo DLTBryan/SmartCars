@@ -9,7 +9,7 @@ class Noeud {
 public:
     // Constructeurs
     Noeud(double x, double y) : v_coordonnees{ Point(x, y) }, v_noeudsvoisins{} {}
-    // Déstructeurs
+    // Destructeurs
     ~Noeud() = default;
     // Accesseurs
     std::vector<Noeud*> noeudsVoisins() const {
@@ -27,7 +27,7 @@ public:
     Point coordonnees() const {
         return v_coordonnees;
     }
-    // Méthodes
+    // Methodes
     void ajouteVoisin(Noeud* v);
     void ajouteVoisinVoiturable(Noeud* v);
     bool estVoiturable() const;

@@ -7,7 +7,7 @@ public:
     // Constructeurs
     Point() : v_x{ 0 }, v_y{ 0 } {}
     Point(double x, double y) : v_x{ x }, v_y{ y } {}
-    // Déstructeurs
+    // Destructeurs
     ~Point() = default;
 
     double x() {
